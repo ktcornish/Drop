@@ -5,5 +5,6 @@
         android:id="@+id/nav_account"
         android:title="@string/nav_account"
         app:showAsAction="never"/>
+    <item android:title="@string/logout" />
 
 </menu>
