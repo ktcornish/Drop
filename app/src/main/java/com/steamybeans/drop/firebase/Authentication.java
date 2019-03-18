@@ -13,7 +13,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.steamybeans.drop.LoginPage;
-import com.steamybeans.drop.views.home.HomeActivity;
+import com.steamybeans.drop.views.home_activity.HomeActivity;
 
 
 public class Authentication extends AppCompatActivity {
