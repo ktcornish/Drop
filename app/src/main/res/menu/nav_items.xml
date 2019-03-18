@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:icon="@drawable/ic_nav_home_24dp"
+        android:title="@string/nav_home" />
+    <item
+        android:icon="@drawable/ic_nav_drop_24dp"
+        android:title="@string/nav_drop" />
+    <item
+        android:icon="@drawable/ic_nav_tags_24dp"
+        android:title="@string/nav_tags" />
+</menu>
