@@ -3,6 +3,7 @@ package com.steamybeans.drop;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -25,7 +26,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class LoginPage extends AppCompatActivity {
 
     private Button BTNsignUp;
-    private Button BTNlogin;
+    private FloatingActionButton BTNlogin;
     private String email;
     private String password;
     private FirebaseAuth firebaseAuth;
@@ -51,7 +52,7 @@ public class LoginPage extends AppCompatActivity {
         BTNsignUp = (Button)findViewById(R.id.BTNsignUp);
         ETemail = (EditText)findViewById(R.id.ETloginEmailAddress);
         ETpassword = (EditText)findViewById(R.id.ETloginPassword);
-        BTNlogin = (Button)findViewById(R.id.BTNlogin);
+        BTNlogin = (FloatingActionButton)findViewById(R.id.BTNlogin);
 
         BTNsignUp.setOnClickListener(new View.OnClickListener() {
             @Override

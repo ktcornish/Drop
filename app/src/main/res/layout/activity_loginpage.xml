@@ -8,82 +8,102 @@
     tools:context=".LoginPage">
 
 
-    <EditText
-        android:id="@+id/ETloginEmailAddress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="361dp"
+        android:layout_height="600dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="176dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="510dp"
-        android:ems="10"
-        android:hint="Enter email address"
-        android:inputType="textPersonName"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/loginbackgroundshape"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.747" />
+
+    <EditText
+        android:id="@+id/ETloginEmailAddress"
+        android:layout_width="279dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:ems="10"
+        android:hint="Enter email address"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/ETloginPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView3"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/BTNsignUp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="298dp"
+        android:layout_height="61dp"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:background="@drawable/buttonbackground"
         android:text="Signup"
+        android:textColor="@android:color/white"
+        android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.485"
+        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ETloginEmailAddress"
-        app:layout_constraintVertical_bias="0.48" />
+        app:layout_constraintVertical_bias="0.89" />
 
     <TextView
         android:id="@+id/TVlogin"
-        android:layout_width="127dp"
-        android:layout_height="42dp"
+        android:layout_width="83dp"
+        android:layout_height="43dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="DROP"
+        android:textColor="#ffffff"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/ETloginEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.22" />
 
     <EditText
         android:id="@+id/ETloginPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="279dp"
+        android:layout_height="55dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="352dp"
         android:ems="10"
         android:hint="Enter password"
         android:inputType="textPersonName"
         android:password="true"
-        app:layout_constraintBottom_toTopOf="@+id/BTNsignUp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ETloginEmailAddress"
-        app:layout_constraintVertical_bias="0.267" />
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/BTNlogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="login"
-        app:layout_constraintBottom_toTopOf="@+id/BTNsignUp"
+        android:clickable="true"
+        app:backgroundTint="#365CBB"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.882"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ETloginPassword" />
+        app:layout_constraintTop_toTopOf="@+id/imageView3"
+        app:layout_constraintVertical_bias="0.676"
+        app:srcCompat="@drawable/ic_loginarrow" />
 
 </android.support.constraint.ConstraintLayout>
