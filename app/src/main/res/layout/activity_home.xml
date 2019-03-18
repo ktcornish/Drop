@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".views.home_activity.HomeActivity">
 
+    // Include toolbar in layout
     <include
         layout="@layout/toolbar_top"
         android:id="@+id/toolbar_top"/>
