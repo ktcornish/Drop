@@ -12,6 +12,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.steamybeans.drop.LoginPage;
 import com.steamybeans.drop.views.home.HomeActivity;
 
 
@@ -24,22 +25,40 @@ public class Authentication extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
 
-    public void signin(String email, String password) {
+    public void login(String email, String password) {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(Authentication.this, new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // sign in success
-                            Log.d("Sign In", "signInWithEmail:success");
+                            Log.d("Log In", "signInWithEmail:success");
                             FirebaseUser user = firebaseAuth.getCurrentUser();
-                            Intent i1 = new Intent(context, HomeActivity.class);
-                            context.startActivity(i1);
+                            context.startActivity(new Intent(context, HomeActivity.class));
                         } else {
                             // Sign in fails
-                            Log.w("Sign In", "signInWithEmail:fail", task.getException());
+                            Log.w("Log In", "signInWithEmail:fail", task.getException());
                             Toast.makeText(context, "Login Failed!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    public void signup(String email, String password) {
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d("Sign Up", "createUserWithEmail:success");
+                            FirebaseUser user = firebaseAuth.getCurrentUser();
+                            startActivity(new Intent(context, LoginPage.class));
+                        } else {
+                            Log.w("Sign Up", "createUserWithEmail:failure", task.getException());
+                            Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

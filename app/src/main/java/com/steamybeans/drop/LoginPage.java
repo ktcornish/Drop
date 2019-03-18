@@ -59,7 +59,7 @@ public class LoginPage extends AppCompatActivity {
             public void onClick(View v) {
                 email = ETemail.getText().toString();
                 password = ETpassword.getText().toString();
-                authentication.signin(email, password);
+                authentication.login(email, password);
             }
         });
     }
