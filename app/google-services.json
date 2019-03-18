@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1045779179208",
+    "firebase_url": "https://drop-77452.firebaseio.com",
+    "project_id": "drop-77452",
+    "storage_bucket": "drop-77452.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1045779179208:android:600289eb4995ac5b",
+        "android_client_info": {
+          "package_name": "com.steamybeans.drop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1045779179208-spt0b9c2po7dl16873s92hjb3e6mj4jo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.steamybeans.drop",
+            "certificate_hash": "8456b28aa639eb44d9c90bf9cf341f119ddaaa22"
+          }
+        },
+        {
+          "client_id": "1045779179208-q5vv172smjjhj8ojblpj08q5rh96jd48.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2_EOP6McDqd-qRZIhJFhlvtYbbM0FTns"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1045779179208-q5vv172smjjhj8ojblpj08q5rh96jd48.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
