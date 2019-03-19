@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.steamybeans.drop.R;
 import com.steamybeans.drop.firebase.Authentication;
 
@@ -63,5 +64,13 @@ public class LoginPage extends AppCompatActivity {
                 authentication.login(email, password);
             }
         });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        authentication = new Authentication(this);
+        authentication.alreadySignedIn();
     }
 }
