@@ -33,6 +33,7 @@ public class SignUpFeatureTest {
         onView(withId(R.id.ETsignupEmailAddress)).perform(typeText("test@user.com"));
         onView(withId(R.id.ETsignupPassword)).perform(typeText("password"));
         onView(withId(R.id.BTNcompleteSignUp)).perform(click());
+        Thread.sleep(1000);
         onView(withId(R.id.TVlogin)).check(matches(isDisplayed()));
     }
 }

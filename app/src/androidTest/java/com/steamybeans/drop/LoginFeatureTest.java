@@ -10,6 +10,8 @@ import org.junit.runner.RunWith;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.typeText;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 @RunWith(AndroidJUnit4.class)
@@ -26,5 +28,7 @@ public class LoginFeatureTest {
         onView(withId(R.id.ETloginEmailAddress)).perform(typeText("test@user.com"));
         onView(withId(R.id.ETloginPassword)).perform(typeText("password"));
         onView(withId(R.id.BTNlogin)).perform(click());
+        Thread.sleep(1000);
+        onView(withId(R.id.toolbar_top)).check(matches(isDisplayed()));
     }
 }
