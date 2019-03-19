@@ -34,4 +34,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TVEmail"
         app:layout_constraintVertical_bias="0.267" />
+
+    <include
+        layout="@layout/toolbar_myaccount_top"
+        android:id="@+id/toolbar_myaccount_top"/>
+
 </android.support.constraint.ConstraintLayout>
