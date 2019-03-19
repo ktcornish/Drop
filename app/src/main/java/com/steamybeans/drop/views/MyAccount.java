@@ -1,11 +1,14 @@
 package com.steamybeans.drop.views;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.steamybeans.drop.R;
@@ -15,6 +18,7 @@ public class MyAccount extends AppCompatActivity {
 
     private User user;
     private TextView TVEmail;
+    private Button BTNlogOut;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +31,17 @@ public class MyAccount extends AppCompatActivity {
         user = new User();
         TVEmail = (TextView) findViewById(R.id.TVEmail);
         TVEmail.setText(user.email());
+
+        BTNlogOut = (Button) findViewById(R.id.BTNlogOut);
+
+        BTNlogOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                user.signOut();
+                startActivity(new Intent(MyAccount.this, LoginPage.class));
+
+            }
+        });
     }
 
 

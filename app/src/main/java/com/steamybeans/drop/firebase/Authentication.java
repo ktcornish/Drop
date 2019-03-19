@@ -63,4 +63,10 @@ public class Authentication extends AppCompatActivity {
                     }
                 });
     }
+
+    public void alreadySignedIn() {
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        if (currentUser != null) {context.startActivity(new Intent(context, HomeActivity.class));};
+    }
 }
