@@ -63,6 +63,7 @@ public class MyAccount extends AppCompatActivity {
             case R.id.TBclose:
                 startActivity(new Intent(MyAccount.this, HomeActivity.class));
                 overridePendingTransition(R.anim.slide_up_from_bottom, R.anim.slide_down_from_top);
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

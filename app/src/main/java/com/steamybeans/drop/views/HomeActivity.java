@@ -143,6 +143,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             buildGoogleApiclient();
             mMap.setMyLocationEnabled(true);
+            mMap.setPadding(0,200,0,200);
         }
 
 
@@ -208,7 +209,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         currentUserLocationMarker = mMap.addMarker(markerOptions);
 
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(18));
 
         //add lat and Lon to variable for use with drops
         currentLocation = latLng;
