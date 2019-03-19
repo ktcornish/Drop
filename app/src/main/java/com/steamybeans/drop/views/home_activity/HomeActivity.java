@@ -13,13 +13,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.steamybeans.drop.R;
 import com.steamybeans.drop.firebase.Drop;
 import com.steamybeans.drop.firebase.User;
 import com.steamybeans.drop.views.MyAccount;
-
-import org.w3c.dom.Text;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -55,9 +54,13 @@ public class HomeActivity extends AppCompatActivity {
                         BTNaddDrop.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Drop drop = new Drop();
-                                drop.newDrop(ETaddDrop.getText().toString(), user.uid());
-                                dialog.dismiss();
+                                if (ETaddDrop.getText().toString().trim().length() > 0) {
+                                    Drop drop = new Drop();
+                                    drop.newDrop(ETaddDrop.getText().toString(), user.uid());
+                                    dialog.dismiss();
+                                } else {
+                                    Toast.makeText(HomeActivity.this, "No Drop entered!", Toast.LENGTH_LONG).show();
+                                }
                             }
                         });
                         dialog.show();
