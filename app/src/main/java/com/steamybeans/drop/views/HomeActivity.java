@@ -1,12 +1,18 @@
 package com.steamybeans.drop.views;
 
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -17,6 +23,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -27,9 +36,12 @@ import com.steamybeans.drop.R;
 import com.steamybeans.drop.firebase.Drop;
 import com.steamybeans.drop.firebase.User;
 
-public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback {
-    private GoogleMap mMap;
+public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        LocationListener {
 
+    private GoogleMap mMap;
     private User user;
     private BottomNavigationView BNbottomNavigationView;
     private Button BTNaddDrop;
@@ -61,8 +73,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                         dialog.setContentView(R.layout.dialogue_new_drop);
 
                         //find button on dialog
-                        BTNaddDrop = (Button)dialog.findViewById(R.id.BTNaddDrop);
-                        ETaddDrop = (EditText)dialog.findViewById(R.id.ETaddDrop);
+                        BTNaddDrop = (Button) dialog.findViewById(R.id.BTNaddDrop);
+                        ETaddDrop = (EditText) dialog.findViewById(R.id.ETaddDrop);
 
                         //onclicklistener for button
                         BTNaddDrop.setOnClickListener(new View.OnClickListener() {
@@ -96,7 +108,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     // Support onClick actions on options in toolbar
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case R.id.TBAccount:
                 startActivity(new Intent(HomeActivity.this, MyAccount.class));
                 return true;
@@ -110,22 +122,37 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mMap.setMyLocationEnabled(true);
 
-        // Add a marker in Sydney and move the camera
-        // Loc to be reassignable - final only in test context
-        final LatLng makers = new LatLng(51.524579,-0.098996);
-        mMap.addMarker(new MarkerOptions().position(makers).title("Marker in Makers"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(makers));
-
-        //Toastloc
-        FloatingActionButton button = findViewById(R.id.fabTempToastLoc);
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(HomeActivity.this, "" + makers.toString() , Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
 }
