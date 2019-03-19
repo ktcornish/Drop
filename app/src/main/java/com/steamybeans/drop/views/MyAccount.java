@@ -29,7 +29,7 @@ public class MyAccount extends AppCompatActivity {
         setContentView(R.layout.activity_my_account);
 
         // Support toolbar in activity
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_top);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_myaccount_top);
         setSupportActionBar(toolbar);
         user = new User();
         TVEmail = (TextView) findViewById(R.id.TVEmail);
@@ -52,13 +52,20 @@ public class MyAccount extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.toolbar_nav_items, menu);
+        inflater.inflate(R.menu.toolbar_myaccount_top_items, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     // Support onClick actions on options in toolbar
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
+        switch(item.getItemId()) {
+            case R.id.TBclose:
+                startActivity(new Intent(MyAccount.this, HomeActivity.class));
+                overridePendingTransition(R.anim.slide_up_from_bottom, R.anim.slide_down_from_top);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

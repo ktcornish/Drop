@@ -1,13 +1,11 @@
 <resources>
     <string name="app_name">Drop</string>
 
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_signup">Signup</string>
     <string name="nav_home">Home</string>
     <string name="nav_drop">Drop</string>
+    <string name="nav_myaccount">My Account</string>
     <string name="nav_filter">Filter</string>
-    <string name="nav_account">Account</string>
     <string name="logout">Log Out</string>
     <string name="title_activity_maps">Map</string>
 

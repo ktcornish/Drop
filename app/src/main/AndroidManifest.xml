@@ -35,7 +35,8 @@
             android:label="@string/title_activity_maps"></activity>
         <activity android:name=".views.HomeActivity" />
 
-        <activity android:name=".views.MyAccount"></activity>
+        <activity android:name=".views.MyAccount"
+            android:label="My Account"></activity>
         <activity
             android:name=".views.Signup"
 
