@@ -57,6 +57,7 @@ public class HomeActivity extends AppCompatActivity {
                             public void onClick(View v) {
                                 Drop drop = new Drop();
                                 drop.newDrop(ETaddDrop.getText().toString(), user.uid());
+                                dialog.dismiss();
                             }
                         });
                         dialog.show();
