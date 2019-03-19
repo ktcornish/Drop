@@ -6,10 +6,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.steamybeans.drop.R;
+import com.steamybeans.drop.firebase.User;
 
 public class HomeActivity extends AppCompatActivity {
+
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +23,8 @@ public class HomeActivity extends AppCompatActivity {
         // Support toolbar in activity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_top);
         setSupportActionBar(toolbar);
+        user = new User();
+        Toast.makeText(this, user.email(), Toast.LENGTH_LONG).show();
     }
 
     // Populate toolbar with buttons

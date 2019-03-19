@@ -12,4 +12,10 @@ public class User {
         String userUid = (firebaseUser != null) ? firebaseUser.getUid() : null;
         return userUid;
     }
+
+    public String email() {
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        String userEmail = (firebaseUser != null) ? firebaseUser.getEmail() : null;
+        return userEmail;
+    }
 }
