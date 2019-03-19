@@ -1,4 +1,4 @@
-package com.steamybeans.drop.views.home_activity;
+package com.steamybeans.drop.views;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -18,7 +18,6 @@ import android.widget.Toast;
 import com.steamybeans.drop.R;
 import com.steamybeans.drop.firebase.Drop;
 import com.steamybeans.drop.firebase.User;
-import com.steamybeans.drop.views.MyAccount;
 
 public class HomeActivity extends AppCompatActivity {
 
