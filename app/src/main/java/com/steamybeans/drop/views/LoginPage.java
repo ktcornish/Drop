@@ -1,4 +1,4 @@
-package com.steamybeans.drop;
+package com.steamybeans.drop.views;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.steamybeans.drop.R;
 import com.steamybeans.drop.firebase.Authentication;
 
 /**
