@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import com.steamybeans.drop.R;
+import com.steamybeans.drop.firebase.Drop;
 import com.steamybeans.drop.firebase.User;
 import com.steamybeans.drop.views.MyAccount;
 
@@ -23,6 +24,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        user = new User();
 
         // Support toolbar in activity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_top);
@@ -34,10 +36,12 @@ public class HomeActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.NBdrop:
-                        final Dialog dialog = new Dialog(HomeActivity.this);
-                        dialog.setContentView(R.layout.dialogue_new_drop);
-                        dialog.show();
-                        return true;
+//                        final Dialog dialog = new Dialog(HomeActivity.this);
+//                        dialog.setContentView(R.layout.dialogue_new_drop);
+//                        dialog.show();
+//                        return true;
+                        Drop drop = new Drop();
+                        drop.newDrop("test", user.uid());
                 }
                 return false;
             }
