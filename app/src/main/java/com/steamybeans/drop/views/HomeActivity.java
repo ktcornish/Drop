@@ -99,6 +99,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         switch(item.getItemId()) {
             case R.id.TBAccount:
                 startActivity(new Intent(HomeActivity.this, MyAccount.class));
+                overridePendingTransition(R.anim.slide_up_from_bottom, R.anim.nothing);
                 return true;
 
             default:
