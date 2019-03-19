@@ -1,31 +1,34 @@
-package com.steamybeans.drop.views.home_activity;
+package com.steamybeans.drop.views;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.steamybeans.drop.R;
 import com.steamybeans.drop.firebase.User;
-import com.steamybeans.drop.views.MyAccount;
 
-public class HomeActivity extends AppCompatActivity {
+public class MyAccount extends AppCompatActivity {
 
     private User user;
+    private TextView TVEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_my_account);
 
         // Support toolbar in activity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_top);
         setSupportActionBar(toolbar);
+        user = new User();
+        TVEmail = (TextView) findViewById(R.id.TVEmail);
+        TVEmail.setText(user.email());
     }
+
 
     // Populate toolbar with buttons
     @Override
@@ -38,14 +41,6 @@ public class HomeActivity extends AppCompatActivity {
     // Support onClick actions on options in toolbar
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
-            case R.id.TBAccount:
-                startActivity(new Intent(HomeActivity.this, MyAccount.class));
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+        return super.onOptionsItemSelected(item);
     }
-
 }

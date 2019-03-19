@@ -4,6 +4,8 @@ package com.steamybeans.drop;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.steamybeans.drop.views.LoginPage;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,6 +35,7 @@ public class SignUpFeatureTest {
         onView(withId(R.id.ETsignupEmailAddress)).perform(typeText("test@user.com"));
         onView(withId(R.id.ETsignupPassword)).perform(typeText("password"));
         onView(withId(R.id.BTNcompleteSignUp)).perform(click());
+        Thread.sleep(1000);
         onView(withId(R.id.TVlogin)).check(matches(isDisplayed()));
     }
 }
