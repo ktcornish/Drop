@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.steamybeans.drop.R;
 import com.steamybeans.drop.firebase.User;
@@ -39,7 +40,7 @@ public class MyAccount extends AppCompatActivity {
             public void onClick(View v) {
                 user.signOut();
                 startActivity(new Intent(MyAccount.this, LoginPage.class));
-
+                Toast.makeText(MyAccount.this, "User successfully signed out", Toast.LENGTH_LONG).show();
             }
         });
     }
