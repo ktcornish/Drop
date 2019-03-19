@@ -1,12 +1,18 @@
 package com.steamybeans.drop.views.home_activity;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.internal.BottomNavigationItemView;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.steamybeans.drop.R;
@@ -16,6 +22,7 @@ import com.steamybeans.drop.views.MyAccount;
 public class HomeActivity extends AppCompatActivity {
 
     private User user;
+    private BottomNavigationView BNbottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +32,21 @@ public class HomeActivity extends AppCompatActivity {
         // Support toolbar in activity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_top);
         setSupportActionBar(toolbar);
+
+        BNbottomNavigationView = (BottomNavigationView) findViewById(R.id.BNbottomNavigationView);
+        BNbottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.NBdrop:
+                        final Dialog dialog = new Dialog(HomeActivity.this);
+                        dialog.setContentView(R.layout.dialogue_new_drop);
+                        dialog.show();
+                        return true;
+                }
+                return false;
+            }
+        });
     }
 
     // Populate toolbar with buttons
