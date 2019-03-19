@@ -12,8 +12,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.steamybeans.drop.views.LoginPage;
 import com.steamybeans.drop.views.HomeActivity;
+import com.steamybeans.drop.views.LoginPage;
 
 
 public class Authentication extends AppCompatActivity {
@@ -67,6 +67,7 @@ public class Authentication extends AppCompatActivity {
     public void alreadySignedIn() {
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-        if (currentUser != null) {context.startActivity(new Intent(context, HomeActivity.class));};
+        if (currentUser != null) {context.startActivity(new Intent(context, HomeActivity.class));}
     }
+
 }
