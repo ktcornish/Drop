@@ -1,4 +1,4 @@
-package com.steamybeans.drop.views.home_activity;
+package com.steamybeans.drop.views;
 
 
 import android.content.Intent;
@@ -27,7 +27,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.steamybeans.drop.R;
 import com.steamybeans.drop.firebase.Drop;
 import com.steamybeans.drop.firebase.User;
-import com.steamybeans.drop.views.MyAccount;
 
 public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback {
     private GoogleMap mMap;
