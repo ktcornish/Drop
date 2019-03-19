@@ -1,5 +1,8 @@
 package com.steamybeans.drop.views.home_activity;
 
+
+import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.app.Dialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -15,12 +18,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.steamybeans.drop.R;
 import com.steamybeans.drop.firebase.Drop;
 import com.steamybeans.drop.firebase.User;
 import com.steamybeans.drop.views.MyAccount;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback {
+    private GoogleMap mMap;
 
     private User user;
     private BottomNavigationView BNbottomNavigationView;
@@ -31,7 +41,13 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.homemap);
+        mapFragment.getMapAsync(this);
+
         user = new User();
+
 
         // Support toolbar in activity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_top);
@@ -90,6 +106,28 @@ public class HomeActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        // Add a marker in Sydney and move the camera
+        // Loc to be reassignable - final only in test context
+        final LatLng makers = new LatLng(51.524579,-0.098996);
+        mMap.addMarker(new MarkerOptions().position(makers).title("Marker in Makers"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(makers));
+
+        //Toastloc
+        FloatingActionButton button = findViewById(R.id.fabTempToastLoc);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(HomeActivity.this, "" + makers.toString() , Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }
