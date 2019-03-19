@@ -206,7 +206,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         markerOptions.title("Current Location");
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
 
-        currentUserLocationMarker = mMap.addMarker(markerOptions);
+//        currentUserLocationMarker = mMap.addMarker(markerOptions);
 
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(18));
