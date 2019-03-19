@@ -1,4 +1,4 @@
-package com.steamybeans.drop;
+package com.steamybeans.drop.views;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +8,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.steamybeans.drop.R;
 import com.steamybeans.drop.firebase.Authentication;
 
 /**
