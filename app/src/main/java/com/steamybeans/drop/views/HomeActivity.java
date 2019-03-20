@@ -38,6 +38,9 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.steamybeans.drop.R;
 import com.steamybeans.drop.firebase.Drop;
 import com.steamybeans.drop.firebase.User;
@@ -98,7 +101,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                             public void onClick(View v) {
                                 if (ETaddDrop.getText().toString().trim().length() > 0) {
                                     Drop drop = new Drop();
-                                    drop.newDrop(ETaddDrop.getText().toString(), user.uid());
+                                    drop.newDrop(ETaddDrop.getText().toString(), user.uid(), currentLocation);
                                     dialog.dismiss();
                                 } else {
                                     Toast.makeText(HomeActivity.this, "No Drop entered!", Toast.LENGTH_LONG).show();
@@ -203,7 +206,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         LatLng latLng = new LatLng(location.getLatitude(),location.getLongitude());
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
-        markerOptions.title("Current Location");
+        markerOptions.title("drop");
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
 
 //        currentUserLocationMarker = mMap.addMarker(markerOptions);
