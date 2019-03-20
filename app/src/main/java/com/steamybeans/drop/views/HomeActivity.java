@@ -3,6 +3,7 @@ package com.steamybeans.drop.views;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.app.LauncherActivity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -43,11 +44,14 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.steamybeans.drop.R;
 import com.steamybeans.drop.firebase.Authentication;
 import com.steamybeans.drop.firebase.Drop;
 import com.steamybeans.drop.firebase.Firebasemarker;
 import com.steamybeans.drop.firebase.User;
+
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -71,6 +75,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private ChildEventListener childEventListener;
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference();
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,36 +184,33 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void addMarkersToMap(final GoogleMap googleMap) {
-        childEventListener = databaseReference.child("users").child(user.uid()).child("posts").addChildEventListener(new ChildEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Firebasemarker marker = dataSnapshot.getValue(Firebasemarker.class);
-                String content = marker.getContent();
-                double longitude = marker.getLongitude();
-                double latitude = marker.getLatitude();
-                LatLng location = new LatLng(latitude, longitude);
-                googleMap.addMarker(new MarkerOptions().position(location).title(content));
-            }
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    userId = snapshot.getKey();
+                    System.out.println(userId);
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Firebasemarker marker = dataSnapshot.getValue(Firebasemarker.class);
-                String content = marker.getContent();
-                double longitude = marker.getLongitude();
-                double latitude = marker.getLatitude();
-                LatLng location = new LatLng(latitude, longitude);
-                googleMap.addMarker(new MarkerOptions().position(location).title(content));
+                    FirebaseDatabase.getInstance().getReference().child("users").child(userId).child("posts")
+                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                        Firebasemarker marker = snapshot.getValue(Firebasemarker.class);
+                                            String content = marker.getContent();
+                                            double longitude = marker.getLongitude();
+                                            double latitude = marker.getLatitude();
+                                            LatLng location = new LatLng(latitude, longitude);
+                                            googleMap.addMarker(new MarkerOptions().position(location).title(content));
+                                    }
+                                }
 
-            }
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
+                                }
+                            });
+                }
             }
 
             @Override
