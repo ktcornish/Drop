@@ -168,7 +168,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Firebasemarker marker = dataSnapshot.getValue(Firebasemarker.class);
-                System.out.println(marker.content);
                 String content = marker.getContent();
                 double longitude = marker.getLongitude();
                 double latitude = marker.getLatitude();
@@ -178,6 +177,12 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Firebasemarker marker = dataSnapshot.getValue(Firebasemarker.class);
+                String content = marker.getContent();
+                double longitude = marker.getLongitude();
+                double latitude = marker.getLatitude();
+                LatLng location = new LatLng(latitude, longitude);
+                googleMap.addMarker(new MarkerOptions().position(location).title(content));
 
             }
 
@@ -245,17 +250,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onLocationChanged(Location location) {
         lastLocation = location;
-        if(currentUserLocationMarker != null) {
-            currentUserLocationMarker.remove();
-        }
 
         LatLng latLng = new LatLng(location.getLatitude(),location.getLongitude());
-        currentLatitude = location.getLatitude();
-        currentLongitude = location.getLongitude();
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(latLng);
-        markerOptions.title("My location");
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
 
 //        currentUserLocationMarker = mMap.addMarker(markerOptions);
 
@@ -264,8 +260,11 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         //add lat and Lon to variable for use with drops
         currentLocation = latLng;
+        currentLatitude = location.getLatitude();
+        currentLongitude = location.getLongitude();
 
         //stop updating location if location already found
+        addMarkersToMap(mMap);
         if(googleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient,this);
 
