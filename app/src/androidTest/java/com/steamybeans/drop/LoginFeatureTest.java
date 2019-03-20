@@ -3,8 +3,7 @@ package com.steamybeans.drop;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.steamybeans.drop.helpers.TestHelpers;
 import com.steamybeans.drop.views.LoginPage;
 
 import org.junit.Rule;
@@ -22,22 +21,15 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 @RunWith(AndroidJUnit4.class)
 public class LoginFeatureTest {
 
-    public void deleteCurrentUser() {
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-        firebaseUser.delete();
-    }
+    private TestHelpers testHelpers;
 
     @Rule
     public ActivityTestRule<LoginPage> mainActivityTestRule = new ActivityTestRule<LoginPage>(LoginPage.class);
 
     @Test
     public void LoggingIn() throws Exception {
-        onView(withId(R.id.BTNsignUp)).perform(click());
-        onView(withId(R.id.ETsignupEmailAddress)).perform(typeText("test@user.com"));
-        onView(withId(R.id.ETsignupPassword)).perform(typeText("password"));
-        onView(withId(R.id.ETsignupPassword)).perform(closeSoftKeyboard());
-        onView(withId(R.id.BTNcompleteSignUp)).perform(click());
+        testHelpers = new TestHelpers();
+        testHelpers.signUpTestUser();
         Thread.sleep(2000);
         onView(withId(R.id.TBAccount)).perform(click());
         onView(withId(R.id.BTNlogOut)).perform(click());
@@ -47,8 +39,8 @@ public class LoginFeatureTest {
         onView(withId(R.id.BTNlogin)).perform(click());
         Thread.sleep(2000);
         onView(withId(R.id.toolbar_top)).check(matches(isDisplayed()));
-        deleteCurrentUser();
-        onView(withId(R.id.TBAccount)).perform(click());
-        onView(withId(R.id.BTNlogOut)).perform(click());
+        testHelpers.deleteCurrentUser();
+        Thread.sleep(2000);
+        testHelpers.logOutUser();
     }
 }
