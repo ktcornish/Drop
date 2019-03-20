@@ -73,4 +73,9 @@ public class LoginPage extends AppCompatActivity {
         authentication.alreadySignedIn();
     }
 
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+    }
+
 }
