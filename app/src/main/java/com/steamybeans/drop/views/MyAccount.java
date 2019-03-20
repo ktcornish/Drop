@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.steamybeans.drop.R;
+import com.steamybeans.drop.firebase.Authentication;
 import com.steamybeans.drop.firebase.User;
 
 public class MyAccount extends AppCompatActivity {
@@ -20,6 +21,7 @@ public class MyAccount extends AppCompatActivity {
     private User user;
     private TextView TVEmail;
     private Button BTNlogOut;
+    private Authentication authentication;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +31,13 @@ public class MyAccount extends AppCompatActivity {
         // Support toolbar in activity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_myaccount_top);
         setSupportActionBar(toolbar);
+
         user = new User();
+        authentication = new Authentication(this);
+
+        //check if user account is still active
+        authentication.checkAccountIsActive();
+
         TVEmail = (TextView) findViewById(R.id.TVEmail);
         TVEmail.setText(user.email());
 
@@ -45,6 +53,12 @@ public class MyAccount extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        //check if user account is still active
+        authentication.checkAccountIsActive();
+    }
 
     // Populate toolbar with buttons
     @Override

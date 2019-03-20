@@ -4,16 +4,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.Time;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 import com.steamybeans.drop.views.HomeActivity;
 import com.steamybeans.drop.views.LoginPage;
+
+import java.sql.Date;
+import java.time.LocalDateTime;
 
 
 public class Authentication extends AppCompatActivity {
@@ -68,6 +74,21 @@ public class Authentication extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         if (currentUser != null) {context.startActivity(new Intent(context, HomeActivity.class));}
+    }
+
+    public void checkAccountIsActive() {
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        System.out.println("CHECK IF USER EXISTS!!!!!!!!!!!!!++++++++++++++" + LocalDateTime.now());
+
+        currentUser.reload().addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                if (e instanceof FirebaseAuthInvalidUserException) {
+                    context.startActivity(new Intent(context, LoginPage.class));
+                }
+            }
+        });
     }
 
 }
