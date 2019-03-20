@@ -39,7 +39,7 @@ public class MyAccount extends AppCompatActivity {
         authentication.checkAccountIsActive();
 
         TVEmail = (TextView) findViewById(R.id.TVEmail);
-        TVEmail.setText(user.email());
+        TVEmail.setText(user.getEmail());
 
         BTNlogOut = (Button) findViewById(R.id.BTNlogOut);
 

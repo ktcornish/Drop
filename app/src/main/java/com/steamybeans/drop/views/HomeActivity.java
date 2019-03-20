@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -107,7 +106,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                             public void onClick(View v) {
                                 if (ETaddDrop.getText().toString().trim().length() > 0) {
                                     Drop drop = new Drop();
-                                    drop.newDrop(ETaddDrop.getText().toString(), user.uid());
+                                    drop.newDrop(ETaddDrop.getText().toString(), user.getUid());
                                     dialog.dismiss();
                                 } else {
                                     Toast.makeText(HomeActivity.this, "No Drop entered!", Toast.LENGTH_LONG).show();
