@@ -6,6 +6,8 @@ import android.app.Dialog;
 import android.app.LauncherActivity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 
 import android.os.Build;
@@ -112,6 +114,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     case R.id.NBdrop:
                         final Dialog dialog = new Dialog(HomeActivity.this);
                         dialog.setContentView(R.layout.dialogue_new_drop);
+                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
                         //find button on dialog
                         BTNaddDrop = (Button) dialog.findViewById(R.id.BTNaddDrop);
