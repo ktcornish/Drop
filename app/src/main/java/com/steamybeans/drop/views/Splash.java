@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.steamybeans.drop.R;
 
@@ -21,7 +22,7 @@ public class Splash extends AppCompatActivity {
             @Override
             public void run() {
 
-                Intent mySuperIntent = new Intent(Splash.this, HomeActivity.class);
+                Intent mySuperIntent = new Intent(Splash.this, LoginPage.class);
                 startActivity(mySuperIntent);
                 finish();
             }
