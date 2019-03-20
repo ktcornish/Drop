@@ -12,14 +12,12 @@ import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 @RunWith(AndroidJUnit4.class)
-public class LoginFeatureTest {
+public class LogOutFeatureTest {
 
     private TestHelpers testHelpers;
 
@@ -27,20 +25,14 @@ public class LoginFeatureTest {
     public ActivityTestRule<LoginPage> mainActivityTestRule = new ActivityTestRule<LoginPage>(LoginPage.class);
 
     @Test
-    public void LoggingIn() throws Exception {
+    public void LoggingOut() throws Exception {
         testHelpers = new TestHelpers();
         testHelpers.signUpTestUser();
         Thread.sleep(2000);
+        testHelpers.deleteCurrentUser();
+        Thread.sleep(3000);
         onView(withId(R.id.TBAccount)).perform(click());
         onView(withId(R.id.BTNlogOut)).perform(click());
-        onView(withId(R.id.ETloginEmailAddress)).perform(typeText("test@user.com"));
-        onView(withId(R.id.ETloginPassword)).perform(typeText("password"));
-        onView(withId(R.id.ETloginPassword)).perform(closeSoftKeyboard());
-        onView(withId(R.id.BTNlogin)).perform(click());
-        Thread.sleep(2000);
-        onView(withId(R.id.toolbar_top)).check(matches(isDisplayed()));
-        testHelpers.deleteCurrentUser();
-        Thread.sleep(2000);
-        testHelpers.logOutUser();
+        onView(withId(R.id.BTNsignUp)).check(matches(isDisplayed()));
     }
 }
