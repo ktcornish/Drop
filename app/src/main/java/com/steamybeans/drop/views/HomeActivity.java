@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -39,6 +38,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.steamybeans.drop.R;
+import com.steamybeans.drop.firebase.Authentication;
 import com.steamybeans.drop.firebase.Drop;
 import com.steamybeans.drop.firebase.User;
 
@@ -49,6 +49,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private GoogleMap mMap;
     private User user;
+    private Authentication authentication;
     private BottomNavigationView BNbottomNavigationView;
     private Button BTNaddDrop;
     private EditText ETaddDrop;
@@ -73,16 +74,23 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
 
         user = new User();
-
+        authentication = new Authentication(this);
 
         // Support toolbar in activity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_top);
         setSupportActionBar(toolbar);
 
+        //check if user account is still active
+        authentication.checkAccountIsActive();
+
         BNbottomNavigationView = (BottomNavigationView) findViewById(R.id.BNbottomNavigationView);
         BNbottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                //check if user account is still active
+                authentication.checkAccountIsActive();
+
                 switch (item.getItemId()) {
                     case R.id.NBdrop:
                         final Dialog dialog = new Dialog(HomeActivity.this);
@@ -98,7 +106,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                             public void onClick(View v) {
                                 if (ETaddDrop.getText().toString().trim().length() > 0) {
                                     Drop drop = new Drop();
-                                    drop.newDrop(ETaddDrop.getText().toString(), user.uid());
+                                    drop.newDrop(ETaddDrop.getText().toString(), user.getUid());
                                     dialog.dismiss();
                                 } else {
                                     Toast.makeText(HomeActivity.this, "No Drop entered!", Toast.LENGTH_LONG).show();
@@ -111,6 +119,13 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 return false;
             }
         });
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        //check if user account is still active
+        authentication.checkAccountIsActive();
     }
 
     // Populate toolbar with buttons

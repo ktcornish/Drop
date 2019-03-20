@@ -13,13 +13,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.steamybeans.drop.R;
+import com.steamybeans.drop.firebase.Authentication;
 import com.steamybeans.drop.firebase.User;
 
 public class MyAccount extends AppCompatActivity {
 
     private User user;
-    private TextView TVEmail;
-    private Button BTNlogOut;
+    private Authentication authentication;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,13 +27,25 @@ public class MyAccount extends AppCompatActivity {
         setContentView(R.layout.activity_my_account);
 
         // Support toolbar in activity
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_myaccount_top);
+        Toolbar toolbar = findViewById(R.id.toolbar_myaccount_top);
         setSupportActionBar(toolbar);
-        user = new User();
-        TVEmail = (TextView) findViewById(R.id.TVEmail);
-        TVEmail.setText(user.email());
 
-        BTNlogOut = (Button) findViewById(R.id.BTNlogOut);
+        //Set up classes
+        authentication = new Authentication(this);
+        user = new User();
+
+        //check if user account is still active
+        authentication.checkAccountIsActive();
+
+        //set text views to user email
+        TextView TVEmail = findViewById(R.id.TVEmail);
+        TVEmail.setText(user.getEmail());
+
+        setUpButtons();
+    }
+
+    private void setUpButtons() {
+        Button BTNlogOut = findViewById(R.id.BTNlogOut);
 
         BTNlogOut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,6 +57,12 @@ public class MyAccount extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        //check if user account is still active
+        authentication.checkAccountIsActive();
+    }
 
     // Populate toolbar with buttons
     @Override

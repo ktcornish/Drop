@@ -8,16 +8,14 @@ public class User {
     private FirebaseUser firebaseUser;
     private FirebaseAuth firebaseAuth;
 
-    public String uid() {
+    public String getUid() {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        String userUid = (firebaseUser != null) ? firebaseUser.getUid() : null;
-        return userUid;
+        return (firebaseUser != null) ? firebaseUser.getUid() : null;
     }
 
-    public String email() {
+    public String getEmail() {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        String userEmail = (firebaseUser != null) ? firebaseUser.getEmail() : null;
-        return userEmail;
+        return (firebaseUser != null) ? firebaseUser.getEmail() : null;
     }
 
     public void signOut(){
