@@ -30,7 +30,9 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".views.HomeActivity" />
+        <activity android:name=".views.HomeActivity"
+            android:label=""/>
+
         <activity
             android:name=".views.MyAccount"
             android:label="My Account" />
