@@ -15,7 +15,7 @@ public class Drop {
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
 
-    public void newDrop(final String drop, String uid, final LatLng location) {
+    public void newDrop(final String drop, String uid, final double currentLatitude, final double currentLongitude) {
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("users")
                 .child(uid).child("posts").push();
@@ -24,7 +24,8 @@ public class Drop {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 databaseReference.child("content").setValue(drop);
-                databaseReference.child("location").setValue(location);
+                databaseReference.child("latitude").setValue(currentLatitude);
+                databaseReference.child("longitude").setValue(currentLongitude);
             }
 
             @Override
