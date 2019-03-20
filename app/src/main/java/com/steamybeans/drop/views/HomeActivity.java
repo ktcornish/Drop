@@ -37,9 +37,16 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.steamybeans.drop.R;
 import com.steamybeans.drop.firebase.Authentication;
 import com.steamybeans.drop.firebase.Drop;
+import com.steamybeans.drop.firebase.Firebasemarker;
 import com.steamybeans.drop.firebase.User;
 
 public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback,
@@ -59,6 +66,11 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Marker currentUserLocationMarker;
     private static final int request_User_Location_Code = 99;
     public LatLng currentLocation;
+    public double currentLatitude;
+    public double currentLongitude;
+    private ChildEventListener childEventListener;
+    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    private DatabaseReference databaseReference = firebaseDatabase.getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +118,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                             public void onClick(View v) {
                                 if (ETaddDrop.getText().toString().trim().length() > 0) {
                                     Drop drop = new Drop();
-                                    drop.newDrop(ETaddDrop.getText().toString(), user.getUid());
+                                    drop.newDrop(ETaddDrop.getText().toString(), user.uid(), currentLatitude, currentLongitude);
                                     dialog.dismiss();
                                 } else {
                                     Toast.makeText(HomeActivity.this, "No Drop entered!", Toast.LENGTH_LONG).show();
@@ -159,9 +171,51 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             buildGoogleApiclient();
             mMap.setMyLocationEnabled(true);
             mMap.setPadding(0,200,0,200);
+
+            addMarkersToMap(googleMap);
         }
 
 
+    }
+
+    private void addMarkersToMap(final GoogleMap googleMap) {
+        childEventListener = databaseReference.child("users").child(user.uid()).child("posts").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Firebasemarker marker = dataSnapshot.getValue(Firebasemarker.class);
+                String content = marker.getContent();
+                double longitude = marker.getLongitude();
+                double latitude = marker.getLatitude();
+                LatLng location = new LatLng(latitude, longitude);
+                googleMap.addMarker(new MarkerOptions().position(location).title(content));
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Firebasemarker marker = dataSnapshot.getValue(Firebasemarker.class);
+                String content = marker.getContent();
+                double longitude = marker.getLongitude();
+                double latitude = marker.getLatitude();
+                LatLng location = new LatLng(latitude, longitude);
+                googleMap.addMarker(new MarkerOptions().position(location).title(content));
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public boolean checkUserLocationPermission() {
@@ -211,15 +265,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onLocationChanged(Location location) {
         lastLocation = location;
-        if(currentUserLocationMarker != null) {
-            currentUserLocationMarker.remove();
-        }
 
         LatLng latLng = new LatLng(location.getLatitude(),location.getLongitude());
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(latLng);
-        markerOptions.title("Current Location");
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
 
 //        currentUserLocationMarker = mMap.addMarker(markerOptions);
 
@@ -228,13 +275,15 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         //add lat and Lon to variable for use with drops
         currentLocation = latLng;
+        currentLatitude = location.getLatitude();
+        currentLongitude = location.getLongitude();
 
         //stop updating location if location already found
+        addMarkersToMap(mMap);
         if(googleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient,this);
 
         }
-
 
     }
 
