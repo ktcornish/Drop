@@ -207,7 +207,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                                             double longitude = marker.getLongitude();
                                             double latitude = marker.getLatitude();
                                             LatLng location = new LatLng(latitude, longitude);
-                                            googleMap.addMarker(new MarkerOptions().position(location).title(content));
+                                            googleMap.addMarker(new MarkerOptions().position(location).title(content).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
                                     }
                                 }
 
