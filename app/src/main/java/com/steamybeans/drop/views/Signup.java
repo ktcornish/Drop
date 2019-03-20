@@ -6,7 +6,10 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import com.steamybeans.drop.R;
 import com.steamybeans.drop.firebase.Authentication;
 
@@ -35,7 +38,12 @@ public class Signup extends AppCompatActivity {
                 EditText ETsignupPassword = findViewById(R.id.ETsignupPassword);
                 String email = ETsignupEmailAddress.getText().toString();
                 String password = ETsignupPassword.getText().toString();
-                authentication.signUp(email, password);
+                CheckBox CBtermsAndConditions = findViewById(R.id.CBtermsAndConditions);
+                if (CBtermsAndConditions.isChecked()) {
+                    authentication.signUp(email, password);
+                } else {
+                    Toast.makeText(Signup.this, "Please agree to the terms and conditions", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
