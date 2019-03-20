@@ -8,7 +8,7 @@ public class User {
     private FirebaseUser firebaseUser;
     private FirebaseAuth firebaseAuth;
 
-    public String getUid() {
+    public String uid() {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         return (firebaseUser != null) ? firebaseUser.getUid() : null;
     }

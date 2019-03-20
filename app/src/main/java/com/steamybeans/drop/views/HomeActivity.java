@@ -280,18 +280,18 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         //stop updating location if location already found
         addMarkersToMap(mMap);
-        if(googleApiClient != null) {
-            LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient,this);
-
-        }
+//        if(googleApiClient != null) {
+//            LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient,this);
+//
+//        }
 
     }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         locationRequest = new LocationRequest();
-        locationRequest.setInterval(1100);
-        locationRequest.setFastestInterval(1100);
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(10000);
         locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
         if(ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
