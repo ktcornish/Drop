@@ -47,7 +47,7 @@ public class Signup extends AppCompatActivity {
                 ETsignupPassword = (EditText) findViewById(R.id.ETsignupPassword);
                 email = ETsignupEmailAddress.getText().toString();
                 password = ETsignupPassword.getText().toString();
-                authentication.signup(email, password);
+                authentication.signUp(email, password);
             }
         });
     }

@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.text.format.Time;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -17,9 +15,6 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 import com.steamybeans.drop.views.HomeActivity;
 import com.steamybeans.drop.views.LoginPage;
-
-import java.sql.Date;
-import java.time.LocalDateTime;
 
 
 public class Authentication extends AppCompatActivity {
@@ -39,32 +34,27 @@ public class Authentication extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // sign in success
-                            Log.d("Log In", "signInWithEmail:success");
-                            FirebaseUser user = firebaseAuth.getCurrentUser();
                             context.startActivity(new Intent(context, HomeActivity.class));
                         } else {
                             // Sign in fails
-                            Log.w("Log In", "signInWithEmail:fail", task.getException());
-                            Toast.makeText(context, "Login Failed!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "This email and password combination is incorrect", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
     }
 
-    public void signup(String email, String password) {
+    public void signUp(String email, String password) {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d("Sign Up", "createUserWithEmail:success");
-                            FirebaseUser user = firebaseAuth.getCurrentUser();
+                            // Sign up success
                             context.startActivity(new Intent(context, LoginPage.class));
                         } else {
-                            Log.w("Sign Up", "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                            // Sign up fails
+                            Toast.makeText(context, "Can't create account:" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -79,8 +69,6 @@ public class Authentication extends AppCompatActivity {
     public void checkAccountIsActive() {
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-        System.out.println("CHECK IF USER EXISTS!!!!!!!!!!!!!++++++++++++++" + LocalDateTime.now());
-
         currentUser.reload().addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
