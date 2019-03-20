@@ -25,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -64,6 +65,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private User user;
     private Authentication authentication;
     private BottomNavigationView BNbottomNavigationView;
+    private TextView TVdialogTitle;
     private Button BTNaddDrop;
     private EditText ETaddDrop;
     private GoogleApiClient googleApiClient;
@@ -117,6 +119,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
                         //find button on dialog
+                        TVdialogTitle = (TextView) dialog.findViewById(R.id.TVdialogTitle);
                         BTNaddDrop = (Button) dialog.findViewById(R.id.BTNaddDrop);
                         ETaddDrop = (EditText) dialog.findViewById(R.id.ETaddDrop);
 
