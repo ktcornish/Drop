@@ -51,6 +51,7 @@ import com.steamybeans.drop.firebase.Authentication;
 import com.steamybeans.drop.firebase.Drop;
 import com.steamybeans.drop.firebase.Firebasemarker;
 import com.steamybeans.drop.firebase.User;
+import com.steamybeans.drop.firebase.Vote;
 
 public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -77,6 +78,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference();
     private String userId;
+    private Vote vote;
 
 
     @Override
@@ -177,31 +179,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-//        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-//            @Override
-//            public boolean onMarkerClick(final Marker marker) {
-//                final Dialog dialog = new Dialog(HomeActivity.this);
-//                dialog.setContentView(R.layout.dialogue_view_drop);
-//                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-//
-//                //find text view on dialog
-//                Button BTNupvote = findViewById(R.id.BTNupvote);
-//                Button BTNdownvote = findViewById(R.id.BTNdownvote);
-//                TVviewDialogTitle = dialog.findViewById(R.id.TVviewDialogTitle);
-//                TVviewDialogTitle.setText(marker.getTitle());
-//
-//                BTNupvote.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        final DatabaseReference databaseReference;
-//                        databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(marker.getSnippet()).child("posts").
-//                    }
-//                });
-//                dialog.show();
-//                return true;
-//            }
-//        });
-
         if(ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
             buildGoogleApiclient();
@@ -210,11 +187,10 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             addMarkersToMap(googleMap);
         }
-
-
     }
 
     private void addMarkersToMap(final GoogleMap googleMap) {
+        vote = new Vote();
         FirebaseDatabase.getInstance().getReference().child("users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -226,71 +202,11 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 @Override
                                 public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
                                     for (final DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                        Firebasemarker marker = snapshot.getValue(Firebasemarker.class);
-                                            String content = marker.getContent();
-                                            double longitude = marker.getLongitude();
-                                            double latitude = marker.getLatitude();
-                                            LatLng location = new LatLng(latitude, longitude);
-                                            googleMap.addMarker(new MarkerOptions().position(location).title(content)
+                                        Firebasemarker firebaseMarker = snapshot.getValue(Firebasemarker.class);
+                                            LatLng location = new LatLng(firebaseMarker.getLatitude(), firebaseMarker.getLongitude());
+                                            googleMap.addMarker(new MarkerOptions().position(location).title(userId).snippet(snapshot.getKey())
                                                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
-
-                                            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                                                @Override
-                                                public boolean onMarkerClick(final Marker marker) {
-                                                    final Dialog dialog = new Dialog(HomeActivity.this);
-                                                    dialog.setContentView(R.layout.dialogue_view_drop);
-                                                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-                                                    //find text view on dialog
-                                                    TVviewDialogTitle = dialog.findViewById(R.id.TVviewDialogTitle);
-                                                    TVviewDialogTitle.setText(marker.getTitle());
-                                                    Button BTNupvote = dialog.findViewById(R.id.BTNupvote);
-                                                    Button BTNdownvote = dialog.findViewById(R.id.BTNdownvote);
-
-                                                    BTNupvote.setOnClickListener(new View.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(View v) {
-                                                            final DatabaseReference databaseReference;
-                                                            databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(userId)
-                                                                    .child("posts").child(snapshot.getKey()).child("votes");
-                                                                    databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                                                                        @Override
-                                                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                                            databaseReference.child(user.getUid()).setValue(1);
-                                                                        }
-
-                                                                        @Override
-                                                                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                                                        }
-                                                                    });
-                                                        }
-                                                    });
-                                                    BTNdownvote.setOnClickListener(new View.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(View v) {
-                                                            final DatabaseReference databaseReference;
-                                                            databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(userId)
-                                                                    .child("posts").child(snapshot.getKey()).child("votes");
-                                                                    databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                                                                        @Override
-                                                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                                            databaseReference.child(user.getUid()).setValue(-1);
-                                                                        }
-
-                                                                        @Override
-                                                                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                                                        }
-                                                                    });
-                                                        }
-                                                    });
-
-
-                                                    dialog.show();
-                                                    return true;
-                                                }
-                                            });
+                                            setUpMarkerClickListener();
                                     }
                                 }
 
@@ -305,6 +221,44 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
+            }
+        });
+    }
+
+    public void setUpMarkerClickListener() {
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+
+            @Override
+            public boolean onMarkerClick(final Marker marker) {
+                Drop drop = new Drop();
+                final Dialog dialog = new Dialog(HomeActivity.this);
+                dialog.setContentView(R.layout.dialogue_view_drop);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                //find text view on dialog
+                TVviewDialogTitle = dialog.findViewById(R.id.TVviewDialogTitle);
+                System.out.println("BEFORE METHOD!!!!!!!!!!!");
+                drop.getDropContent(marker.getTitle(), marker.getSnippet(), TVviewDialogTitle);
+                System.out.println("AFTER METHOD!!!!!!!!!!!");
+                Button BTNupvote = dialog.findViewById(R.id.BTNupvote);
+                Button BTNdownvote = dialog.findViewById(R.id.BTNdownvote);
+
+                BTNupvote.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        vote.makeAVote(1,marker.getTitle(), marker.getSnippet());
+                    }
+                });
+                BTNdownvote.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        vote.makeAVote(-1,marker.getTitle(), marker.getSnippet());
+                    }
+                });
+
+
+                dialog.show();
+                return true;
             }
         });
     }
