@@ -303,7 +303,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
         }
 
-
     }
 
     @Override

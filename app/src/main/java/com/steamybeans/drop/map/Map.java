@@ -15,6 +15,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.steamybeans.drop.R;
 import com.steamybeans.drop.firebase.Drop;
 import com.steamybeans.drop.firebase.Vote;
+import com.steamybeans.drop.firebase.VotesCalculator;
 
 public class Map extends AppCompatActivity {
     private final Context context;
@@ -29,6 +30,7 @@ public class Map extends AppCompatActivity {
             @Override
             public boolean onMarkerClick(final Marker marker) {
                 Drop drop = new Drop();
+                VotesCalculator votesCalculator = new VotesCalculator();
                 final Vote vote = new Vote();
 
                 final Dialog dialog = new Dialog(context);
@@ -37,7 +39,9 @@ public class Map extends AppCompatActivity {
 
                 //find text view on dialog
                 TextView dropDialogTitle = dialog.findViewById(R.id.TVviewDialogTitle);
+                TextView TVvotes = dialog.findViewById(R.id.TVvotes);
                 drop.setDropContent(marker.getTitle(), marker.getSnippet(), dropDialogTitle);
+                votesCalculator.setDropVotesContent(marker.getTitle(), marker.getSnippet(), TVvotes);
 
                 Button BTNupvote = dialog.findViewById(R.id.BTNupvote);
                 Button BTNdownvote = dialog.findViewById(R.id.BTNdownvote);

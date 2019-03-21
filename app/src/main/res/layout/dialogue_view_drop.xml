@@ -28,10 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="44dp"
-        android:layout_marginEnd="8dp"
         android:text="Up Vote"
-        app:layout_constraintEnd_toStartOf="@+id/BTNdownvote"
-        app:layout_constraintHorizontal_bias="0.682"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TVviewDialogTitle" />
 
@@ -39,10 +36,25 @@
         android:id="@+id/BTNdownvote"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="44dp"
-        android:layout_marginEnd="96dp"
         android:text="Down Vote"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/BTNupvote"
         app:layout_constraintTop_toBottomOf="@+id/TVviewDialogTitle" />
+
+    <TextView
+        android:id="@+id/TVvotes"
+        android:layout_width="69dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/BTNdownvote"
+        app:layout_constraintTop_toBottomOf="@+id/TVviewDialogTitle"
+        app:layout_constraintVertical_bias="1.0" />
 
 </android.support.constraint.ConstraintLayout>
