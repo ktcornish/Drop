@@ -203,8 +203,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
                                     for (final DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                         Firebasemarker firebaseMarker = snapshot.getValue(Firebasemarker.class);
+                                            String user = dataSnapshot.getRef().getParent().getKey();
                                             LatLng location = new LatLng(firebaseMarker.getLatitude(), firebaseMarker.getLongitude());
-                                            googleMap.addMarker(new MarkerOptions().position(location).title(userId).snippet(snapshot.getKey())
+                                            googleMap.addMarker(new MarkerOptions().position(location).title(user).snippet(snapshot.getKey())
                                                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
                                             setUpMarkerClickListener();
                                     }
@@ -237,9 +238,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 //find text view on dialog
                 TVviewDialogTitle = dialog.findViewById(R.id.TVviewDialogTitle);
-                System.out.println("BEFORE METHOD!!!!!!!!!!!");
                 drop.getDropContent(marker.getTitle(), marker.getSnippet(), TVviewDialogTitle);
-                System.out.println("AFTER METHOD!!!!!!!!!!!");
+
                 Button BTNupvote = dialog.findViewById(R.id.BTNupvote);
                 Button BTNdownvote = dialog.findViewById(R.id.BTNdownvote);
 
