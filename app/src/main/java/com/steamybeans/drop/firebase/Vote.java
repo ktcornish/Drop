@@ -1,6 +1,7 @@
 package com.steamybeans.drop.firebase;
 
 import android.support.annotation.NonNull;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -9,10 +10,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class Vote {
+    private DatabaseReference databaseReference;
+    private FirebaseDatabase firebaseDatabase;
 
-    public void makeAVote(final int voteValue, String idOfDropper, String postId) {
+
+    public void makeAVote(final int voteValue, final String idOfDropper, final String postId, final TextView TVvotes) {
         final User user = new User();
-        final DatabaseReference databaseReference;
 
         databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(idOfDropper)
                 .child("posts").child(postId).child("votes");
@@ -20,6 +23,8 @@ public class Vote {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 databaseReference.child(user.getUid()).setValue(voteValue);
+                calculateVotesTotal(idOfDropper, postId, TVvotes);
+
             }
 
             @Override
@@ -28,4 +33,26 @@ public class Vote {
             }
         });
     }
+
+    public void calculateVotesTotal(String userUid, String dropUid, final TextView TVvotes) {
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("users")
+                .child(userUid).child("posts").child(dropUid).child("votes");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int counter = 0;
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    counter += snapshot.getValue(Integer.class);
+                }
+                TVvotes.setText(String.valueOf(counter));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 }
