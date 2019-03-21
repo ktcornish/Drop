@@ -66,6 +66,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Authentication authentication;
     private BottomNavigationView BNbottomNavigationView;
     private TextView TVdialogTitle;
+    private TextView TVviewDialogTitle;
     private Button BTNaddDrop;
     private EditText ETaddDrop;
     private GoogleApiClient googleApiClient;
@@ -178,6 +179,22 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                final Dialog dialog = new Dialog(HomeActivity.this);
+                dialog.setContentView(R.layout.dialogue_view_drop);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                //find text view on dialog
+                TVviewDialogTitle = dialog.findViewById(R.id.TVviewDialogTitle);
+                TVviewDialogTitle.setText(marker.getTitle());
+                dialog.show();
+                return true;
+            }
+        });
+
         if(ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
             buildGoogleApiclient();
@@ -196,7 +213,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     userId = snapshot.getKey();
-                    System.out.println(userId);
 
                     FirebaseDatabase.getInstance().getReference().child("users").child(userId).child("posts")
                             .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -209,6 +225,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                                             double latitude = marker.getLatitude();
                                             LatLng location = new LatLng(latitude, longitude);
                                             googleMap.addMarker(new MarkerOptions().position(location).title(content).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
+
                                     }
                                 }
 

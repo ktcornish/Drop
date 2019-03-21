@@ -33,6 +33,7 @@ public class LoginFeatureTest {
         Thread.sleep(2000);
         onView(withId(R.id.TBAccount)).perform(click());
         onView(withId(R.id.BTNlogOut)).perform(click());
+        Thread.sleep(2000);
         onView(withId(R.id.ETloginEmailAddress)).perform(typeText("test@user.com"));
         onView(withId(R.id.ETloginPassword)).perform(typeText("password"));
         onView(withId(R.id.ETloginPassword)).perform(closeSoftKeyboard());
@@ -41,6 +42,5 @@ public class LoginFeatureTest {
         onView(withId(R.id.toolbar_top)).check(matches(isDisplayed()));
         testHelpers.deleteCurrentUser();
         Thread.sleep(2000);
-        testHelpers.logOutUser();
     }
 }
