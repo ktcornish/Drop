@@ -1,14 +1,13 @@
 package com.steamybeans.drop.firebase;
 
 import android.support.annotation.NonNull;
+import android.widget.TextView;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.steamybeans.drop.views.HomeActivity;
 
 public class Drop {
 
@@ -26,6 +25,23 @@ public class Drop {
                 databaseReference.child("content").setValue(drop);
                 databaseReference.child("latitude").setValue(currentLatitude);
                 databaseReference.child("longitude").setValue(currentLongitude);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
+
+    public void setDropContent(String userUid, String dropUid, final TextView dropContent) {
+
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("users")
+                .child(userUid).child("posts").child(dropUid);
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                dropContent.setText(dataSnapshot.child("content").getValue().toString());
             }
 
             @Override

@@ -3,7 +3,6 @@ package com.steamybeans.drop.views;
 
 import android.Manifest;
 import android.app.Dialog;
-import android.app.LauncherActivity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -41,7 +40,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -53,8 +51,8 @@ import com.steamybeans.drop.firebase.Authentication;
 import com.steamybeans.drop.firebase.Drop;
 import com.steamybeans.drop.firebase.Firebasemarker;
 import com.steamybeans.drop.firebase.User;
-
-import java.util.List;
+import com.steamybeans.drop.firebase.Vote;
+import com.steamybeans.drop.map.Map;
 
 public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -66,6 +64,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Authentication authentication;
     private BottomNavigationView BNbottomNavigationView;
     private TextView TVdialogTitle;
+    private TextView TVviewDialogTitle;
     private Button BTNaddDrop;
     private EditText ETaddDrop;
     private GoogleApiClient googleApiClient;
@@ -80,6 +79,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference();
     private String userId;
+    private Vote vote;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,7 +131,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                             public void onClick(View v) {
                                 if (ETaddDrop.getText().toString().trim().length() > 0) {
                                     Drop drop = new Drop();
-                                    drop.newDrop(ETaddDrop.getText().toString(), user.uid(), currentLatitude, currentLongitude);
+                                    drop.newDrop(ETaddDrop.getText().toString(), user.getUid(), currentLatitude, currentLongitude);
                                     dialog.dismiss();
                                 } else {
                                     Toast.makeText(HomeActivity.this, "No Drop entered!", Toast.LENGTH_LONG).show();
@@ -178,6 +179,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
         if(ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
             buildGoogleApiclient();
@@ -186,29 +188,28 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             addMarkersToMap(googleMap);
         }
-
-
     }
 
     private void addMarkersToMap(final GoogleMap googleMap) {
+        vote = new Vote();
         FirebaseDatabase.getInstance().getReference().child("users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     userId = snapshot.getKey();
-                    System.out.println(userId);
 
                     FirebaseDatabase.getInstance().getReference().child("users").child(userId).child("posts")
                             .addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                        Firebasemarker marker = snapshot.getValue(Firebasemarker.class);
-                                            String content = marker.getContent();
-                                            double longitude = marker.getLongitude();
-                                            double latitude = marker.getLatitude();
-                                            LatLng location = new LatLng(latitude, longitude);
-                                            googleMap.addMarker(new MarkerOptions().position(location).title(content).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
+                                public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
+                                    for (final DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                        Firebasemarker firebaseMarker = snapshot.getValue(Firebasemarker.class);
+                                            String user = dataSnapshot.getRef().getParent().getKey();
+                                            LatLng location = new LatLng(firebaseMarker.getLatitude(), firebaseMarker.getLongitude());
+                                            googleMap.addMarker(new MarkerOptions().position(location).title(user).snippet(snapshot.getKey())
+                                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
+                                            Map map = new Map(HomeActivity.this);
+                                            map.setUpMarkerClickListener(mMap);
                                     }
                                 }
 
@@ -289,11 +290,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         //stop updating location if location already found
         addMarkersToMap(mMap);
-//        if(googleApiClient != null) {
-//            LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient,this);
-//
-//        }
-
     }
 
     @Override
@@ -306,7 +302,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         if(ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
         }
-
 
     }
 

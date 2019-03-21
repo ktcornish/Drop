@@ -36,15 +36,15 @@ public class SignUpFeatureTest {
     @Test
     public void fillInEmailAndPassword() throws Exception {
         testHelpers = new TestHelpers();
+        Thread.sleep(2000);
         onView(withId(R.id.BTNsignUp)).perform(click());
         onView(withId(R.id.ETsignupEmailAddress)).perform(typeText("test@user.com"));
         onView(withId(R.id.ETsignupPassword)).perform(typeText("password"));
         onView(withId(R.id.ETsignupPassword)).perform(closeSoftKeyboard());
         onView(withId(R.id.BTNcompleteSignUp)).perform(click());
         Thread.sleep(2000);
-        testHelpers.deleteCurrentUser();
-        Thread.sleep(3000);
         onView(withId(R.id.toolbar_top)).check(matches(isDisplayed()));
-        testHelpers.logOutUser();
+        testHelpers.deleteCurrentUser();
+        Thread.sleep(2000);
     }
 }

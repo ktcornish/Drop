@@ -26,6 +26,13 @@ public class TestHelpers {
         onView(withId(R.id.BTNcompleteSignUp)).perform(click());
     }
 
+    public void logInTestUser() {
+        onView(withId(R.id.ETloginEmailAddress)).perform(typeText("test@user.com"));
+        onView(withId(R.id.ETloginPassword)).perform(typeText("password"));
+        onView(withId(R.id.ETloginPassword)).perform(closeSoftKeyboard());
+        onView(withId(R.id.BTNlogin)).perform(click());
+}
+
     public void logOutUser() {
         onView(withId(R.id.TBAccount)).perform(click());
         onView(withId(R.id.BTNlogOut)).perform(click());

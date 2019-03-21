@@ -27,12 +27,22 @@ public class LogOutFeatureTest {
     @Test
     public void LoggingOut() throws Exception {
         testHelpers = new TestHelpers();
-        testHelpers.signUpTestUser();
         Thread.sleep(2000);
-        testHelpers.deleteCurrentUser();
-        Thread.sleep(3000);
+        testHelpers.signUpTestUser();
+        Thread.sleep(2500);
         onView(withId(R.id.TBAccount)).perform(click());
         onView(withId(R.id.BTNlogOut)).perform(click());
+        Thread.sleep(2000);
         onView(withId(R.id.BTNsignUp)).check(matches(isDisplayed()));
+        Thread.sleep(2000);
+        DeleteUser();
+    }
+
+    public void DeleteUser() throws Exception {
+        testHelpers = new TestHelpers();
+        testHelpers.logInTestUser();
+        Thread.sleep(2000);
+        testHelpers.deleteCurrentUser();
+        Thread.sleep(2000);
     }
 }
