@@ -48,15 +48,12 @@ public class Map extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         vote.makeAVote(1,marker.getTitle(), marker.getSnippet(), TVvotes);
-
-
                     }
                 });
                 BTNdownvote.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         vote.makeAVote(-1,marker.getTitle(), marker.getSnippet(), TVvotes);
-
                     }
                 });
 
