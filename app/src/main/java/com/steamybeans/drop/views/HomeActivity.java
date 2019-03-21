@@ -52,6 +52,7 @@ import com.steamybeans.drop.firebase.Drop;
 import com.steamybeans.drop.firebase.Firebasemarker;
 import com.steamybeans.drop.firebase.User;
 import com.steamybeans.drop.firebase.Vote;
+import com.steamybeans.drop.map.Map;
 
 public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -207,7 +208,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                                             LatLng location = new LatLng(firebaseMarker.getLatitude(), firebaseMarker.getLongitude());
                                             googleMap.addMarker(new MarkerOptions().position(location).title(user).snippet(snapshot.getKey())
                                                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
-                                            setUpMarkerClickListener();
+                                            Map map = new Map(HomeActivity.this);
+                                            map.setUpMarkerClickListener(mMap);
                                     }
                                 }
 
@@ -222,43 +224,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
-    }
-
-    public void setUpMarkerClickListener() {
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-
-            @Override
-            public boolean onMarkerClick(final Marker marker) {
-                Drop drop = new Drop();
-                final Dialog dialog = new Dialog(HomeActivity.this);
-                dialog.setContentView(R.layout.dialogue_view_drop);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-                //find text view on dialog
-                TVviewDialogTitle = dialog.findViewById(R.id.TVviewDialogTitle);
-                drop.getDropContent(marker.getTitle(), marker.getSnippet(), TVviewDialogTitle);
-
-                Button BTNupvote = dialog.findViewById(R.id.BTNupvote);
-                Button BTNdownvote = dialog.findViewById(R.id.BTNdownvote);
-
-                BTNupvote.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        vote.makeAVote(1,marker.getTitle(), marker.getSnippet());
-                    }
-                });
-                BTNdownvote.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        vote.makeAVote(-1,marker.getTitle(), marker.getSnippet());
-                    }
-                });
-
-
-                dialog.show();
-                return true;
             }
         });
     }
@@ -325,11 +290,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         //stop updating location if location already found
         addMarkersToMap(mMap);
-//        if(googleApiClient != null) {
-//            LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient,this);
-//
-//        }
-
     }
 
     @Override
