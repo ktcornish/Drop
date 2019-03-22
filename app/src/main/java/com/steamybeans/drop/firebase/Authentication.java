@@ -12,8 +12,16 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.steamybeans.drop.views.HomeActivity;
 import com.steamybeans.drop.views.LoginPage;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 
 public class Authentication extends AppCompatActivity {
@@ -42,13 +50,40 @@ public class Authentication extends AppCompatActivity {
                 });
     }
 
-    public void signUp(String email, String password) {
+    public void checkUsernameIsUnique(final String username, final String password, final String email) {
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ArrayList usernames = new ArrayList();
+                for (final DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    usernames.add(snapshot.child("username").getValue().toString());
+                }
+
+                if (usernames.contains(username)) {
+                    Toast.makeText(context, "Username already exists", Toast.LENGTH_SHORT).show();
+                } else {
+                    signUp(email, password, username);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void signUp(String email, String password, final String username) {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            User signedUpUser= new User();
+                            String uid = signedUpUser.getUid();
+                            addUserToDatabase(uid, username);
                             // Sign up success
                             context.startActivity(new Intent(context, LoginPage.class));
                         } else {
@@ -78,4 +113,19 @@ public class Authentication extends AppCompatActivity {
         });
     }
 
+
+    private void addUserToDatabase(final String uid, final String username) {
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                databaseReference.child(uid).child("username").setValue(username);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 }
