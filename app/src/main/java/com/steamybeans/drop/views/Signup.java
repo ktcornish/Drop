@@ -42,7 +42,7 @@ public class Signup extends AppCompatActivity {
                 String username = ETsignupUsername.getText().toString();
                 CheckBox CBtermsAndConditions = findViewById(R.id.CBtermsAndConditions);
                 if (CBtermsAndConditions.isChecked()) {
-                    authentication.signUp(email, password, username);
+                    authentication.checkUsernameIsUnique(username, password, email);
                 } else {
                     Toast.makeText(Signup.this, "Please agree to the terms and conditions", Toast.LENGTH_SHORT).show();
                 }

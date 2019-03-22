@@ -20,6 +20,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.steamybeans.drop.views.HomeActivity;
 import com.steamybeans.drop.views.LoginPage;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 
 public class Authentication extends AppCompatActivity {
     private final Context context;
@@ -47,16 +50,41 @@ public class Authentication extends AppCompatActivity {
                 });
     }
 
-    public void signUp(String email, String password, final String username) {
+    public void checkUsernameIsUnique(final String username, final String password, final String email) {
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ArrayList usernames = new ArrayList();
+                for (final DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    usernames.add(snapshot.child("username").getValue().toString());
+                }
+
+                if (usernames.contains(username)) {
+                    Toast.makeText(context, "Username already exists", Toast.LENGTH_SHORT).show();
+                } else {
+                    signUp(email, password, username);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void signUp(String email, String password, final String username) {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            User signedUpUser= new User();
+                            String uid = signedUpUser.getUid();
+                            addUserToDatabase(uid, username);
                             // Sign up success
-                            User user = new User();
-                            addUserToDatabase(user.getUid(), username);
                             context.startActivity(new Intent(context, LoginPage.class));
                         } else {
                             // Sign up fails
@@ -85,9 +113,10 @@ public class Authentication extends AppCompatActivity {
         });
     }
 
+
     private void addUserToDatabase(final String uid, final String username) {
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users");
-                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 databaseReference.child(uid).child("username").setValue(username);
@@ -99,5 +128,4 @@ public class Authentication extends AppCompatActivity {
             }
         });
     }
-
 }
