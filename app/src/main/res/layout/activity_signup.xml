@@ -10,7 +10,7 @@
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="361dp"
-        android:layout_height="305dp"
+        android:layout_height="394dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -21,21 +21,34 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.455" />
+        app:layout_constraintVertical_bias="0.565" />
+
+    <EditText
+        android:id="@+id/ETsignupUsername"
+        android:layout_width="253dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:ems="10"
+        android:hint="Enter username"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/ETsignupPassword"
+        app:layout_constraintEnd_toEndOf="@+id/imageView3"
+        app:layout_constraintStart_toStartOf="@+id/imageView3" />
 
     <EditText
         android:id="@+id/ETsignupEmailAddress"
         android:layout_width="253dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="68dp"
+        android:layout_marginBottom="24dp"
         android:ems="10"
         android:hint="Enter email address"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/ETsignupPassword"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="@+id/imageView3"
         app:layout_constraintStart_toStartOf="@+id/imageView3"
-        app:layout_constraintTop_toTopOf="@+id/imageView3" />
+        app:layout_constraintTop_toTopOf="@+id/imageView3"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/BTNcompleteSignUp"
@@ -53,15 +66,15 @@
 
     <EditText
         android:id="@+id/ETsignupPassword"
-        android:layout_width="254dp"
+        android:layout_width="253dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="24dp"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
         app:layout_constraintBottom_toTopOf="@+id/CBtermsAndConditions"
         app:layout_constraintEnd_toEndOf="@+id/imageView3"
-        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintHorizontal_bias="0.509"
         app:layout_constraintStart_toStartOf="@+id/imageView3" />
 
     <CheckBox
@@ -81,9 +94,10 @@
         android:layout_height="289dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="184dp"
+        android:layout_marginBottom="264dp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView3"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.622"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/logo3" />
 

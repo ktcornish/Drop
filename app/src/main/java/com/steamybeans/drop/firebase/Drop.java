@@ -9,6 +9,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Text;
+
 public class Drop {
 
     private FirebaseDatabase firebaseDatabase;
@@ -42,6 +44,7 @@ public class Drop {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 dropContent.setText(dataSnapshot.child("content").getValue().toString());
+
             }
 
             @Override

@@ -12,6 +12,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.steamybeans.drop.views.HomeActivity;
 import com.steamybeans.drop.views.LoginPage;
 
@@ -42,7 +47,7 @@ public class Authentication extends AppCompatActivity {
                 });
     }
 
-    public void signUp(String email, String password) {
+    public void signUp(String email, String password, final String username) {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -50,6 +55,8 @@ public class Authentication extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign up success
+                            User user = new User();
+                            addUserToDatabase(user.getUid(), username);
                             context.startActivity(new Intent(context, LoginPage.class));
                         } else {
                             // Sign up fails
@@ -74,6 +81,21 @@ public class Authentication extends AppCompatActivity {
                 if (e instanceof FirebaseAuthInvalidUserException) {
                     context.startActivity(new Intent(context, LoginPage.class));
                 }
+            }
+        });
+    }
+
+    private void addUserToDatabase(final String uid, final String username) {
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users");
+                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                databaseReference.child(uid).child("username").setValue(username);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
     }

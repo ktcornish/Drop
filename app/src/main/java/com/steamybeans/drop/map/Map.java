@@ -40,7 +40,16 @@ public class Map extends AppCompatActivity {
 
 //              calculating distance between pins
                 if (calc.distanceBetweenDropsInMetres(marker.getPosition(), latLng) > 1000) {
-                    Toast.makeText(context, "YOU ARE TOO FAR AWAY", Toast.LENGTH_LONG).show();
+                    //load dialog box
+                    final Dialog dialog = new Dialog(context);
+                    dialog.setContentView(R.layout.dialog_drop_out_of_range);
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                    // set dialog box fields
+                    final TextView TVvotes = dialog.findViewById(R.id.TVvotes);
+                    vote.calculateVotesTotal(marker.getTitle(), marker.getSnippet(), TVvotes);
+
+                    dialog.show();
                 } else {
                     final Dialog dialog = new Dialog(context);
                     dialog.setContentView(R.layout.dialogue_view_drop);
