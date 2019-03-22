@@ -1,6 +1,8 @@
 package com.steamybeans.drop.views;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +11,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.VideoView;
 
 import com.steamybeans.drop.R;
 import com.steamybeans.drop.firebase.Authentication;
@@ -53,6 +56,23 @@ public class LoginPage extends AppCompatActivity {
                 authentication.login(email, password);
             }
         });
+    }
+
+    protected void onResume() {
+        super.onResume();
+
+        VideoView video = findViewById(R.id.VIDloginBG);
+
+        video.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mp.setLooping(true);
+            }
+        });
+
+        Uri videoPath = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.rain);
+        video.setVideoURI(videoPath);
+        video.start();
     }
 
     @Override
