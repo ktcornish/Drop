@@ -3,6 +3,9 @@ package com.steamybeans.drop;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.steamybeans.drop.firebase.Authentication;
+import com.steamybeans.drop.firebase.User;
 import com.steamybeans.drop.helpers.TestHelpers;
 import com.steamybeans.drop.views.LoginPage;
 
@@ -29,6 +32,14 @@ public class LoginFeatureTest {
     @Test
     public void LoggingIn() throws Exception {
         testHelpers = new TestHelpers();
+
+        if (testHelpers.isUserLoggedIn()) {
+            onView(withId(R.id.TBAccount)).perform(click());
+            // Cannot find logout button until activity_my_account displayed
+            Thread.sleep(500);
+            onView(withId(R.id.BTNlogOut)).perform(click());
+        }
+
         testHelpers.signUpTestUser();
         Thread.sleep(2000);
         onView(withId(R.id.TBAccount)).perform(click());

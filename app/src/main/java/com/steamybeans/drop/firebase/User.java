@@ -18,7 +18,7 @@ public class User {
         return (firebaseUser != null) ? firebaseUser.getEmail() : null;
     }
 
-    public void signOut(){
+    public void signOut() {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuth.signOut();
     }

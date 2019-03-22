@@ -30,4 +30,10 @@ public class TestHelpers {
         onView(withId(R.id.TBAccount)).perform(click());
         onView(withId(R.id.BTNlogOut)).perform(click());
     }
+
+    public boolean isUserLoggedIn() {
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        return firebaseUser == null ? false : true;
+    }
 }
