@@ -22,7 +22,10 @@ public class Vote {
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.child(user.getUid()).getValue(Integer.class) == voteValue) {
+                if (dataSnapshot.child(user.getUid()).getValue() == null) {
+                    databaseReference.child(user.getUid()).setValue(voteValue);
+                    calculateVotesTotal(idOfDropper, postId, TVvotes);
+                } else if (dataSnapshot.child(user.getUid()).getValue(Integer.class) == voteValue) {
                     databaseReference.child(user.getUid()).setValue(0);
                     calculateVotesTotal(idOfDropper, postId, TVvotes);
                 } else {

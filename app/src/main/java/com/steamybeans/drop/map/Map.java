@@ -41,8 +41,8 @@ public class Map extends AppCompatActivity {
                 drop.setDropContent(marker.getTitle(), marker.getSnippet(), dropDialogTitle);
                 vote.calculateVotesTotal(marker.getTitle(), marker.getSnippet(), TVvotes);
 
-                Button BTNupvote = dialog.findViewById(R.id.linearLayout2).findViewById(R.id.linearLayout3).findViewById(R.id.linearLayout4).findViewById(R.id.linearLayout5).findViewById(R.id.BTNupvote);
-                Button BTNdownvote = dialog.findViewById(R.id.linearLayout2).findViewById(R.id.linearLayout3).findViewById(R.id.linearLayout4).findViewById(R.id.linearLayout5).findViewById(R.id.BTNdownvote);
+                Button BTNupvote = dialog.findViewById(R.id.BTNupvote);
+                Button BTNdownvote = dialog.findViewById(R.id.BTNdownvote);
 
                 BTNupvote.setOnClickListener(new View.OnClickListener() {
                     @Override
