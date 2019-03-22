@@ -35,16 +35,16 @@ public class Drop {
         });
     }
 
-    public void setDropContent(String userUid, String dropUid, final TextView dropContent) {
+    public void setDropContent(final String userUid, final String dropUid, final TextView dropContent, final TextView username) {
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("users")
-                .child(userUid).child("posts").child(dropUid);
+                .child(userUid);
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                dropContent.setText(dataSnapshot.child("content").getValue().toString());
-
+                dropContent.setText(dataSnapshot.child("posts").child(dropUid).child("content").getValue().toString());
+                username.setText(dataSnapshot.child("username").getValue().toString());
             }
 
             @Override

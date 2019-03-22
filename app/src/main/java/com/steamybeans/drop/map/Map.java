@@ -57,8 +57,10 @@ public class Map extends AppCompatActivity {
 
                     //find text view on dialog
                     TextView dropDialogTitle = dialog.findViewById(R.id.TVviewDialogTitle);
+                    TextView dropUsername = dialog.findViewById(R.id.TVusername);
                     final TextView TVvotes = dialog.findViewById(R.id.TVvotes);
-                    drop.setDropContent(marker.getTitle(), marker.getSnippet(), dropDialogTitle);
+
+                    drop.setDropContent(marker.getTitle(), marker.getSnippet(), dropDialogTitle, dropUsername);
                     vote.calculateVotesTotal(marker.getTitle(), marker.getSnippet(), TVvotes);
 
                     Button BTNupvote = dialog.findViewById(R.id.BTNupvote);
