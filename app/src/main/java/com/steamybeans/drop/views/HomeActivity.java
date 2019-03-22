@@ -209,7 +209,11 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                                             googleMap.addMarker(new MarkerOptions().position(location).title(user).snippet(snapshot.getKey())
                                                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
                                             Map map = new Map(HomeActivity.this);
-                                            map.setUpMarkerClickListener(mMap);
+                                        if(ContextCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                                            Location location1 = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+                                            map.setUpMarkerClickListener(mMap, location1);
+                                        }
+
                                     }
                                 }
 
@@ -282,7 +286,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 //        this moves the map back to the original zoom and place
 //        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(18));
+//        mMap.animateCamera(CameraUpdateFactory.zoomTo(18));
 
         //add lat and Lon to variable for use with drops
         currentLocation = latLng;
