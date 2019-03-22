@@ -280,7 +280,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 //        currentUserLocationMarker = mMap.addMarker(markerOptions);
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+//        this moves the map back to the original zoom and place
+//        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(18));
 
         //add lat and Lon to variable for use with drops
