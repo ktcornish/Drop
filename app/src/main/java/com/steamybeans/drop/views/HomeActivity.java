@@ -83,6 +83,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private DatabaseReference databaseReference = firebaseDatabase.getReference();
     private String userId;
     private Vote vote;
+    private boolean zoomed = false;
 
 
     @Override
@@ -150,7 +151,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         //check if user account is still active
         authentication.checkAccountIsActive();
@@ -184,8 +185,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap = googleMap;
 
         try {
-            // Customise the styling of the base map using a JSON object defined
-            // in a raw resource file.
+
             boolean success = googleMap.setMapStyle(
                     MapStyleOptions.loadRawResourceStyle(
                             this, R.raw.map_style));
@@ -197,11 +197,11 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             Log.e("Map styling", "Can't find style. Error: ", e);
         }
 
-        if(ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
             buildGoogleApiclient();
             mMap.setMyLocationEnabled(true);
-            mMap.setPadding(0,200,0,200);
+            mMap.setPadding(0, 200, 0, 200);
 
             addMarkersToMap(googleMap);
         }
@@ -221,12 +221,12 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
                                     for (final DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                         Firebasemarker firebaseMarker = snapshot.getValue(Firebasemarker.class);
-                                            String user = dataSnapshot.getRef().getParent().getKey();
-                                            LatLng location = new LatLng(firebaseMarker.getLatitude(), firebaseMarker.getLongitude());
-                                            googleMap.addMarker(new MarkerOptions().position(location).title(user).snippet(snapshot.getKey())
-                                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
-                                            Map map = new Map(HomeActivity.this);
-                                        if(ContextCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                                        String user = dataSnapshot.getRef().getParent().getKey();
+                                        LatLng location = new LatLng(firebaseMarker.getLatitude(), firebaseMarker.getLongitude());
+                                        googleMap.addMarker(new MarkerOptions().position(location).title(user).snippet(snapshot.getKey())
+                                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
+                                        Map map = new Map(HomeActivity.this);
+                                        if (ContextCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                                             Location location1 = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
                                             map.setUpMarkerClickListener(mMap, location1);
                                         }
@@ -250,8 +250,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     public boolean checkUserLocationPermission() {
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION) ) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, request_User_Location_Code);
             } else {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, request_User_Location_Code);
@@ -265,12 +265,11 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode)
-        {
+        switch (requestCode) {
             case request_User_Location_Code:
-                if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-                        if(googleApiClient == null) {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        if (googleApiClient == null) {
                             buildGoogleApiclient();
                         }
                         mMap.setMyLocationEnabled(true);
@@ -297,13 +296,17 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onLocationChanged(Location location) {
         lastLocation = location;
 
-        LatLng latLng = new LatLng(location.getLatitude(),location.getLongitude());
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
 //        currentUserLocationMarker = mMap.addMarker(markerOptions);
 
-//        this moves the map back to the original zoom and place
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-//        mMap.animateCamera(CameraUpdateFactory.zoomTo(18));
+//        Zooms camera on first location only to allow map scrolling;
+        if (zoomed == false) {
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(18));
+            zoomed = true;
+        }
+
 
         //add lat and Lon to variable for use with drops
         currentLocation = latLng;
@@ -321,7 +324,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         locationRequest.setFastestInterval(10000);
         locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
-        if(ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
         }
 
