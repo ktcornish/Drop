@@ -35,7 +35,7 @@
 
         <activity
             android:name=".views.MyAccount"
-            android:label="My Account" />
+            android:label="" />
         <activity
             android:name=".views.Signup"
             android:configChanges="orientation|keyboardHidden|screenSize"

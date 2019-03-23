@@ -1,7 +1,10 @@
 package com.steamybeans.drop.views;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -9,8 +12,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.steamybeans.drop.R;
 import com.steamybeans.drop.firebase.Authentication;
@@ -20,6 +25,9 @@ public class MyAccount extends AppCompatActivity {
 
     private User user;
     private Authentication authentication;
+    private TextView TVemail;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +46,29 @@ public class MyAccount extends AppCompatActivity {
         authentication.checkAccountIsActive();
 
         //set text views to user email
-        TextView TVEmail = findViewById(R.id.TVEmail);
-        TVEmail.setText(user.getEmail());
+        TVemail = (TextView) findViewById(R.id.TVEmail);
+        TVemail.setText(user.getEmail());
 
         setUpButtons();
+
+        //REMOVE BEFORE FINAL BUILD
+        debugLayout();
+    }
+
+    private void debugLayout() {
+        //TODO REMOVE BEFORE FINAL BUILD
+        TextView TVuserName = findViewById(R.id.TVuserName);
+        ImageView IVprofileImage = findViewById(R.id.IVprofileImage);
+        String email = user.getEmail();
+        if(email.equals("ross@rossmail.com")) {
+            TVuserName.setText("RossyB");
+            IVprofileImage.setImageResource(R.drawable.ross_test);
+        }
+        if(email.equals("jeddhoppo@gmail.com")) {
+            TVuserName.setText("Jedd");
+            IVprofileImage.setImageResource(R.drawable.jedd_avatar);
+        }
+
     }
 
     private void setUpButtons() {
@@ -60,6 +87,19 @@ public class MyAccount extends AppCompatActivity {
     @Override
     public void onResume(){
         super.onResume();
+        VideoView video = findViewById(R.id.VIDloginBG);
+
+        video.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mp.setLooping(true);
+            }
+        });
+
+        Uri videoPath = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.rain);
+        video.setVideoURI(videoPath);
+        video.start();
+
         //check if user account is still active
         authentication.checkAccountIsActive();
     }

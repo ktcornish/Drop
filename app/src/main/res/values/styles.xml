@@ -5,8 +5,8 @@
         <!-- Customize your theme here. -->
 
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimaryDark">#365CBB</item>
+        <item name="colorAccent">#365CBB</item>
     </style>
 
     <style name="FullscreenTheme" parent="AppTheme">
@@ -18,7 +18,7 @@
     </style>
 
     <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
-        <item name="android:background">@color/black_overlay</item>
+        <item name="android:background">#365CBB</item>
     </style>
 
 </resources>
