@@ -155,7 +155,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                         SBupvotes.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                             @Override
                             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                                Toast.makeText(getApplicationContext(),"seekbar progress: "+progress, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(),"seekbar progress: "+(progress-10), Toast.LENGTH_SHORT).show();
                                 mMap.clear();
                                 minRating = progress -10;
                                 addMarkersToMap(mMap);
