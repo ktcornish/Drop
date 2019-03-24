@@ -138,7 +138,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                                     drop.newDrop(ETaddDrop.getText().toString(), user.getUid(), currentLatitude, currentLongitude);
                                     dialog.dismiss();
                                 } else {
-                                    Toast.makeText(HomeActivity.this, "No Drop entered!", Toast.LENGTH_LONG).show();
+                                    ETaddDrop.setError("Please enter a drop!");
                                 }
                             }
                         });
