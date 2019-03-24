@@ -1,10 +1,12 @@
 package com.steamybeans.drop.views;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -19,6 +21,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.steamybeans.drop.R;
 import com.steamybeans.drop.firebase.Authentication;
 import com.steamybeans.drop.firebase.User;
@@ -31,6 +40,9 @@ public class MyAccount extends AppCompatActivity {
     private Authentication authentication;
     private TextView TVemail;
     final static int gallery_image = 1;
+    private StorageReference userProfileImageRef;
+    private DatabaseReference userRef;
+    private ProgressDialog loadingBar;
 
 
 
@@ -38,14 +50,17 @@ public class MyAccount extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_account);
+        //Set up classes
+        authentication = new Authentication(this);
+        user = new User();
+
+        //Set Up database & Storage
+        userProfileImageRef = FirebaseStorage.getInstance().getReference().child("Profile Images");
+        userRef = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid());
 
         // Support toolbar in activity
         Toolbar toolbar = findViewById(R.id.toolbar_myaccount_top);
         setSupportActionBar(toolbar);
-
-        //Set up classes
-        authentication = new Authentication(this);
-        user = new User();
 
         //check if user account is still active
         authentication.checkAccountIsActive();
@@ -108,9 +123,9 @@ public class MyAccount extends AppCompatActivity {
 
         if(requestCode==gallery_image && resultCode==RESULT_OK && data!=null){
 
-            Uri ImageUri = data.getData();
+            Uri imageUri = data.getData();
 
-            CropImage.activity(ImageUri)
+            CropImage.activity(imageUri)
                     .setGuidelines(CropImageView.Guidelines.ON)
                     .setAspectRatio(1,1)
                     .start(this);
@@ -119,8 +134,44 @@ public class MyAccount extends AppCompatActivity {
         if(requestCode==CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
 
-            if(requestCode == RESULT_OK) {
-                Uri resultUri = result.getUri();
+            if(resultCode == RESULT_OK) {
+
+                loadingBar = new ProgressDialog(this);
+
+                loadingBar.setTitle("Uploading Image");
+                loadingBar.setMessage("Just a sec while we upload your image");
+                loadingBar.show();
+                loadingBar.setCanceledOnTouchOutside(true);
+
+                Uri croppedImageUri = result.getUri();
+
+                StorageReference filePath = userProfileImageRef.child(user.getUid() + ".jpg");
+                filePath.putFile(croppedImageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                        if(task.isSuccessful()) {
+                            //Toast.makeText(MyAccount.this, "Profile Image Uploaded", Toast.LENGTH_SHORT).show();
+
+                            final String downloadUrl = task.getResult().getStorage().getDownloadUrl().toString();
+                            userRef.child("profileimage").setValue(downloadUrl)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+
+                                    if(task.isSuccessful()){
+                                        Toast.makeText(MyAccount.this, "Profile Updated", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        String message = task.getException().getMessage();
+                                        Toast.makeText(MyAccount.this, "Error:" + message, Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                            loadingBar.dismiss();
+                        }
+                    }
+                });
+            } else {
+                Toast.makeText(authentication, "Error Occured: Image can't be cropped", Toast.LENGTH_SHORT).show();
             }
 
         }
