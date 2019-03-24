@@ -158,6 +158,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 Toast.makeText(getApplicationContext(),"seekbar progress: "+progress, Toast.LENGTH_SHORT).show();
                                 mMap.clear();
                                 minRating = progress -10;
+                                addMarkersToMap(mMap);
                             }
 
                             @Override
