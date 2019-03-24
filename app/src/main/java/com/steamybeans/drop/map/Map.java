@@ -82,7 +82,6 @@ public class Map extends AppCompatActivity {
                     BTNviewComment.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            final Dialog dialog1 = new Dialog(context);
                             dialog.setContentView(R.layout.dialogue_new_drop);
                             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                         }
