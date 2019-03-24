@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +27,7 @@ public class MyAccount extends AppCompatActivity {
     private User user;
     private Authentication authentication;
     private TextView TVemail;
+    final static int gallery_image = 1;
 
 
 
@@ -73,6 +75,7 @@ public class MyAccount extends AppCompatActivity {
 
     private void setUpButtons() {
         Button BTNlogOut = findViewById(R.id.BTNlogOut);
+        ImageButton BTNupload = findViewById(R.id.BTNupload);
 
         BTNlogOut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +85,18 @@ public class MyAccount extends AppCompatActivity {
                 Toast.makeText(MyAccount.this, "User successfully signed out", Toast.LENGTH_LONG).show();
             }
         });
+
+        BTNupload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent galleryIntent = new Intent();
+                galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+                galleryIntent.setType("image/*");
+                startActivityForResult(galleryIntent, gallery_image);
+
+            }
+        });
+
     }
 
     @Override
