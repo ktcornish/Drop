@@ -4,9 +4,10 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,6 +22,8 @@ import android.widget.VideoView;
 import com.steamybeans.drop.R;
 import com.steamybeans.drop.firebase.Authentication;
 import com.steamybeans.drop.firebase.User;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 public class MyAccount extends AppCompatActivity {
 
@@ -97,6 +100,30 @@ public class MyAccount extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode==gallery_image && resultCode==RESULT_OK && data!=null){
+
+            Uri ImageUri = data.getData();
+
+            CropImage.activity(ImageUri)
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    .setAspectRatio(1,1)
+                    .start(this);
+        }
+
+        if(requestCode==CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+
+            if(requestCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
+            }
+
+        }
     }
 
     @Override

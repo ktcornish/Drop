@@ -2,8 +2,8 @@ package com.steamybeans.drop.firebase;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -20,7 +20,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.steamybeans.drop.views.HomeActivity;
 import com.steamybeans.drop.views.LoginPage;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 
