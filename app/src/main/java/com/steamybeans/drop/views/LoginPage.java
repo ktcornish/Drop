@@ -11,6 +11,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.steamybeans.drop.R;
@@ -51,9 +52,15 @@ public class LoginPage extends AppCompatActivity {
         BTNlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = ETemail.getText().toString();
-                String password = ETpassword.getText().toString();
-                authentication.login(email, password);
+                if (ETemail.getText().toString().trim().length() < 1) {
+                    ETemail.setError("Email is empty");
+                } else if (ETpassword.getText().toString().trim().length() < 1) {
+                    ETpassword.setError("Password is empty");
+                } else {
+                    String email = ETemail.getText().toString();
+                    String password = ETpassword.getText().toString();
+                    authentication.login(email, password);
+                }
             }
         });
     }
