@@ -41,9 +41,6 @@ public class SignUpFeatureTest {
         onView(withId(R.id.ETsignupPassword)).perform(typeText("password"));
         onView(withId(R.id.ETsignupPassword)).perform(closeSoftKeyboard());
         onView(withId(R.id.BTNcompleteSignUp)).perform(click());
-        Thread.sleep(2000);
-        testHelpers.deleteCurrentUser();
-        Thread.sleep(3000);
         onView(withId(R.id.toolbar_top)).check(matches(isDisplayed()));
         testHelpers.logOutUser();
     }

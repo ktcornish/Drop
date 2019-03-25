@@ -1,5 +1,6 @@
 package com.steamybeans.drop;
 
+import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -33,6 +34,8 @@ public class LoginFeatureTest {
     public void LoggingIn() throws Exception {
         testHelpers = new TestHelpers();
 
+        // 01 Log out if app launches with user signed in
+        System.out.println("Attempt 01 - log out");
         if (testHelpers.isUserLoggedIn()) {
             onView(withId(R.id.TBAccount)).perform(click());
             // Cannot find logout button until activity_my_account displayed
@@ -40,18 +43,28 @@ public class LoginFeatureTest {
             onView(withId(R.id.BTNlogOut)).perform(click());
         }
 
+        // 02 Sign up test user.
+        System.out.println("Attempt 02 - sign up test user");
         testHelpers.signUpTestUser();
-        Thread.sleep(2000);
-        onView(withId(R.id.TBAccount)).perform(click());
-        onView(withId(R.id.BTNlogOut)).perform(click());
+        Thread.sleep(1000);
+
+        // 03 Return to login activity
+        System.out.println("Attempt 03 - log out if signup successful/go back if not");
+        if (testHelpers.isUserLoggedIn()) {
+            onView(withId(R.id.TBAccount)).perform(click());
+            // Cannot find logout button until activity_my_account displayed
+            Thread.sleep(500);
+            onView(withId(R.id.BTNlogOut)).perform(click());
+        }
+        else { Espresso.pressBack(); }
+
+        // 04 Attempt to log in
+        System.out.println("Attempt 04 - enter test user details and log in");
         onView(withId(R.id.ETloginEmailAddress)).perform(typeText("test@user.com"));
         onView(withId(R.id.ETloginPassword)).perform(typeText("password"));
         onView(withId(R.id.ETloginPassword)).perform(closeSoftKeyboard());
         onView(withId(R.id.BTNlogin)).perform(click());
         Thread.sleep(2000);
         onView(withId(R.id.toolbar_top)).check(matches(isDisplayed()));
-        testHelpers.deleteCurrentUser();
-        Thread.sleep(2000);
-        testHelpers.logOutUser();
     }
 }

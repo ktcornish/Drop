@@ -28,8 +28,6 @@ public class LogOutFeatureTest {
     public void LoggingOut() throws Exception {
         testHelpers = new TestHelpers();
         testHelpers.signUpTestUser();
-        Thread.sleep(2000);
-        testHelpers.deleteCurrentUser();
         Thread.sleep(3000);
         onView(withId(R.id.TBAccount)).perform(click());
         onView(withId(R.id.BTNlogOut)).perform(click());

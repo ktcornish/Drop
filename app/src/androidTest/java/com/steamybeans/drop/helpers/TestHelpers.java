@@ -11,13 +11,6 @@ import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 public class TestHelpers {
-
-    public void deleteCurrentUser() {
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-        firebaseUser.delete();
-    }
-
     public void signUpTestUser() {
         onView(withId(R.id.BTNsignUp)).perform(click());
         onView(withId(R.id.ETsignupEmailAddress)).perform(typeText("test@user.com"));
