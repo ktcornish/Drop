@@ -88,7 +88,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private boolean zoomed = false;
     public int minRating = -10;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -317,7 +316,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 if (counter < 0) {
                     googleMap.addMarker(new MarkerOptions().position(location).title(user).snippet(postId)
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+                            .icon(BitmapDescriptorFactory.fromResource((R.raw.pin_red))));
                 } else if (counter > 5) {
                     googleMap.addMarker(new MarkerOptions().position(location).title(user).snippet(postId)
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
