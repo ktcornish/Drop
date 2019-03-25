@@ -49,9 +49,11 @@ public class LogOutFeatureTest {
         }
 
         // 03 Test logout
+        Thread.sleep(2000);
         onView(withId(R.id.TBAccount)).perform(click());
         Thread.sleep(500);
         onView(withId(R.id.BTNlogOut)).perform(click());
+        Thread.sleep(2000);
         onView(withId(R.id.BTNsignUp)).check(matches(isDisplayed()));
     }
 }
