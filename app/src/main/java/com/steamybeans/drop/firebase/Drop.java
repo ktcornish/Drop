@@ -9,8 +9,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.w3c.dom.Text;
-
 public class Drop {
 
     private FirebaseDatabase firebaseDatabase;
@@ -36,7 +34,8 @@ public class Drop {
     }
 
     public void setDropContent(final String userUid, final String dropUid, final TextView dropContent, final TextView username) {
-
+        System.out.println("SETTING DROP CONTENT!!!");
+        System.out.println(dropUid);
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("users")
                 .child(userUid);

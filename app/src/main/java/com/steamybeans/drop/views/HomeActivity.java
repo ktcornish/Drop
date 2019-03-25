@@ -26,6 +26,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -84,6 +85,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private String userId;
     private Vote vote;
     private boolean zoomed = false;
+    public int minRating = -10;
 
 
     @Override
@@ -110,7 +112,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         //check if user account is still active
         authentication.checkAccountIsActive();
 
-        BNbottomNavigationView = (BottomNavigationView) findViewById(R.id.BNbottomNavigationView);
+        BNbottomNavigationView = findViewById(R.id.BNbottomNavigationView);
         BNbottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -125,9 +127,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
                         //find button on dialog
-                        TVdialogTitle = (TextView) dialog.findViewById(R.id.TVdialogTitle);
-                        BTNaddDrop = (Button) dialog.findViewById(R.id.BTNaddDrop);
-                        ETaddDrop = (EditText) dialog.findViewById(R.id.ETaddDrop);
+                        TVdialogTitle = dialog.findViewById(R.id.TVdialogTitle);
+                        BTNaddDrop = dialog.findViewById(R.id.BTNaddDrop);
+                        ETaddDrop = dialog.findViewById(R.id.ETaddDrop);
 
                         //onclicklistener for button
                         BTNaddDrop.setOnClickListener(new View.OnClickListener() {
@@ -143,6 +145,35 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                             }
                         });
                         dialog.show();
+                        return true;
+                    case R.id.NBfilter:
+                        final Dialog filterDialog = new Dialog(HomeActivity.this);
+                        filterDialog.setContentView(R.layout.dialog_filter_drops);
+                        filterDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                        SeekBar SBupvotes = filterDialog.findViewById(R.id.SBupvotes);
+                        SBupvotes.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                            @Override
+                            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                                Toast.makeText(getApplicationContext(),"seekbar progress: "+(progress-10), Toast.LENGTH_SHORT).show();
+                                mMap.clear();
+                                minRating = progress -10;
+                                addMarkersToMap(mMap);
+                            }
+
+                            @Override
+                            public void onStartTrackingTouch(SeekBar seekBar) {
+
+                            }
+
+                            @Override
+                            public void onStopTrackingTouch(SeekBar seekBar) {
+
+                            }
+                        });
+
+
+                        filterDialog.show();
                         return true;
                 }
                 return false;
@@ -208,11 +239,13 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void addMarkersToMap(final GoogleMap googleMap) {
+        System.out.println("AT TOP OF ADD MARKERS TO MAP METHOD");
         vote = new Vote();
         FirebaseDatabase.getInstance().getReference().child("users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    System.out.println("IN FIRST LOOP");
                     userId = snapshot.getKey();
 
                     FirebaseDatabase.getInstance().getReference().child("users").child(userId).child("posts")
@@ -220,16 +253,33 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 @Override
                                 public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
                                     for (final DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                        Firebasemarker firebaseMarker = snapshot.getValue(Firebasemarker.class);
-                                        String user = dataSnapshot.getRef().getParent().getKey();
-                                        LatLng location = new LatLng(firebaseMarker.getLatitude(), firebaseMarker.getLongitude());
-                                        googleMap.addMarker(new MarkerOptions().position(location).title(user).snippet(snapshot.getKey())
-                                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
-                                        Map map = new Map(HomeActivity.this);
-                                        if (ContextCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                                            Location location1 = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-                                            map.setUpMarkerClickListener(mMap, location1);
-                                        }
+                                        System.out.println("IN SECOND LOOP");
+                                        final Firebasemarker firebaseMarker = snapshot.getValue(Firebasemarker.class);
+                                        final String user = dataSnapshot.getRef().getParent().getKey();
+                                        final String postId = snapshot.getKey();
+
+                                        FirebaseDatabase.getInstance().getReference().child("users").child(user).child("posts")
+                                                .child(postId).child("votes").addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                int counter = 0;
+                                                for (final DataSnapshot snapshot3 : dataSnapshot.getChildren()) {
+                                                    counter += snapshot3.getValue(Integer.class);;
+                                                    System.out.println("IN VOTES LOOP");
+                                                    System.out.println(counter);
+                                                    System.out.println(minRating);
+                                                }
+                                                if (counter > minRating) {
+                                                    setUpMarker(googleMap, firebaseMarker, user, postId);
+
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                            }
+                                        });
 
                                     }
                                 }
@@ -248,6 +298,79 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
     }
+
+    private void setUpMarker(GoogleMap googleMap, Firebasemarker firebaseMarker, String user, String postId) {
+        System.out.println("setting up marker");
+        LatLng location = new LatLng(firebaseMarker.getLatitude(), firebaseMarker.getLongitude());
+        googleMap.addMarker(new MarkerOptions().position(location).title(user).snippet(postId)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
+        Map map = new Map(HomeActivity.this);
+        if (ContextCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            Location location1 = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+            map.setUpMarkerClickListener(googleMap, location1);
+        }
+    }
+
+//    private void filterMapMarkersByPopularity(final GoogleMap googleMap, int upVotes) {
+//        FirebaseDatabase.getInstance().getReference().child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                    userId = snapshot.getKey();
+//                    FirebaseDatabase.getInstance().getReference().child("users").child(userId).child("posts")
+//                            .addListenerForSingleValueEvent(new ValueEventListener() {
+//                                @Override
+//                                public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
+//                                    for (final DataSnapshot snapshot2 : dataSnapshot.getChildren()) {
+//
+//                                        String postid = snapshot2.getKey();
+//                                        String user = dataSnapshot.getRef().getParent().getKey();
+//
+//                                        FirebaseDatabase.getInstance().getReference().child(user).child("posts")
+//                                                .child(postid).child("votes").addListenerForSingleValueEvent(new ValueEventListener() {
+//                                            @Override
+//                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                                                int counter = 0;
+//                                                for (final DataSnapshot snapshot3 : dataSnapshot.getChildren()) {
+//                                                    counter += snapshot3.getValue(Integer.class);
+//                                                }
+//                                                if (counter > 1) {
+//                                                    Firebasemarker firebaseMarker = snapshot2.getValue(Firebasemarker.class);
+//                                                    String user = dataSnapshot.getRef().getParent().getKey();
+//                                                    LatLng location = new LatLng(firebaseMarker.getLatitude(), firebaseMarker.getLongitude());
+//                                                    googleMap.addMarker(new MarkerOptions().position(location).title(user).snippet(snapshot2.getKey())
+//                                                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
+//                                                    Map map = new Map(HomeActivity.this);
+//                                                    if (ContextCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+//                                                        Location location1 = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+//                                                        map.setUpMarkerClickListener(mMap, location1);
+//                                                    }
+//                                                }
+//                                            }
+//                                            @Override
+//                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                                            }
+//                                        });
+//
+//
+//                                    }
+//                                }
+//
+//                                @Override
+//                                public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                                }
+//                            });
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+//    }
 
     public boolean checkUserLocationPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
