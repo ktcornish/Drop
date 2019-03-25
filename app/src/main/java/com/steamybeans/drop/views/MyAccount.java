@@ -81,7 +81,7 @@ public class MyAccount extends AppCompatActivity {
         //check if user account is still active
         authentication.checkAccountIsActive();
 
-        //set text views to user email
+        //set text views to user email & Username;
         TVemail = (TextView) findViewById(R.id.TVEmail);
         TVuserName = (TextView) findViewById(R.id.TVuserName);
         userRef.child("username").addValueEventListener(new ValueEventListener() {
@@ -98,11 +98,8 @@ public class MyAccount extends AppCompatActivity {
         TVemail.setText(user.getEmail());
 
 
-
         setUpButtons();
 
-        //REMOVE BEFORE FINAL BUILD
-//        debugLayout();
     }
 
 
@@ -129,7 +126,7 @@ public class MyAccount extends AppCompatActivity {
 
             }
         });
-
+        // THIS UPDATES THE PROFILE IMAGE BOX
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
