@@ -44,13 +44,16 @@ public class LogOutFeatureTest {
             Espresso.pressBack();
             onView(withId(R.id.ETloginEmailAddress)).perform(typeText("test@user.com"));
             onView(withId(R.id.ETloginPassword)).perform(typeText("password"));
-            onView(withId(R.id.ETloginPassword)).perform(closeSoftKeyboard());
+            Espresso.closeSoftKeyboard();
+            Thread.sleep(500);
             onView(withId(R.id.BTNlogin)).perform(click());
         }
 
         // 03 Test logout
         Thread.sleep(2000);
         onView(withId(R.id.TBAccount)).perform(click());
+        Thread.sleep(500);
+        Espresso.closeSoftKeyboard();
         Thread.sleep(500);
         onView(withId(R.id.BTNlogOut)).perform(click());
         Thread.sleep(2000);

@@ -35,6 +35,8 @@ public class LoginFeatureTest {
         if (testHelpers.isUserLoggedIn()) {
             onView(withId(R.id.TBAccount)).perform(click());
             Thread.sleep(500);
+            Espresso.closeSoftKeyboard();
+            Thread.sleep(500);
             onView(withId(R.id.BTNlogOut)).perform(click());
         }
 
