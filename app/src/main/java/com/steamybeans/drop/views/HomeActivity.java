@@ -9,17 +9,8 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
-
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,8 +23,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -45,6 +36,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -58,6 +50,13 @@ import com.steamybeans.drop.firebase.Firebasemarker;
 import com.steamybeans.drop.firebase.User;
 import com.steamybeans.drop.firebase.Vote;
 import com.steamybeans.drop.map.Map;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -87,6 +86,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Vote vote;
     private boolean zoomed = false;
     public int minRating = -10;
+    public float seekBarProgressTextViewPosition = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,10 +153,19 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                         filterDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
                         SeekBar SBupvotes = filterDialog.findViewById(R.id.SBupvotes);
+                        SBupvotes.setProgress(minRating + 10);
+
+                        final TextView TVseekBarProgress = filterDialog.findViewById(R.id.TVseekBarProgress);
+                        TVseekBarProgress.setText(String.valueOf(minRating));
+                        TVseekBarProgress.setX(seekBarProgressTextViewPosition);
+
                         SBupvotes.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                             @Override
                             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                                Toast.makeText(getApplicationContext(),"seekbar progress: "+(progress-10), Toast.LENGTH_SHORT).show();
+                                TVseekBarProgress.setText(String.valueOf(minRating));
+                                int val = (progress * (seekBar.getWidth() - 2 * seekBar.getThumbOffset())) / seekBar.getMax();
+                                seekBarProgressTextViewPosition = (seekBar.getX() + val + seekBar.getThumbOffset() / 2);
+                                TVseekBarProgress.setX(seekBarProgressTextViewPosition);
                                 mMap.clear();
                                 minRating = progress -10;
                                 addMarkersToMap(mMap);
