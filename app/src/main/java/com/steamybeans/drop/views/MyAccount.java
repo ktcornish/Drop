@@ -2,6 +2,8 @@ package com.steamybeans.drop.views;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,28 +25,40 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 import com.steamybeans.drop.R;
 import com.steamybeans.drop.firebase.Authentication;
 import com.steamybeans.drop.firebase.User;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.io.File;
+import java.io.IOException;
+import java.lang.ref.Reference;
+
 public class MyAccount extends AppCompatActivity {
 
     private User user;
     private Authentication authentication;
     private TextView TVemail;
+    private TextView TVuserName;
     final static int gallery_image = 1;
     private StorageReference userProfileImageRef;
     private DatabaseReference userRef;
     private ProgressDialog loadingBar;
-
+    private ImageView IVprofileImage;
 
 
     @Override
@@ -53,6 +68,7 @@ public class MyAccount extends AppCompatActivity {
         //Set up classes
         authentication = new Authentication(this);
         user = new User();
+        IVprofileImage = (ImageView) findViewById(R.id.IVprofileImage);
 
         //Set Up database & Storage
         userProfileImageRef = FirebaseStorage.getInstance().getReference().child("Profile Images");
@@ -67,29 +83,28 @@ public class MyAccount extends AppCompatActivity {
 
         //set text views to user email
         TVemail = (TextView) findViewById(R.id.TVEmail);
+        TVuserName = (TextView) findViewById(R.id.TVuserName);
+        userRef.child("username").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                TVuserName.setText(snapshot.getValue().toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
         TVemail.setText(user.getEmail());
+
+
 
         setUpButtons();
 
         //REMOVE BEFORE FINAL BUILD
-        debugLayout();
+//        debugLayout();
     }
 
-    private void debugLayout() {
-        //TODO REMOVE BEFORE FINAL BUILD
-        TextView TVuserName = findViewById(R.id.TVuserName);
-        ImageView IVprofileImage = findViewById(R.id.IVprofileImage);
-        String email = user.getEmail();
-        if(email.equals("ross@rossmail.com")) {
-            TVuserName.setText("RossyB");
-            IVprofileImage.setImageResource(R.drawable.ross_test);
-        }
-        if(email.equals("jeddhoppo@gmail.com")) {
-            TVuserName.setText("Jedd");
-            IVprofileImage.setImageResource(R.drawable.jedd_avatar);
-        }
-
-    }
 
     private void setUpButtons() {
         Button BTNlogOut = findViewById(R.id.BTNlogOut);
@@ -115,26 +130,57 @@ public class MyAccount extends AppCompatActivity {
             }
         });
 
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    StorageReference UserPic = userProfileImageRef.child(user.getUid() + ".jpg");
+                    try {
+                        final File localFile = File.createTempFile("images", "jpg");
+                        UserPic.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                                IVprofileImage.setImageBitmap(bitmap);
+
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                            }
+                        });
+                    } catch (IOException e) {
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode==gallery_image && resultCode==RESULT_OK && data!=null){
+        if (requestCode == gallery_image && resultCode == RESULT_OK && data != null) {
 
             Uri imageUri = data.getData();
 
             CropImage.activity(imageUri)
                     .setGuidelines(CropImageView.Guidelines.ON)
-                    .setAspectRatio(1,1)
+                    .setAspectRatio(1, 1)
                     .start(this);
         }
 
-        if(requestCode==CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
 
-            if(resultCode == RESULT_OK) {
+            if (resultCode == RESULT_OK) {
 
                 loadingBar = new ProgressDialog(this);
 
@@ -149,23 +195,23 @@ public class MyAccount extends AppCompatActivity {
                 filePath.putFile(croppedImageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                        if(task.isSuccessful()) {
+                        if (task.isSuccessful()) {
                             //Toast.makeText(MyAccount.this, "Profile Image Uploaded", Toast.LENGTH_SHORT).show();
 
                             final String downloadUrl = task.getResult().getStorage().getDownloadUrl().toString();
                             userRef.child("profileimage").setValue(downloadUrl)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
 
-                                    if(task.isSuccessful()){
-                                        Toast.makeText(MyAccount.this, "Profile Updated", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        String message = task.getException().getMessage();
-                                        Toast.makeText(MyAccount.this, "Error:" + message, Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
+                                            if (task.isSuccessful()) {
+                                                Toast.makeText(MyAccount.this, "Profile Updated", Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                String message = task.getException().getMessage();
+                                                Toast.makeText(MyAccount.this, "Error:" + message, Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
                             loadingBar.dismiss();
                         }
                     }
@@ -178,7 +224,7 @@ public class MyAccount extends AppCompatActivity {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         VideoView video = findViewById(R.id.VIDloginBG);
 
@@ -208,7 +254,7 @@ public class MyAccount extends AppCompatActivity {
     // Support onClick actions on options in toolbar
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case R.id.TBclose:
                 startActivity(new Intent(MyAccount.this, HomeActivity.class));
                 overridePendingTransition(R.anim.slide_up_from_bottom, R.anim.slide_down_from_top);
