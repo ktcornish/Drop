@@ -35,31 +35,29 @@ public class LoginFeatureTest {
         testHelpers = new TestHelpers();
 
         // 01 Log out if app launches with user signed in
-        System.out.println("Attempt 01 - log out");
+        System.out.println("LoginFT 01 - log out");
         if (testHelpers.isUserLoggedIn()) {
             onView(withId(R.id.TBAccount)).perform(click());
-            // Cannot find logout button until activity_my_account displayed
             Thread.sleep(500);
             onView(withId(R.id.BTNlogOut)).perform(click());
         }
 
         // 02 Sign up test user.
-        System.out.println("Attempt 02 - sign up test user");
+        System.out.println("LoginFT 02 - sign up test user");
         testHelpers.signUpTestUser();
         Thread.sleep(1000);
 
         // 03 Return to login activity
-        System.out.println("Attempt 03 - log out if signup successful/go back if not");
+        System.out.println("LoginFT 03 - log out if signup successful/go back if not");
         if (testHelpers.isUserLoggedIn()) {
             onView(withId(R.id.TBAccount)).perform(click());
-            // Cannot find logout button until activity_my_account displayed
             Thread.sleep(500);
             onView(withId(R.id.BTNlogOut)).perform(click());
         }
         else { Espresso.pressBack(); }
 
-        // 04 Attempt to log in
-        System.out.println("Attempt 04 - enter test user details and log in");
+        // 04 Test login
+        System.out.println("LoginFT 04 - enter test user details and log in");
         onView(withId(R.id.ETloginEmailAddress)).perform(typeText("test@user.com"));
         onView(withId(R.id.ETloginPassword)).perform(typeText("password"));
         onView(withId(R.id.ETloginPassword)).perform(closeSoftKeyboard());
