@@ -123,6 +123,8 @@ public class Authentication extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 databaseReference.child(uid).child("username").setValue(username);
+                databaseReference.child(uid).child("profileimage").setValue("default");
+
             }
 
             @Override
