@@ -38,13 +38,9 @@ public class SignUpFeatureTest {
         testHelpers = new TestHelpers();
         Thread.sleep(2000);
         onView(withId(R.id.BTNsignUp)).perform(click());
-        onView(withId(R.id.ETsignupEmailAddress)).perform(typeText("test@user.com"));
-        onView(withId(R.id.ETsignupPassword)).perform(typeText("password"));
-        onView(withId(R.id.ETsignupPassword)).perform(closeSoftKeyboard());
-        onView(withId(R.id.BTNcompleteSignUp)).perform(click());
+        testHelpers.signUpTestUser();
         Thread.sleep(2000);
         onView(withId(R.id.toolbar_top)).check(matches(isDisplayed()));
-        testHelpers.deleteCurrentUser();
         Thread.sleep(2000);
     }
 }

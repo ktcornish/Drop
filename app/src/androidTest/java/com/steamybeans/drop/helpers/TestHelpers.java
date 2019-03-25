@@ -11,30 +11,19 @@ import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 public class TestHelpers {
-
-    public void deleteCurrentUser() {
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-        firebaseUser.delete();
-    }
-
     public void signUpTestUser() {
         onView(withId(R.id.BTNsignUp)).perform(click());
         onView(withId(R.id.ETsignupEmailAddress)).perform(typeText("test@user.com"));
+        onView(withId(R.id.ETsignupUsername)).perform(typeText("testuser"));
         onView(withId(R.id.ETsignupPassword)).perform(typeText("password"));
         onView(withId(R.id.ETsignupPassword)).perform(closeSoftKeyboard());
+        onView(withId(R.id.CBtermsAndConditions)).perform(click());
         onView(withId(R.id.BTNcompleteSignUp)).perform(click());
     }
 
-    public void logInTestUser() {
-        onView(withId(R.id.ETloginEmailAddress)).perform(typeText("test@user.com"));
-        onView(withId(R.id.ETloginPassword)).perform(typeText("password"));
-        onView(withId(R.id.ETloginPassword)).perform(closeSoftKeyboard());
-        onView(withId(R.id.BTNlogin)).perform(click());
-}
-
-    public void logOutUser() {
-        onView(withId(R.id.TBAccount)).perform(click());
-        onView(withId(R.id.BTNlogOut)).perform(click());
+    public boolean isUserLoggedIn() {
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        return firebaseUser == null ? false : true;
     }
 }
