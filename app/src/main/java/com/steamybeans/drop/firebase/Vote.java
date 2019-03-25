@@ -1,6 +1,6 @@
 package com.steamybeans.drop.firebase;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;

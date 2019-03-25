@@ -3,10 +3,10 @@ package com.steamybeans.drop.firebase;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+//import
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+//end
 import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -24,7 +24,6 @@ import com.steamybeans.drop.R;
 import com.steamybeans.drop.views.HomeActivity;
 import com.steamybeans.drop.views.LoginPage;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 
