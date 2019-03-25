@@ -3,6 +3,8 @@ package com.steamybeans.drop.views;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -55,6 +57,7 @@ import com.steamybeans.drop.R;
 import com.steamybeans.drop.firebase.Authentication;
 import com.steamybeans.drop.firebase.Drop;
 import com.steamybeans.drop.firebase.Firebasemarker;
+import com.steamybeans.drop.firebase.Notification;
 import com.steamybeans.drop.firebase.User;
 import com.steamybeans.drop.firebase.Vote;
 import com.steamybeans.drop.map.Map;
@@ -96,6 +99,13 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkUserLocationPermission();
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("drop", "Drop", NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription("drop notifications");
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
         }
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -186,6 +196,51 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onResume();
         //check if user account is still active
         authentication.checkAccountIsActive();
+        final Notification notification = new Notification(this);
+
+        //check for changes to db
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("users")
+                .child(user.getUid()).child("posts");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
+                    String dropUid = snapshot.getKey();
+
+                    FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid())
+                            .child("posts").child(dropUid).child("votes")
+                            .addListenerForSingleValueEvent(new ValueEventListener() {
+
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                            int counter = 0;
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                counter += snapshot.getValue(Integer.class);
+                            }
+                            if (counter == 5) {
+                                notification.createNotification("DROP", "Has received 5 likes");
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     // Populate toolbar with buttons
