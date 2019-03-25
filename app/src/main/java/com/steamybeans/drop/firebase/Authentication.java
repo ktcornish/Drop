@@ -1,9 +1,12 @@
 package com.steamybeans.drop.firebase;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+//import
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+//end
 import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -17,6 +20,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.steamybeans.drop.R;
 import com.steamybeans.drop.views.HomeActivity;
 import com.steamybeans.drop.views.LoginPage;
 

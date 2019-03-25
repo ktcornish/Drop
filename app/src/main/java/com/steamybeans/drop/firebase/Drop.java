@@ -34,7 +34,8 @@ public class Drop {
     }
 
     public void setDropContent(final String userUid, final String dropUid, final TextView dropContent, final TextView username) {
-
+        System.out.println("SETTING DROP CONTENT!!!");
+        System.out.println(dropUid);
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("users")
                 .child(userUid);

@@ -62,6 +62,7 @@ public class Map extends AppCompatActivity {
 
                     Button BTNupvote = dialog.findViewById(R.id.BTNupvote);
                     Button BTNdownvote = dialog.findViewById(R.id.BTNdownvote);
+                    Button BTNviewComment = dialog.findViewById(R.id.BTNviewComments);
 
                     BTNupvote.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -73,6 +74,13 @@ public class Map extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             vote.makeAVote(-1, marker.getTitle(), marker.getSnippet(), TVvotes);
+                        }
+                    });
+                    BTNviewComment.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.setContentView(R.layout.dialogue_new_drop);
+                            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                         }
                     });
 
