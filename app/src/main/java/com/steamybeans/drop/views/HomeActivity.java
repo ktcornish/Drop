@@ -19,6 +19,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -299,11 +300,42 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
     }
 
-    private void setUpMarker(GoogleMap googleMap, Firebasemarker firebaseMarker, String user, String postId) {
+    private void setUpMarker(final GoogleMap googleMap, Firebasemarker firebaseMarker, final String user, final String postId) {
         System.out.println("setting up marker");
-        LatLng location = new LatLng(firebaseMarker.getLatitude(), firebaseMarker.getLongitude());
-        googleMap.addMarker(new MarkerOptions().position(location).title(user).snippet(postId)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
+        final LatLng location = new LatLng(firebaseMarker.getLatitude(), firebaseMarker.getLongitude());
+
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("users")
+                .child(user).child("posts").child(postId).child("votes");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int counter = 0;
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    counter += snapshot.getValue(Integer.class);
+                }
+
+                if (counter < 0) {
+                    googleMap.addMarker(new MarkerOptions().position(location).title(user).snippet(postId)
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+                } else if (counter > 5) {
+                    googleMap.addMarker(new MarkerOptions().position(location).title(user).snippet(postId)
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                } else {
+                    googleMap.addMarker(new MarkerOptions().position(location).title(user).snippet(postId)
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
         Map map = new Map(HomeActivity.this);
         if (ContextCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             Location location1 = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
