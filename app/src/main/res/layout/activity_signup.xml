@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/loginbackground"
     tools:context=".views.LoginPage">
-    
+
     <VideoView
         android:id="@+id/VIDloginBG"
         android:layout_width="4000px"
@@ -111,15 +111,15 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="350dp"
-        android:layout_height="289dp"
+        android:layout_width="312dp"
+        android:layout_height="258dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="264dp"
+        android:layout_marginBottom="290dp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.622"
+        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/logo3" />
+        app:srcCompat="@drawable/logo_crop" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
