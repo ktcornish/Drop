@@ -106,14 +106,16 @@ public class Authentication extends AppCompatActivity {
     public void checkAccountIsActive() {
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-        currentUser.reload().addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                if (e instanceof FirebaseAuthInvalidUserException) {
-                    context.startActivity(new Intent(context, LoginPage.class));
+        if (currentUser != null) {
+            currentUser.reload().addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    if (e instanceof FirebaseAuthInvalidUserException) {
+                        context.startActivity(new Intent(context, LoginPage.class));
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
 

@@ -2,6 +2,7 @@ package com.steamybeans.drop;
 
 import androidx.test.espresso.Espresso;
 import androidx.test.rule.ActivityTestRule;
+import androidx.test.rule.GrantPermissionRule;
 import androidx.test.runner.AndroidJUnit4;
 
 import com.steamybeans.drop.helpers.TestHelpers;
@@ -13,7 +14,6 @@ import org.junit.runner.RunWith;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -26,6 +26,9 @@ public class LogOutFeatureTest {
 
     @Rule
     public ActivityTestRule<LoginPage> mainActivityTestRule = new ActivityTestRule<LoginPage>(LoginPage.class);
+    public GrantPermissionRule mGrantPermissionRule =
+            GrantPermissionRule.grant(
+                    "android.permission.ACCESS_FINE_LOCATION");
 
     @Test
     public void LoggingOut() throws Exception {
@@ -52,11 +55,9 @@ public class LogOutFeatureTest {
         // 03 Test logout
         Thread.sleep(2000);
         onView(withId(R.id.TBAccount)).perform(click());
-        Thread.sleep(500);
-        Espresso.closeSoftKeyboard();
-        Thread.sleep(500);
+        Thread.sleep(1000);
         onView(withId(R.id.BTNlogOut)).perform(click());
-        Thread.sleep(2000);
+        Thread.sleep(1000);
         onView(withId(R.id.BTNsignUp)).check(matches(isDisplayed()));
     }
 }
