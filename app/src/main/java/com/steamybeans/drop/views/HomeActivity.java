@@ -316,10 +316,10 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 if (counter < 0) {
                     googleMap.addMarker(new MarkerOptions().position(location).title(user).snippet(postId)
-                            .icon(BitmapDescriptorFactory.fromResource((R.raw.pin_red))));
+                            .icon(BitmapDescriptorFactory.fromResource((R.drawable.pin_ice))));
                 } else if (counter > 5) {
                     googleMap.addMarker(new MarkerOptions().position(location).title(user).snippet(postId)
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                            .icon(BitmapDescriptorFactory.fromResource((R.drawable.pin_fire))));
                 } else {
                     googleMap.addMarker(new MarkerOptions().position(location).title(user).snippet(postId)
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
