@@ -3,7 +3,9 @@ package com.steamybeans.drop.firebase;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -16,6 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.steamybeans.drop.R;
+import com.steamybeans.drop.views.MyAccount;
 
 import java.util.Calendar;
 
@@ -62,7 +65,8 @@ public class Notifications extends AppCompatActivity {
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ross_test);
 //        Uri soundPath = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.rain);
 
-
+        Intent myIntent = new Intent(context, MyAccount.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, myIntent, PendingIntent.FLAG_ONE_SHOT);
 
 
         NotificationCompat.Builder mBuilder =
@@ -75,7 +79,9 @@ public class Notifications extends AppCompatActivity {
                         .setChannelId("drop")
                         .setDefaults(Notification.DEFAULT_SOUND)
                         .setContentText(content)
-                        .setPriority(NotificationCompat.PRIORITY_MAX);
+                        .setPriority(NotificationCompat.PRIORITY_MAX)
+                        .setContentIntent(pendingIntent)
+                        .setAutoCancel(true);
 
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
         notificationManagerCompat.notify(1, mBuilder.build());
