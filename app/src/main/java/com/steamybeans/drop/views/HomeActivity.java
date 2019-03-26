@@ -52,12 +52,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.steamybeans.drop.R;
+import com.steamybeans.drop.firebase.AchievementData;
 import com.steamybeans.drop.firebase.Authentication;
 import com.steamybeans.drop.firebase.Drop;
 import com.steamybeans.drop.firebase.Firebasemarker;
 import com.steamybeans.drop.firebase.User;
 import com.steamybeans.drop.firebase.Vote;
 import com.steamybeans.drop.map.Map;
+
+import java.sql.SQLOutput;
 
 public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -138,6 +141,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 if (ETaddDrop.getText().toString().trim().length() > 0) {
                                     Drop drop = new Drop();
                                     drop.newDrop(ETaddDrop.getText().toString(), user.getUid(), currentLatitude, currentLongitude);
+                                    AchievementData ad = new AchievementData();
+                                    ad.setDropsPosted(user.getUid(), 1);
                                     dialog.dismiss();
                                 } else {
                                     ETaddDrop.setError("Please enter a drop!");
@@ -280,7 +285,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                                             }
                                         });
-
                                     }
                                 }
 

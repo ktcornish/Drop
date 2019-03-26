@@ -25,12 +25,20 @@ public class Vote {
                 if (dataSnapshot.child(user.getUid()).getValue() == null) {
                     databaseReference.child(user.getUid()).setValue(voteValue);
                     calculateVotesTotal(idOfDropper, postId, TVvotes);
+                    addGiveVoteAchievementLogic(voteValue);
+                    addReceiveVoteAchievementLogic(voteValue, idOfDropper);
                 } else if (dataSnapshot.child(user.getUid()).getValue(Integer.class) == voteValue) {
-                    databaseReference.child(user.getUid()).setValue(0);
+                    databaseReference.child(user.getUid()).setValue(null);
                     calculateVotesTotal(idOfDropper, postId, TVvotes);
+                    cancelGiveVoteAchievementLogic(voteValue);
+                    cancelReceiveVoteAchievementLogic(voteValue, idOfDropper);
                 } else {
                     databaseReference.child(user.getUid()).setValue(voteValue);
                     calculateVotesTotal(idOfDropper, postId, TVvotes);
+                    addGiveVoteAchievementLogic(voteValue);
+                    cancelGiveVoteAchievementLogic(- voteValue);
+                    addReceiveVoteAchievementLogic(voteValue, idOfDropper);
+                    cancelReceiveVoteAchievementLogic(-voteValue, idOfDropper);
                 }
             }
 
@@ -60,5 +68,35 @@ public class Vote {
 
             }
         });
+    }
+
+    private void addGiveVoteAchievementLogic(int voteValue) {
+        User user = new User();
+        AchievementData adV = new AchievementData();
+
+        if (voteValue == - 1) { adV.setDownVotesGiven(user.getUid(), 1); }
+        else if (voteValue == 1) { adV.setUpVotesGiven(user.getUid(), 1); }
+    }
+
+    private void cancelGiveVoteAchievementLogic(int voteValue) {
+        User user = new User();
+        AchievementData adV = new AchievementData();
+
+        if (voteValue == - 1) { adV.setDownVotesGiven(user.getUid(), - 1); }
+        else if (voteValue == 1) { adV.setUpVotesGiven(user.getUid(), - 1); }
+    }
+
+    private void addReceiveVoteAchievementLogic(int voteValue, String idOfDropper) {
+        AchievementData adV = new AchievementData();
+
+        if (voteValue == - 1) { adV.setDownVotesReceived(idOfDropper, 1); }
+        else if (voteValue == 1) { adV.setUpVotesReceived(idOfDropper,1); }
+    }
+
+    private void cancelReceiveVoteAchievementLogic(int voteValue, String idOfDropper) {
+        AchievementData adV = new AchievementData();
+
+        if (voteValue == - 1) { adV.setDownVotesReceived(idOfDropper, - 1); }
+        else if (voteValue == 1) { adV.setUpVotesReceived(idOfDropper,- 1); }
     }
 }
