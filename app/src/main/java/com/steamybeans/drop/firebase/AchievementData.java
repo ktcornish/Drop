@@ -28,10 +28,10 @@ public class AchievementData {
         });
     }
 
-    public void setUpVotesGiven(String userUid, final long change) {
+    public void setDownVotesReceived(String userUid, final long change) {
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("users").child(userUid).child("achievementdata")
-                .child("upvotesgiven");
+                .child("downvotesreceived");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -44,10 +44,31 @@ public class AchievementData {
         });
     }
 
-    public void setDownVotesReceived(String userUid, final long change) {
+    public void setDropsPosted(String userUid, final long change) {
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("users").child(userUid).child("achievementdata")
-                .child("downvotesreceived");
+                .child("dropsposted");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                long currentVal = (long) dataSnapshot.getValue();
+                databaseReference.setValue(change + currentVal);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError database) {}
+        });
+    }
+
+
+    public void setDropsViewed(String userUid, final long change) {
+        // BOOKMARK - PLACEHOLDER
+    }
+
+    public void setUpVotesGiven(String userUid, final long change) {
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("users").child(userUid).child("achievementdata")
+                .child("upvotesgiven");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -75,6 +96,9 @@ public class AchievementData {
             public void onCancelled(@NonNull DatabaseError database) {}
         });
     }
+
+
+
 
 
 
