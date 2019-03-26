@@ -60,7 +60,6 @@ public class MyAccount extends AppCompatActivity {
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -237,11 +236,11 @@ public class MyAccount extends AppCompatActivity {
 
         updateAchievementGraphics();
 
+        setAcheivementDescriptionText();
+
         //check if user account is still active
         authentication.checkAccountIsActive();
     }
-
-
 
     // Populate toolbar with buttons
     @Override
@@ -263,6 +262,60 @@ public class MyAccount extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    // Set achievement description text when user clicks achievement badge
+    private void setAcheivementDescriptionText() {
+        final ImageView ivDownVotesGiven = findViewById(R.id.IVdownVotesGiven);
+        final ImageView ivDownVotesReceived = findViewById(R.id.IVdownVotesReceived);
+        final ImageView ivDropsPosted = findViewById(R.id.IVdropsPosted);
+        final ImageView ivDropFirstPost = findViewById(R.id.IVdropFirstPost);
+        final ImageView ivUpVotesGiven = findViewById(R.id.IVupVotesGiven);
+        final ImageView ivUpVotesReceived = findViewById(R.id.IVupVotesReceived);
+        final TextView et = findViewById(R.id.TVachievmentDescription);
+
+        ivDownVotesGiven.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                et.setText(getString(R.string.achievement_desc_downvotes_given));
+            }
+        });
+
+        ivDownVotesReceived.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                et.setText(getString(R.string.achievement_desc_downvotes_received));
+            }
+        });
+
+        ivDropsPosted.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                et.setText(getString(R.string.achievement_desc_drops_posted));
+            }
+        });
+
+        ivDropFirstPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                et.setText(getString(R.string.achievement_desc_first_drop));
+            }
+        });
+
+        ivUpVotesGiven.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                et.setText(getString(R.string.achievement_desc_upvotes_given));
+            }
+        });
+
+        ivUpVotesReceived.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextView et = findViewById(R.id.TVachievmentDescription);
+                et.setText(getString(R.string.achievement_desc_upvotes_received));
+            }
+        });
     }
 
     private void updateAchievementGraphics() {
