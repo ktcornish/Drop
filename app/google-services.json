@@ -23,6 +23,22 @@
           }
         },
         {
+          "client_id": "1045779179208-fokudgvflbovi156egs2huflo7hlsrue.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.steamybeans.drop",
+            "certificate_hash": "91c49f46821e38119c42506d21eb9f64676139fc"
+          }
+        },
+        {
+          "client_id": "1045779179208-bskad5hbhbjtohs4a5ked45ln2ud0b0f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.steamybeans.drop",
+            "certificate_hash": "7cb1d6bb12a8a165099a47636846c62976bfecb9"
+          }
+        },
+        {
           "client_id": "1045779179208-q5vv172smjjhj8ojblpj08q5rh96jd48.apps.googleusercontent.com",
           "client_type": 3
         }
