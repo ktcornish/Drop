@@ -25,16 +25,20 @@ public class Vote {
                 if (dataSnapshot.child(user.getUid()).getValue() == null) {
                     databaseReference.child(user.getUid()).setValue(voteValue);
                     calculateVotesTotal(idOfDropper, postId, TVvotes);
-                    addVoteAchievementLogic(voteValue);
+                    addGiveVoteAchievementLogic(voteValue);
+                    addReceiveVoteAchievementLogic(voteValue, idOfDropper);
                 } else if (dataSnapshot.child(user.getUid()).getValue(Integer.class) == voteValue) {
-                    databaseReference.child(user.getUid()).setValue(0);
+                    databaseReference.child(user.getUid()).setValue(null);
                     calculateVotesTotal(idOfDropper, postId, TVvotes);
-                    cancelVoteAchievementLogic(voteValue);
+                    cancelGiveVoteAchievementLogic(voteValue);
+                    cancelReceiveVoteAchievementLogic(voteValue, idOfDropper);
                 } else {
                     databaseReference.child(user.getUid()).setValue(voteValue);
                     calculateVotesTotal(idOfDropper, postId, TVvotes);
-                    addVoteAchievementLogic(voteValue);
-                    cancelVoteAchievementLogic(- voteValue);
+                    addGiveVoteAchievementLogic(voteValue);
+                    cancelGiveVoteAchievementLogic(- voteValue);
+                    addReceiveVoteAchievementLogic(voteValue, idOfDropper);
+                    cancelReceiveVoteAchievementLogic(-voteValue, idOfDropper);
                 }
             }
 
@@ -66,7 +70,7 @@ public class Vote {
         });
     }
 
-    private void addVoteAchievementLogic(int voteValue) {
+    private void addGiveVoteAchievementLogic(int voteValue) {
         User user = new User();
         AchievementData adV = new AchievementData();
 
@@ -74,11 +78,25 @@ public class Vote {
         else if (voteValue == 1) { adV.setUpVotesGiven(user.getUid(), 1); }
     }
 
-    private void cancelVoteAchievementLogic(int voteValue) {
+    private void cancelGiveVoteAchievementLogic(int voteValue) {
         User user = new User();
         AchievementData adV = new AchievementData();
 
         if (voteValue == - 1) { adV.setDownVotesGiven(user.getUid(), - 1); }
         else if (voteValue == 1) { adV.setUpVotesGiven(user.getUid(), - 1); }
+    }
+
+    private void addReceiveVoteAchievementLogic(int voteValue, String idOfDropper) {
+        AchievementData adV = new AchievementData();
+
+        if (voteValue == - 1) { adV.setDownVotesReceived(idOfDropper, 1); }
+        else if (voteValue == 1) { adV.setUpVotesReceived(idOfDropper,1); }
+    }
+
+    private void cancelReceiveVoteAchievementLogic(int voteValue, String idOfDropper) {
+        AchievementData adV = new AchievementData();
+
+        if (voteValue == - 1) { adV.setDownVotesReceived(idOfDropper, - 1); }
+        else if (voteValue == 1) { adV.setUpVotesReceived(idOfDropper,- 1); }
     }
 }

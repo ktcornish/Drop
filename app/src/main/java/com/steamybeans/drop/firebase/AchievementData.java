@@ -44,6 +44,42 @@ public class AchievementData {
         });
     }
 
+    public void setDownVotesReceived(String userUid, final long change) {
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("users").child(userUid).child("achievementdata")
+                .child("downvotesreceived");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                long currentVal = (long) dataSnapshot.getValue();
+                databaseReference.setValue(change + currentVal);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError database) {}
+        });
+    }
+
+    public void setUpVotesReceived(String userUid, final long change) {
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("users").child(userUid).child("achievementdata")
+                .child("upvotesreceived");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                long currentVal = (long) dataSnapshot.getValue();
+                databaseReference.setValue(change + currentVal);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError database) {}
+        });
+    }
+
+
+
+
+
 
     /*
     Schema
