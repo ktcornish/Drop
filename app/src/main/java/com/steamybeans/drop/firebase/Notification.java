@@ -27,16 +27,16 @@ public class Notification extends AppCompatActivity {
     private static final String CHANNEL_NAME = "Drop";
     private static final String CHANNEL_DESC = "drop notifications";
 
-    public void checkIfAchievmentHasBeenReached(String userUID, String achievementName, final String title, final String content) {
+    public void checkIfAchievmentHasBeenReached(String userUID, final String achievementName, final String title, final String content) {
 
         databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(userUID)
-                .child("notifications").child(achievementName);
+                .child("notifications");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue().equals(false)) {
+                if (!dataSnapshot.hasChild(achievementName)) {
                     createNotification(title, content);
-                    databaseReference.setValue(true);
+                    databaseReference.child(achievementName).setValue(true);
                 }
             }
 

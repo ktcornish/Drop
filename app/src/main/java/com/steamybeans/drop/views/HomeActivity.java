@@ -145,6 +145,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                         BTNaddDrop.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                Notification notification = new Notification(HomeActivity.this);
+                                notification.checkIfAchievmentHasBeenReached(user.getUid(), "First", "First", "You've reached it!");
                                 if (ETaddDrop.getText().toString().trim().length() > 0) {
                                     Drop drop = new Drop();
                                     drop.newDrop(ETaddDrop.getText().toString(), user.getUid(), currentLatitude, currentLongitude);

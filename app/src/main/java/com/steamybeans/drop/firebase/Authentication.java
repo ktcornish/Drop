@@ -124,7 +124,7 @@ public class Authentication extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 databaseReference.child(uid).child("username").setValue(username);
                 databaseReference.child(uid).child("profileimage").setValue("default");
-
+                databaseReference.child(uid).child("notifications").child("default").setValue("null");
             }
 
             @Override
