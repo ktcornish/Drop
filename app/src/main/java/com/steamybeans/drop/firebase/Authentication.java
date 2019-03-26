@@ -125,6 +125,13 @@ public class Authentication extends AppCompatActivity {
                 databaseReference.child(uid).child("username").setValue(username);
                 databaseReference.child(uid).child("profileimage").setValue("default");
                 databaseReference.child(uid).child("notifications").child("default").setValue("null");
+                databaseReference.child(uid).child("achievementdata").child("downvotesgiven").setValue(0);
+                databaseReference.child(uid).child("achievementdata").child("downvotesreceived").setValue(0);
+                databaseReference.child(uid).child("achievementdata").child("dropsposted").setValue(0);
+                databaseReference.child(uid).child("achievementdata").child("dropsviewed").setValue(0);
+                databaseReference.child(uid).child("achievementdata").child("upvotesgiven").setValue(0);
+                databaseReference.child(uid).child("achievementdata").child("upvotesreceived").setValue(0);
+                databaseReference.child(uid).child("achievementdata").child("xp").setValue(0);
             }
 
             @Override
