@@ -12,19 +12,19 @@ public class AchievementData {
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
 
-    public void setDownVotesGiven(String userUid, final Integer change) {
+    public void setDownVotesGiven(String userUid, final long change) {
         System.out.println(userUid);
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("users").child(userUid).child("achievementdata")
                 .child("downvotesgiven");
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 System.out.println("IN ON CHANGE");
-                String currentVal = dataSnapshot.getValue().toString();
-//                Integer currentVal = (Integer) dataSnapshot.getValue();
-//                databaseReference.setValue(change + currentVal);
+
+                long currentVal = (long) dataSnapshot.getValue();
+                databaseReference.setValue(change + currentVal);
             }
 
             @Override
