@@ -15,6 +15,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.steamybeans.drop.R;
+import com.steamybeans.drop.firebase.AchievementData;
+import com.steamybeans.drop.firebase.Authentication;
 import com.steamybeans.drop.firebase.Drop;
 import com.steamybeans.drop.firebase.Vote;
 
