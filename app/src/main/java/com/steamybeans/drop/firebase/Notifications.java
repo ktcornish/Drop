@@ -1,8 +1,13 @@
 package com.steamybeans.drop.firebase;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 
 import com.google.firebase.database.DataSnapshot;
@@ -12,17 +17,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.steamybeans.drop.R;
 
+import java.util.Calendar;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-public class Notification extends AppCompatActivity {
+public class Notifications extends AppCompatActivity {
 
     private final Context context;
     private DatabaseReference databaseReference;
 
-    public Notification(Context context) {
+    public Notifications(Context context) {
         this.context = context;
     }
 
@@ -52,12 +59,21 @@ public class Notification extends AppCompatActivity {
     }
 
     private void createNotification(String title, String content) {
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ross_test);
+//        Uri soundPath = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.rain);
+
+
+
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context, CHANNEL_ID)
-                        .setSmallIcon(R.drawable.ic_nav_drop_24dp)
+                        .setSmallIcon(R.drawable.dropstretch)
+                        .setColor(Color.BLUE)
                         .setContentTitle(title)
+                        .setWhen(Calendar.getInstance().getTimeInMillis())
+                        .setLargeIcon(bitmap)
                         .setChannelId("drop")
+                        .setDefaults(Notification.DEFAULT_SOUND)
                         .setContentText(content)
                         .setPriority(NotificationCompat.PRIORITY_MAX);
 

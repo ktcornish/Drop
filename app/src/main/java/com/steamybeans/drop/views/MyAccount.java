@@ -202,10 +202,10 @@ public class MyAccount extends AppCompatActivity {
                                         public void onComplete(@NonNull Task<Void> task) {
 
                                             if (task.isSuccessful()) {
-                                                Toast.makeText(MyAccount.this, "Profile Updated", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(MyAccount.this, "Profile Updated", Toast.LENGTH_LONG).show();
                                             } else {
                                                 String message = task.getException().getMessage();
-                                                Toast.makeText(MyAccount.this, "Error:" + message, Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(MyAccount.this, "Error:" + message, Toast.LENGTH_LONG).show();
                                             }
                                         }
                                     });
@@ -214,7 +214,7 @@ public class MyAccount extends AppCompatActivity {
                     }
                 });
             } else {
-                Toast.makeText(authentication, "Error Occured: Image can't be cropped", Toast.LENGTH_SHORT).show();
+                Toast.makeText(authentication, "Error Occured: Image can't be cropped", Toast.LENGTH_LONG).show();
             }
 
         }

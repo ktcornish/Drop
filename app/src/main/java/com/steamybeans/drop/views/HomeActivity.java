@@ -57,7 +57,7 @@ import com.steamybeans.drop.R;
 import com.steamybeans.drop.firebase.Authentication;
 import com.steamybeans.drop.firebase.Drop;
 import com.steamybeans.drop.firebase.Firebasemarker;
-import com.steamybeans.drop.firebase.Notification;
+import com.steamybeans.drop.firebase.Notifications;
 import com.steamybeans.drop.firebase.User;
 import com.steamybeans.drop.firebase.Vote;
 import com.steamybeans.drop.map.Map;
@@ -145,8 +145,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                         BTNaddDrop.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Notification notification = new Notification(HomeActivity.this);
-                                notification.checkIfAchievmentHasBeenReached(user.getUid(), "First", "First", "You've reached it!");
+                                Notifications notifications = new Notifications(HomeActivity.this);
+                                notifications.checkIfAchievmentHasBeenReached(user.getUid(), "First", "First Drop", "You've reached it!");
                                 if (ETaddDrop.getText().toString().trim().length() > 0) {
                                     Drop drop = new Drop();
                                     drop.newDrop(ETaddDrop.getText().toString(), user.getUid(), currentLatitude, currentLongitude);
