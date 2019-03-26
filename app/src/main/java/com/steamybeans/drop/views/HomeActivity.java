@@ -3,6 +3,8 @@ package com.steamybeans.drop.views;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -56,6 +58,7 @@ import com.steamybeans.drop.firebase.AchievementData;
 import com.steamybeans.drop.firebase.Authentication;
 import com.steamybeans.drop.firebase.Drop;
 import com.steamybeans.drop.firebase.Firebasemarker;
+import com.steamybeans.drop.firebase.Notifications;
 import com.steamybeans.drop.firebase.User;
 import com.steamybeans.drop.firebase.Vote;
 import com.steamybeans.drop.map.Map;
@@ -101,6 +104,13 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             checkUserLocationPermission();
         }
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("drop", "Drop", NotificationManager.IMPORTANCE_HIGH);
+            channel.setDescription("drop notifications");
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.homemap);
         mapFragment.getMapAsync(this);
@@ -138,6 +148,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                         BTNaddDrop.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                Notifications notifications = new Notifications(HomeActivity.this);
+                                notifications.checkIfAchievmentHasBeenReached(user.getUid(), "First", "First Drop", "You've reached it!");
                                 if (ETaddDrop.getText().toString().trim().length() > 0) {
                                     Drop drop = new Drop();
                                     drop.newDrop(ETaddDrop.getText().toString(), user.getUid(), currentLatitude, currentLongitude);
