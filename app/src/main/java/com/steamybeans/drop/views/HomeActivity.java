@@ -141,11 +141,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 if (ETaddDrop.getText().toString().trim().length() > 0) {
                                     Drop drop = new Drop();
                                     drop.newDrop(ETaddDrop.getText().toString(), user.getUid(), currentLatitude, currentLongitude);
-                                    // BOOKMARKIO!
-                                    System.out.println("IN ON CLICK LISTENER!!!!");
-                                    AchievementData ad = new AchievementData();
-                                    ad.setDownVotesGiven(user.getUid(), 1000);
-
                                     dialog.dismiss();
                                 } else {
                                     ETaddDrop.setError("Please enter a drop!");

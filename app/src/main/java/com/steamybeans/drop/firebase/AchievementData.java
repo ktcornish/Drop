@@ -13,26 +13,35 @@ public class AchievementData {
     private DatabaseReference databaseReference;
 
     public void setDownVotesGiven(String userUid, final long change) {
-        System.out.println(userUid);
-
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("users").child(userUid).child("achievementdata")
                 .child("downvotesgiven");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                System.out.println("IN ON CHANGE");
-
                 long currentVal = (long) dataSnapshot.getValue();
                 databaseReference.setValue(change + currentVal);
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError database) {
-                System.out.println("IN ON CANCELED");
-            }
+            public void onCancelled(@NonNull DatabaseError database) {}
         });
+    }
 
+    public void setUpVotesGiven(String userUid, final long change) {
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("users").child(userUid).child("achievementdata")
+                .child("upvotesgiven");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                long currentVal = (long) dataSnapshot.getValue();
+                databaseReference.setValue(change + currentVal);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError database) {}
+        });
     }
 
 

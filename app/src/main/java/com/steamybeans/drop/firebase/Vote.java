@@ -25,12 +25,16 @@ public class Vote {
                 if (dataSnapshot.child(user.getUid()).getValue() == null) {
                     databaseReference.child(user.getUid()).setValue(voteValue);
                     calculateVotesTotal(idOfDropper, postId, TVvotes);
+                    addVoteAchievementLogic(voteValue);
                 } else if (dataSnapshot.child(user.getUid()).getValue(Integer.class) == voteValue) {
                     databaseReference.child(user.getUid()).setValue(0);
                     calculateVotesTotal(idOfDropper, postId, TVvotes);
+                    cancelVoteAchievementLogic(voteValue);
                 } else {
                     databaseReference.child(user.getUid()).setValue(voteValue);
                     calculateVotesTotal(idOfDropper, postId, TVvotes);
+                    addVoteAchievementLogic(voteValue);
+                    cancelVoteAchievementLogic(- voteValue);
                 }
             }
 
@@ -60,5 +64,21 @@ public class Vote {
 
             }
         });
+    }
+
+    private void addVoteAchievementLogic(int voteValue) {
+        User user = new User();
+        AchievementData adV = new AchievementData();
+
+        if (voteValue == - 1) { adV.setDownVotesGiven(user.getUid(), 1); }
+        else if (voteValue == 1) { adV.setUpVotesGiven(user.getUid(), 1); }
+    }
+
+    private void cancelVoteAchievementLogic(int voteValue) {
+        User user = new User();
+        AchievementData adV = new AchievementData();
+
+        if (voteValue == - 1) { adV.setDownVotesGiven(user.getUid(), - 1); }
+        else if (voteValue == 1) { adV.setUpVotesGiven(user.getUid(), - 1); }
     }
 }
