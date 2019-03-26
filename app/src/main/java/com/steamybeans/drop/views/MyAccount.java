@@ -288,52 +288,52 @@ public class MyAccount extends AppCompatActivity {
 
                 // Downvotes given, gold, silver and bronze
                 if (downVotesGiven >= 5) {
-                    ivDownVotesGiven.setImageResource(R.drawable.ic_nav_drop_24dp);
+                    ivDownVotesGiven.setImageResource(R.drawable.bron_placeholder);
                 } else if (downVotesGiven >= 20 && downVotesGiven < 100) {
-                    ivDownVotesGiven.setImageResource(R.drawable.ic_close_black_24dp);
+                    ivDownVotesGiven.setImageResource(R.drawable.silver_placeholder);
                 } else if (downVotesGiven >= 100) {
-                    ivDownVotesGiven.setImageResource(R.drawable.ic_nav_tags_24dp);
+                    ivDownVotesGiven.setImageResource(R.drawable.gold_placeholder);
                 }
 
                 // Downvotes received, gold, silver and bronze
                 if (downVotesReceived >= 5) {
-                    ivDownVotesReceived.setImageResource(R.drawable.ic_nav_drop_24dp);
+                    ivDownVotesReceived.setImageResource(R.drawable.bron_placeholder);
                 } else if (downVotesReceived >= 20 && downVotesReceived < 100) {
-                    ivDownVotesReceived.setImageResource(R.drawable.ic_close_black_24dp);
+                    ivDownVotesReceived.setImageResource(R.drawable.silver_placeholder);
                 } else if (downVotesReceived >= 100) {
-                    ivDownVotesReceived.setImageResource(R.drawable.ic_nav_tags_24dp);
+                    ivDownVotesReceived.setImageResource(R.drawable.gold_placeholder);
                 }
 
                 // First drop posted
                 if (dropsPosted > 0) {
-                    ivDropFirstPost.setImageResource(R.drawable.ic_nav_drop_24dp);
+                    ivDropFirstPost.setImageResource(R.drawable.purple_placeholder);
                 }
 
                 // Drops posted, gold, silver & bronze
                 if (dropsPosted >= 5) {
-                    ivDropsPosted.setImageResource(R.drawable.ic_nav_drop_24dp);
+                    ivDropsPosted.setImageResource(R.drawable.bron_placeholder);
                 } else if (downVotesReceived >= 20 && dropsPosted < 100) {
-                    ivDropsPosted.setImageResource(R.drawable.ic_close_black_24dp);
+                    ivDropsPosted.setImageResource(R.drawable.silver_placeholder);
                 } else if (dropsPosted >= 100) {
-                    ivDropsPosted.setImageResource(R.drawable.ic_nav_tags_24dp);
+                    ivDropsPosted.setImageResource(R.drawable.gold_placeholder);
                 }
 
                 // Upvotes given, gold, silver and bronze
                 if (upVotesGiven >= 5 && upVotesGiven < 20) {
-                    ivUpVotesGiven.setImageResource(R.drawable.ic_nav_drop_24dp);
+                    ivUpVotesGiven.setImageResource(R.drawable.bron_placeholder);
                 } else if (upVotesGiven >= 20 && upVotesGiven < 100) {
-                    ivUpVotesGiven.setImageResource(R.drawable.ic_close_black_24dp);
+                    ivUpVotesGiven.setImageResource(R.drawable.silver_placeholder);
                 } else if (upVotesGiven >= 100) {
-                    ivUpVotesGiven.setImageResource(R.drawable.ic_nav_tags_24dp);
+                    ivUpVotesGiven.setImageResource(R.drawable.gold_placeholder);
                 }
 
                 // Upvotes received, gold, silver and bronze
                 if (upVotesReceived >= 5 && upVotesReceived < 20) {
-                    ivUpVotesReceived.setImageResource(R.drawable.ic_nav_drop_24dp);
+                    ivUpVotesReceived.setImageResource(R.drawable.bron_placeholder);
                 } else if (upVotesReceived >= 20 && upVotesReceived < 100) {
-                    ivUpVotesReceived.setImageResource(R.drawable.ic_close_black_24dp);
+                    ivUpVotesReceived.setImageResource(R.drawable.silver_placeholder);
                 } else if (upVotesReceived >= 100) {
-                    ivUpVotesReceived.setImageResource(R.drawable.ic_nav_tags_24dp);
+                    ivUpVotesReceived.setImageResource(R.drawable.gold_placeholder);
                 }
             }
 
