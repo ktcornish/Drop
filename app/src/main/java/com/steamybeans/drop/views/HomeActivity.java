@@ -102,7 +102,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel("drop", "Drop", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationChannel channel = new NotificationChannel("drop", "Drop", NotificationManager.IMPORTANCE_HIGH);
             channel.setDescription("drop notifications");
             NotificationManager manager = getSystemService(NotificationManager.class);
             manager.createNotificationChannel(channel);

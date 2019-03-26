@@ -1,6 +1,9 @@
 package com.steamybeans.drop.firebase;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
+import android.os.Build;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,7 +34,7 @@ public class Notification extends AppCompatActivity {
 
         databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(userUID)
                 .child("notifications");
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.hasChild(achievementName)) {
@@ -49,12 +52,14 @@ public class Notification extends AppCompatActivity {
     }
 
     private void createNotification(String title, String content) {
+
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context, CHANNEL_ID)
                         .setSmallIcon(R.drawable.ic_nav_drop_24dp)
                         .setContentTitle(title)
+                        .setChannelId("drop")
                         .setContentText(content)
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                        .setPriority(NotificationCompat.PRIORITY_MAX);
 
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
         notificationManagerCompat.notify(1, mBuilder.build());
