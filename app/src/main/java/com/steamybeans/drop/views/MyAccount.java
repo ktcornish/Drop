@@ -37,7 +37,6 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.Picasso;
 import com.steamybeans.drop.R;
 import com.steamybeans.drop.firebase.Authentication;
 import com.steamybeans.drop.firebase.User;
@@ -46,7 +45,6 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.ref.Reference;
 
 public class MyAccount extends AppCompatActivity {
 
@@ -268,7 +266,13 @@ public class MyAccount extends AppCompatActivity {
     }
 
     private void updateAchievementGraphics() {
-        final ImageView ivUvg = findViewById(R.id.IVUvg);
+        final ImageView ivDownVotesGiven = findViewById(R.id.IVdownVotesGiven);
+        final ImageView ivDownVotesReceived = findViewById(R.id.IVdownVotesReceived);
+        final ImageView ivDropFirstPost = findViewById(R.id.IVdropFirstPost);
+        final ImageView ivDropsPosted = findViewById(R.id.IVdropsPosted);
+        final ImageView ivUpVotesGiven = findViewById(R.id.IVupVotesGiven);
+        final ImageView ivUpVotesReceived = findViewById(R.id.IVupVotesReceived);
+
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("users").child(user.getUid())
                 .child("achievementdata");
@@ -276,11 +280,61 @@ public class MyAccount extends AppCompatActivity {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                long uvg = (long) dataSnapshot.child("upvotesgiven").getValue();
-                if (uvg >= 5) {
-                    ivUvg.setImageResource(R.drawable.ic_nav_drop_24dp);
+                long downVotesGiven = (long) dataSnapshot.child("downvotesgiven").getValue();
+                long downVotesReceived = (long) dataSnapshot.child("downvotesreceived").getValue();
+                long dropsPosted = (long) dataSnapshot.child("dropsposted").getValue();
+                long upVotesGiven = (long) dataSnapshot.child("upvotesgiven").getValue();
+                long upVotesReceived = (long) dataSnapshot.child("downvotesgiven").getValue();
+
+                // Downvotes given, gold, silver and bronze
+                if (downVotesGiven >= 5) {
+                    ivDownVotesGiven.setImageResource(R.drawable.ic_nav_drop_24dp);
+                } else if (downVotesGiven >= 20 && downVotesGiven < 100) {
+                    ivDownVotesGiven.setImageResource(R.drawable.ic_close_black_24dp);
+                } else if (downVotesGiven >= 100) {
+                    ivDownVotesGiven.setImageResource(R.drawable.ic_nav_tags_24dp);
                 }
 
+                // Downvotes received, gold, silver and bronze
+                if (downVotesReceived >= 5) {
+                    ivDownVotesReceived.setImageResource(R.drawable.ic_nav_drop_24dp);
+                } else if (downVotesReceived >= 20 && downVotesReceived < 100) {
+                    ivDownVotesReceived.setImageResource(R.drawable.ic_close_black_24dp);
+                } else if (downVotesReceived >= 100) {
+                    ivDownVotesReceived.setImageResource(R.drawable.ic_nav_tags_24dp);
+                }
+
+                // First drop posted
+                if (dropsPosted > 0) {
+                    ivDropFirstPost.setImageResource(R.drawable.ic_nav_drop_24dp);
+                }
+
+                // Drops posted, gold, silver & bronze
+                if (dropsPosted >= 5) {
+                    ivDropsPosted.setImageResource(R.drawable.ic_nav_drop_24dp);
+                } else if (downVotesReceived >= 20 && dropsPosted < 100) {
+                    ivDropsPosted.setImageResource(R.drawable.ic_close_black_24dp);
+                } else if (dropsPosted >= 100) {
+                    ivDropsPosted.setImageResource(R.drawable.ic_nav_tags_24dp);
+                }
+
+                // Upvotes given, gold, silver and bronze
+                if (upVotesGiven >= 5 && upVotesGiven < 20) {
+                    ivUpVotesGiven.setImageResource(R.drawable.ic_nav_drop_24dp);
+                } else if (upVotesGiven >= 20 && upVotesGiven < 100) {
+                    ivUpVotesGiven.setImageResource(R.drawable.ic_close_black_24dp);
+                } else if (upVotesGiven >= 100) {
+                    ivUpVotesGiven.setImageResource(R.drawable.ic_nav_tags_24dp);
+                }
+
+                // Upvotes received, gold, silver and bronze
+                if (upVotesReceived >= 5 && upVotesReceived < 20) {
+                    ivUpVotesReceived.setImageResource(R.drawable.ic_nav_drop_24dp);
+                } else if (upVotesReceived >= 20 && upVotesReceived < 100) {
+                    ivUpVotesReceived.setImageResource(R.drawable.ic_close_black_24dp);
+                } else if (upVotesReceived >= 100) {
+                    ivUpVotesReceived.setImageResource(R.drawable.ic_nav_tags_24dp);
+                }
             }
 
             @Override
