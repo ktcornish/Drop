@@ -59,6 +59,8 @@ public class MyAccount extends AppCompatActivity {
     private DatabaseReference userRef;
     private ProgressDialog loadingBar;
     private ImageView IVprofileImage;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
 
 
     @Override
@@ -99,7 +101,6 @@ public class MyAccount extends AppCompatActivity {
 
 
         setUpButtons();
-
     }
 
 
@@ -236,9 +237,13 @@ public class MyAccount extends AppCompatActivity {
         video.setVideoURI(videoPath);
         video.start();
 
+        updateAchievementGraphics();
+
         //check if user account is still active
         authentication.checkAccountIsActive();
     }
+
+
 
     // Populate toolbar with buttons
     @Override
@@ -260,5 +265,26 @@ public class MyAccount extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void updateAchievementGraphics() {
+        final ImageView ivUvg = findViewById(R.id.IVUvg);
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("users").child(user.getUid())
+                .child("achievementdata");
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                long uvg = (long) dataSnapshot.child("upvotesgiven").getValue();
+                if (uvg >= 5) {
+                    ivUvg.setImageResource(R.drawable.ic_nav_drop_24dp);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
+        });
     }
 }
