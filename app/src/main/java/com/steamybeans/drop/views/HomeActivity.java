@@ -91,6 +91,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Vote vote;
     private boolean zoomed = false;
     public int minRating = -10;
+    public float seekBarProgressTextViewPosition = 0;
     public Intent myAccountIntent;
 
 
@@ -168,12 +169,18 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                         filterDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
                         SeekBar SBupvotes = filterDialog.findViewById(R.id.SBupvotes);
+                        SBupvotes.setProgress((minRating+10)/10);
+
+                        final TextView TVseekBarProgress = filterDialog.findViewById(R.id.TVseekBarProgress);
+                        TVseekBarProgress.setText(String.valueOf(minRating));
+
                         SBupvotes.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                             @Override
                             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                                Toast.makeText(getApplicationContext(),"seekbar progress: "+(progress-10), Toast.LENGTH_SHORT).show();
+                                TVseekBarProgress.setText(String.valueOf(minRating));
+                                minRating = (progress * 10) - 10;
+                                TVseekBarProgress.setText(String.valueOf(minRating));
                                 mMap.clear();
-                                minRating = progress -10;
                                 addMarkersToMap(mMap);
                             }
 
