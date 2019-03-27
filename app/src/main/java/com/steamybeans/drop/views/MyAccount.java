@@ -1,18 +1,13 @@
 package com.steamybeans.drop.views;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -45,6 +40,11 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;
 import java.io.IOException;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 public class MyAccount extends AppCompatActivity {
 
@@ -266,79 +266,20 @@ public class MyAccount extends AppCompatActivity {
     }
 
     private void updateAchievementGraphics() {
-        final ImageView ivDownVotesGiven = findViewById(R.id.IVdownVotesGiven);
-        final ImageView ivDownVotesReceived = findViewById(R.id.IVdownVotesReceived);
-        final ImageView ivDropFirstPost = findViewById(R.id.IVdropFirstPost);
-        final ImageView ivDropsPosted = findViewById(R.id.IVdropsPosted);
-        final ImageView ivUpVotesGiven = findViewById(R.id.IVupVotesGiven);
-        final ImageView ivUpVotesReceived = findViewById(R.id.IVupVotesReceived);
+        ImageView ivDownVotesGiven = findViewById(R.id.IVdownVotesGiven);
+        ImageView ivDownVotesReceived = findViewById(R.id.IVdownVotesReceived);
+        ImageView ivDropFirstPost = findViewById(R.id.IVdropFirstPost);
+        ImageView ivDropsPosted = findViewById(R.id.IVdropsPosted);
+        ImageView ivUpVotesGiven = findViewById(R.id.IVupVotesGiven);
+        ImageView ivUpVotesReceived = findViewById(R.id.IVupVotesReceived);
+        Bundle extras = getIntent().getExtras();
 
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("users").child(user.getUid())
-                .child("achievementdata");
+        Context context = MyAccount.this;
+        int DownVotesGivenImage = getResources().getIdentifier(extras.getString("downVotesGivenAchievement"),"drawable", context.getPackageName());
+        ivDownVotesGiven.setImageResource(DownVotesGivenImage);
 
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                long downVotesGiven = (long) dataSnapshot.child("downvotesgiven").getValue();
-                long downVotesReceived = (long) dataSnapshot.child("downvotesreceived").getValue();
-                long dropsPosted = (long) dataSnapshot.child("dropsposted").getValue();
-                long upVotesGiven = (long) dataSnapshot.child("upvotesgiven").getValue();
-                long upVotesReceived = (long) dataSnapshot.child("downvotesgiven").getValue();
+        System.out.println(DownVotesGivenImage);
+        System.out.println(extras.getString("downVotesGivenAchievement"));
 
-                // Downvotes given, gold, silver and bronze
-                if (downVotesGiven >= 5) {
-                    ivDownVotesGiven.setImageResource(R.drawable.bron_placeholder);
-                } else if (downVotesGiven >= 20 && downVotesGiven < 100) {
-                    ivDownVotesGiven.setImageResource(R.drawable.silver_placeholder);
-                } else if (downVotesGiven >= 100) {
-                    ivDownVotesGiven.setImageResource(R.drawable.gold_placeholder);
-                }
-
-                // Downvotes received, gold, silver and bronze
-                if (downVotesReceived >= 5) {
-                    ivDownVotesReceived.setImageResource(R.drawable.bron_placeholder);
-                } else if (downVotesReceived >= 20 && downVotesReceived < 100) {
-                    ivDownVotesReceived.setImageResource(R.drawable.silver_placeholder);
-                } else if (downVotesReceived >= 100) {
-                    ivDownVotesReceived.setImageResource(R.drawable.gold_placeholder);
-                }
-
-                // First drop posted
-                if (dropsPosted > 0) {
-                    ivDropFirstPost.setImageResource(R.drawable.purple_placeholder);
-                }
-
-                // Drops posted, gold, silver & bronze
-                if (dropsPosted >= 5) {
-                    ivDropsPosted.setImageResource(R.drawable.bron_placeholder);
-                } else if (downVotesReceived >= 20 && dropsPosted < 100) {
-                    ivDropsPosted.setImageResource(R.drawable.silver_placeholder);
-                } else if (dropsPosted >= 100) {
-                    ivDropsPosted.setImageResource(R.drawable.gold_placeholder);
-                }
-
-                // Upvotes given, gold, silver and bronze
-                if (upVotesGiven >= 5 && upVotesGiven < 20) {
-                    ivUpVotesGiven.setImageResource(R.drawable.bron_placeholder);
-                } else if (upVotesGiven >= 20 && upVotesGiven < 100) {
-                    ivUpVotesGiven.setImageResource(R.drawable.silver_placeholder);
-                } else if (upVotesGiven >= 100) {
-                    ivUpVotesGiven.setImageResource(R.drawable.gold_placeholder);
-                }
-
-                // Upvotes received, gold, silver and bronze
-                if (upVotesReceived >= 5 && upVotesReceived < 20) {
-                    ivUpVotesReceived.setImageResource(R.drawable.bron_placeholder);
-                } else if (upVotesReceived >= 20 && upVotesReceived < 100) {
-                    ivUpVotesReceived.setImageResource(R.drawable.silver_placeholder);
-                } else if (upVotesReceived >= 100) {
-                    ivUpVotesReceived.setImageResource(R.drawable.gold_placeholder);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {}
-        });
     }
 }
