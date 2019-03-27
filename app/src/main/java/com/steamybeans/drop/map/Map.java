@@ -49,12 +49,17 @@ public class Map extends AppCompatActivity {
     private DatabaseReference userRef;
     private StorageReference userProfileImageRef;
     private ImageView IVprofileImage;
-  String dropId;
+    private boolean upPressed;
+    private boolean downPressed;
+    private String dropId;
+    private ImageButton BTNupvote;
+    private ImageButton BTNdownvote;
 
 
     public Map(Context context) {
         this.context = context;
     }
+    User user = new User();
 
     public void setUpMarkerClickListener(GoogleMap mMap, final Location location1) {
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -126,23 +131,46 @@ public class Map extends AppCompatActivity {
                         }
                     });
 
+                    BTNupvote = dialog.findViewById(R.id.BTNupvote);
+                    BTNdownvote = dialog.findViewById(R.id.BTNdownvote);
+
+                    userRef.child("posts").child(dropId).child("votes").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.child(user.getUid()).exists()) {
+                                if (dataSnapshot.child(user.getUid()).getValue().toString().equals("1")) {
+                                    BTNupvote.setBackgroundResource(R.drawable.green_upvote_background);
+                                } else if (dataSnapshot.child(user.getUid()).getValue().toString().equals("-1")) {
+                                    BTNdownvote.setBackgroundResource(R.drawable.red_downvote_background);
+                                }
+                            } else {
+                            BTNupvote.setBackgroundResource(R.drawable.buttonbackground);
+                            BTNdownvote.setBackgroundResource(R.drawable.buttonbackground);
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
 
                     drop.setDropContent(marker.getTitle(), marker.getSnippet(), dropDialogTitle, dropUsername);
                     vote.calculateVotesTotal(marker.getTitle(), marker.getSnippet(), TVvotes);
 
-                    ImageButton BTNupvote = dialog.findViewById(R.id.BTNupvote);
-                    ImageButton BTNdownvote = dialog.findViewById(R.id.BTNdownvote);
 
                     BTNupvote.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            vote.makeAVote(1, marker.getTitle(), marker.getSnippet(), TVvotes);
+                        vote.makeAVote(1, marker.getTitle(), marker.getSnippet(), TVvotes, BTNupvote, BTNdownvote, R.drawable.green_upvote_background);
                         }
                     });
                     BTNdownvote.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            vote.makeAVote(-1, marker.getTitle(), marker.getSnippet(), TVvotes);
+                        vote.makeAVote(-1, marker.getTitle(), marker.getSnippet(), TVvotes, BTNdownvote, BTNupvote, R.drawable.red_downvote_background);
                         }
                     });
 

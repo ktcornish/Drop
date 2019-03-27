@@ -1,6 +1,10 @@
 package com.steamybeans.drop.firebase;
 
 import androidx.annotation.NonNull;
+
+import android.graphics.drawable.Drawable;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -8,13 +12,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.steamybeans.drop.R;
 
 public class Vote {
     private DatabaseReference databaseReference;
     private FirebaseDatabase firebaseDatabase;
 
 
-    public void makeAVote(final int voteValue, final String idOfDropper, final String postId, final TextView TVvotes) {
+    public void makeAVote(final int voteValue, final String idOfDropper, final String postId, final TextView TVvotes, final ImageButton mainButton, final ImageButton otherButton, final int background) {
         final User user = new User();
 
         databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(idOfDropper)
@@ -27,11 +32,13 @@ public class Vote {
                     calculateVotesTotal(idOfDropper, postId, TVvotes);
                     addGiveVoteAchievementLogic(voteValue);
                     addReceiveVoteAchievementLogic(voteValue, idOfDropper);
+                    mainButton.setBackgroundResource(background);
                 } else if (dataSnapshot.child(user.getUid()).getValue(Integer.class) == voteValue) {
                     databaseReference.child(user.getUid()).setValue(null);
                     calculateVotesTotal(idOfDropper, postId, TVvotes);
                     cancelGiveVoteAchievementLogic(voteValue);
                     cancelReceiveVoteAchievementLogic(voteValue, idOfDropper);
+                    mainButton.setBackgroundResource(R.drawable.buttonbackground);
                 } else {
                     databaseReference.child(user.getUid()).setValue(voteValue);
                     calculateVotesTotal(idOfDropper, postId, TVvotes);
@@ -39,6 +46,8 @@ public class Vote {
                     cancelGiveVoteAchievementLogic(- voteValue);
                     addReceiveVoteAchievementLogic(voteValue, idOfDropper);
                     cancelReceiveVoteAchievementLogic(-voteValue, idOfDropper);
+                    mainButton.setBackgroundResource(background);
+                    otherButton.setBackgroundResource(R.drawable.buttonbackground);
                 }
             }
 
