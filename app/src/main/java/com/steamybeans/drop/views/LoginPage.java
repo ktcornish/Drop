@@ -1,6 +1,7 @@
 package com.steamybeans.drop.views;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -54,8 +55,10 @@ public class LoginPage extends AppCompatActivity {
             public void onClick(View v) {
                 if (ETemail.getText().toString().trim().length() < 1) {
                     ETemail.setError("Email is empty");
+                    ETemail.getBackground().setColorFilter(getResources().getColor(R.color.red), PorterDuff.Mode.SRC_ATOP);
                 } else if (ETpassword.getText().toString().trim().length() < 1) {
                     ETpassword.setError("Password is empty");
+                    ETpassword.getBackground().setColorFilter(getResources().getColor(R.color.red), PorterDuff.Mode.SRC_ATOP);
                 } else {
                     String email = ETemail.getText().toString();
                     String password = ETpassword.getText().toString();

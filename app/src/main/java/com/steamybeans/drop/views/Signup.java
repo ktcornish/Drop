@@ -1,5 +1,6 @@
 package com.steamybeans.drop.views;
 
+import android.graphics.PorterDuff;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -61,10 +62,16 @@ public class Signup extends AppCompatActivity {
 
                 if (ETsignupEmailAddress.getText().toString().trim().length() < 1) {
                     ETsignupEmailAddress.setError("Email is empty");
+                    ETsignupEmailAddress.getBackground().setColorFilter(getResources().getColor(R.color.red), PorterDuff.Mode.SRC_ATOP);
+
                 } else if (ETsignupUsername.getText().toString().trim().length() < 1) {
                     ETsignupUsername.setError("Username is empty");
+                    ETsignupUsername.getBackground().setColorFilter(getResources().getColor(R.color.red), PorterDuff.Mode.SRC_ATOP);
+
                 } else if (ETsignupPassword.getText().toString().trim().length() < 1) {
                     ETsignupPassword.setError("Password is empty");
+                    ETsignupPassword.getBackground().setColorFilter(getResources().getColor(R.color.red), PorterDuff.Mode.SRC_ATOP);
+
                 } else {
                     String email = ETsignupEmailAddress.getText().toString();
                     String password = ETsignupPassword.getText().toString();

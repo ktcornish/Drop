@@ -91,7 +91,7 @@ public class Authentication extends AppCompatActivity {
                             context.startActivity(new Intent(context, LoginPage.class));
                         } else {
                             // Sign up fails
-                            Toast.makeText(context, "Can't create account:" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Email address is not valid", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
