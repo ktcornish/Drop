@@ -32,20 +32,20 @@ public class Achievements extends AppCompatActivity {
                 // Downvotes given, gold, silver and bronze
                 downVotesGivenAchievement(downVotesGiven, intent);
 
-//                // Downvotes received, gold, silver and bronze
-//                downVotesReceivedAchievement(downVotesReceived, intent);
-//
-//                // First drop posted
-//                firstDropPosted(dropsPosted, intent);
-//
-//                // Drops posted, gold, silver & bronze
-//                dropsPostedAchievement(dropsPosted, intent);
-//
-//                // Upvotes given, gold, silver and bronze
-//                upvotesGivenAchievement(upVotesGiven, intent);
-//
-//                // Upvotes received, gold, silver and bronze
-//                upvotesRecievedAchievement(upVotesReceived, intent);
+                // Downvotes received, gold, silver and bronze
+                downVotesReceivedAchievement(downVotesReceived, intent);
+
+                // First drop posted
+                firstDropPosted(dropsPosted, intent);
+
+                // Drops posted, gold, silver & bronze
+                dropsPostedAchievement(dropsPosted, intent);
+
+                // Upvotes given, gold, silver and bronze
+                upvotesGivenAchievement(upVotesGiven, intent);
+
+                // Upvotes received, gold, silver and bronze
+                upvotesReceivedAchievement(upVotesReceived, intent);
             }
 
             @Override
@@ -63,46 +63,76 @@ public class Achievements extends AppCompatActivity {
 //            ivUpVotesReceived.setImageResource(R.drawable.gold_placeholder);
 //        }
 //    }
-//
-//    public void upvotesGivenAchievement(Long upVotesGiven, ImageView ivUpVotesGiven) {
-//        // Upvotes given, gold, silver and bronze
-//        if (upVotesGiven >= 5 && upVotesGiven < 20) {
-//            ivUpVotesGiven.setImageResource(R.drawable.bron_placeholder);
-//        } else if (upVotesGiven >= 20 && upVotesGiven < 100) {
-//            ivUpVotesGiven.setImageResource(R.drawable.silver_placeholder);
-//        } else if (upVotesGiven >= 100) {
-//            ivUpVotesGiven.setImageResource(R.drawable.gold_placeholder);
-//        }
-//    }
-//
-//    public void dropsPostedAchievement(Long dropsPosted, ImageView ivDropsPosted) {
-//        // Drops posted, gold, silver & bronze
-//        if (dropsPosted >= 5) {
-//            ivDropsPosted.setImageResource(R.drawable.bron_placeholder);
-//        } else if (dropsPosted >= 20 && dropsPosted < 100) {
-//            ivDropsPosted.setImageResource(R.drawable.silver_placeholder);
-//        } else if (dropsPosted >= 100) {
-//            ivDropsPosted.setImageResource(R.drawable.gold_placeholder);
-//        }
-//    }
-//
-//    public void firstDropPosted(Long dropsPosted, ImageView ivDropFirstPost) {
-//        // First drop posted
-//        if (dropsPosted > 0) {
-//            ivDropFirstPost.setImageResource(R.drawable.purple_placeholder);
-//        }
-//    }
-//
-//    public void downVotesReceivedAchievement(Long downVotesReceived, ImageView ivDownVotesReceived) {
-//        // Drops posted, gold, silver & bronze
-//        if (downVotesReceived >= 5) {
-//            ivDownVotesReceived.setImageResource(R.drawable.bron_placeholder);
-//        } else if (downVotesReceived >= 20 && downVotesReceived < 100) {
-//            ivDownVotesReceived.setImageResource(R.drawable.silver_placeholder);
-//        } else if (downVotesReceived >= 100) {
-//            ivDownVotesReceived.setImageResource(R.drawable.gold_placeholder);
-//        }
-//    }
+
+    public void upvotesReceivedAchievement(Long downVotesGiven, Intent intent) {
+        // Drops posted, gold, silver & bronze
+        if (downVotesGiven < 5) {
+            intent.putExtra("upvotesReceivedAchievement", "upvotes_received_none");
+        } else if (downVotesGiven >= 5 && downVotesGiven < 20) {
+            intent.putExtra("upvotesReceivedAchievement", "upvotes_received_bronze");
+        } else if (downVotesGiven >= 20 && downVotesGiven < 100) {
+            intent.putExtra("upvotesReceivedAchievement", "upvotes_received_silver");
+        } else if (downVotesGiven >= 100 && downVotesGiven < 200 ) {
+            intent.putExtra("upvotesReceivedAchievement", "upvotes_received_gold");
+        } else {
+            intent.putExtra("upvotesReceivedAchievement", "upvotes_received_plat");
+        }
+    }
+
+    public void upvotesGivenAchievement(Long downVotesGiven, Intent intent) {
+        // Drops posted, gold, silver & bronze
+        if (downVotesGiven < 5) {
+            intent.putExtra("upvotesGivenAchievement", "upvotes_given_none");
+        } else if (downVotesGiven >= 5 && downVotesGiven < 20) {
+            intent.putExtra("upvotesGivenAchievement", "upvotes_given_bronze");
+        } else if (downVotesGiven >= 20 && downVotesGiven < 100) {
+            intent.putExtra("upvotesGivenAchievement", "upvotes_given_silver");
+        } else if (downVotesGiven >= 100 && downVotesGiven < 200 ) {
+            intent.putExtra("upvotesGivenAchievement", "upvotes_given_gold");
+        } else {
+            intent.putExtra("upvotesGivenAchievement", "upvotes_given_plat");
+        }
+    }
+
+    public void dropsPostedAchievement(Long downVotesGiven, Intent intent) {
+        // Drops posted, gold, silver & bronze
+        if (downVotesGiven < 5) {
+            intent.putExtra("dropsPostedAchievement", "no_drops");
+        } else if (downVotesGiven >= 5 && downVotesGiven < 20) {
+            intent.putExtra("dropsPostedAchievement", "r_5_drops");
+        } else if (downVotesGiven >= 20 && downVotesGiven < 50) {
+            intent.putExtra("dropsPostedAchievement", "r_20_drops");
+        } else if (downVotesGiven >= 50 && downVotesGiven < 100 ) {
+            intent.putExtra("dropsPostedAchievement", "r_50_drops");
+        } else {
+            intent.putExtra("dropsPostedAchievement", "r_100_drops");
+        }
+    }
+
+    public void firstDropPosted(Long dropsPosted, Intent intent) {
+        // First drop posted
+        if (dropsPosted > 0) {
+            intent.putExtra("firstDropPostedAchievement", "r_1st_drop");
+        } else {
+            intent.putExtra("firstDropPostedAchievement", "r_1st_drop_none");
+        }
+    }
+
+
+    public void downVotesReceivedAchievement(Long downVotesGiven, Intent intent) {
+        // Drops posted, gold, silver & bronze
+        if (downVotesGiven < 5) {
+            intent.putExtra("downVotesReceivedAchievement", "downvotes_received_none");
+        } else if (downVotesGiven >= 5 && downVotesGiven < 20) {
+            intent.putExtra("downVotesReceivedAchievement", "downvotes_received_bronze");
+        } else if (downVotesGiven >= 20 && downVotesGiven < 100) {
+            intent.putExtra("downVotesReceivedAchievement", "downvotes_received_silver");
+        } else if (downVotesGiven >= 100 && downVotesGiven < 200 ) {
+            intent.putExtra("downVotesReceivedAchievement", "downvotes_received_gold");
+        } else {
+            intent.putExtra("downVotesReceivedAchievement", "downvotes_received_plat");
+        }
+    }
 
     public void downVotesGivenAchievement(Long downVotesGiven, Intent intent) {
         // Drops posted, gold, silver & bronze
