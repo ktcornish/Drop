@@ -322,6 +322,7 @@ public class MyAccount extends AppCompatActivity {
                 et.setText(getString(R.string.achievement_desc_upvotes_received));
             }
         });
+    }
 
     private void updateAchievementGraphics() {
         ImageView ivDownVotesGiven = findViewById(R.id.IVdownVotesGiven);
@@ -349,13 +350,5 @@ public class MyAccount extends AppCompatActivity {
         ivUpVotesGiven.setImageResource(UpVotesReceived);
         ivUpVotesReceived.setImageResource(UpVotesGiven);
 
-    private void updateAchievementGraphics() {
-        final ImageView ivDownVotesGiven = findViewById(R.id.IVdownVotesGiven);
-        final ImageView ivDownVotesReceived = findViewById(R.id.IVdownVotesReceived);
-        final ImageView ivDropFirstPost = findViewById(R.id.IVdropFirstPost);
-        final ImageView ivDropsPosted = findViewById(R.id.IVdropsPosted);
-        final ImageView ivDropsViewed = findViewById(R.id.IVdropsViewed);
-        final ImageView ivUpVotesGiven = findViewById(R.id.IVupVotesGiven);
-        final ImageView ivUpVotesReceived = findViewById(R.id.IVupVotesReceived);
     }
 }
