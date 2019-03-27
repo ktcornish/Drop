@@ -269,6 +269,7 @@ public class MyAccount extends AppCompatActivity {
         final ImageView ivDownVotesGiven = findViewById(R.id.IVdownVotesGiven);
         final ImageView ivDownVotesReceived = findViewById(R.id.IVdownVotesReceived);
         final ImageView ivDropsPosted = findViewById(R.id.IVdropsPosted);
+        final ImageView ivDropsViewed = findViewById(R.id.IVdropsViewed);
         final ImageView ivDropFirstPost = findViewById(R.id.IVdropFirstPost);
         final ImageView ivUpVotesGiven = findViewById(R.id.IVupVotesGiven);
         final ImageView ivUpVotesReceived = findViewById(R.id.IVupVotesReceived);
@@ -276,9 +277,7 @@ public class MyAccount extends AppCompatActivity {
 
         ivDownVotesGiven.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                et.setText(getString(R.string.achievement_desc_downvotes_given));
-            }
+            public void onClick(View v) { et.setText(getString(R.string.achievement_desc_downvotes_given)); }
         });
 
         ivDownVotesReceived.setOnClickListener(new View.OnClickListener() {
@@ -292,6 +291,13 @@ public class MyAccount extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 et.setText(getString(R.string.achievement_desc_drops_posted));
+            }
+        });
+
+        ivDropsViewed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                et.setText(getString(R.string.achievement_desc_drops_viewed));
             }
         });
 
@@ -323,75 +329,8 @@ public class MyAccount extends AppCompatActivity {
         final ImageView ivDownVotesReceived = findViewById(R.id.IVdownVotesReceived);
         final ImageView ivDropFirstPost = findViewById(R.id.IVdropFirstPost);
         final ImageView ivDropsPosted = findViewById(R.id.IVdropsPosted);
+        final ImageView ivDropsViewed = findViewById(R.id.IVdropsViewed);
         final ImageView ivUpVotesGiven = findViewById(R.id.IVupVotesGiven);
         final ImageView ivUpVotesReceived = findViewById(R.id.IVupVotesReceived);
-
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("users").child(user.getUid())
-                .child("achievementdata");
-
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                long downVotesGiven = (long) dataSnapshot.child("downvotesgiven").getValue();
-                long downVotesReceived = (long) dataSnapshot.child("downvotesreceived").getValue();
-                long dropsPosted = (long) dataSnapshot.child("dropsposted").getValue();
-                long upVotesGiven = (long) dataSnapshot.child("upvotesgiven").getValue();
-                long upVotesReceived = (long) dataSnapshot.child("downvotesgiven").getValue();
-
-                // Downvotes given, gold, silver and bronze
-                if (downVotesGiven >= 5) {
-                    ivDownVotesGiven.setImageResource(R.drawable.bron_placeholder);
-                } else if (downVotesGiven >= 20 && downVotesGiven < 100) {
-                    ivDownVotesGiven.setImageResource(R.drawable.silver_placeholder);
-                } else if (downVotesGiven >= 100) {
-                    ivDownVotesGiven.setImageResource(R.drawable.gold_placeholder);
-                }
-
-                // Downvotes received, gold, silver and bronze
-                if (downVotesReceived >= 5) {
-                    ivDownVotesReceived.setImageResource(R.drawable.bron_placeholder);
-                } else if (downVotesReceived >= 20 && downVotesReceived < 100) {
-                    ivDownVotesReceived.setImageResource(R.drawable.silver_placeholder);
-                } else if (downVotesReceived >= 100) {
-                    ivDownVotesReceived.setImageResource(R.drawable.gold_placeholder);
-                }
-
-                // First drop posted
-                if (dropsPosted > 0) {
-                    ivDropFirstPost.setImageResource(R.drawable.purple_placeholder);
-                }
-
-                // Drops posted, gold, silver & bronze
-                if (dropsPosted >= 5) {
-                    ivDropsPosted.setImageResource(R.drawable.bron_placeholder);
-                } else if (downVotesReceived >= 20 && dropsPosted < 100) {
-                    ivDropsPosted.setImageResource(R.drawable.silver_placeholder);
-                } else if (dropsPosted >= 100) {
-                    ivDropsPosted.setImageResource(R.drawable.gold_placeholder);
-                }
-
-                // Upvotes given, gold, silver and bronze
-                if (upVotesGiven >= 5 && upVotesGiven < 20) {
-                    ivUpVotesGiven.setImageResource(R.drawable.bron_placeholder);
-                } else if (upVotesGiven >= 20 && upVotesGiven < 100) {
-                    ivUpVotesGiven.setImageResource(R.drawable.silver_placeholder);
-                } else if (upVotesGiven >= 100) {
-                    ivUpVotesGiven.setImageResource(R.drawable.gold_placeholder);
-                }
-
-                // Upvotes received, gold, silver and bronze
-                if (upVotesReceived >= 5 && upVotesReceived < 20) {
-                    ivUpVotesReceived.setImageResource(R.drawable.bron_placeholder);
-                } else if (upVotesReceived >= 20 && upVotesReceived < 100) {
-                    ivUpVotesReceived.setImageResource(R.drawable.silver_placeholder);
-                } else if (upVotesReceived >= 100) {
-                    ivUpVotesReceived.setImageResource(R.drawable.gold_placeholder);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {}
-        });
     }
 }
