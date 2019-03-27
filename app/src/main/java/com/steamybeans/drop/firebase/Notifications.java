@@ -57,6 +57,7 @@ public class Notifications extends AppCompatActivity {
     private void createNotification(String content, String imageName, Intent myIntent) {
         int image = context.getResources().getIdentifier(imageName,"drawable", context.getPackageName());
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), image);
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, 128,128, false);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, myIntent, PendingIntent.FLAG_ONE_SHOT);
 
@@ -67,7 +68,7 @@ public class Notifications extends AppCompatActivity {
                         .setColor(Color.BLUE)
                         .setContentTitle("Achievement reached")
                         .setWhen(Calendar.getInstance().getTimeInMillis())
-                        .setLargeIcon(bitmap)
+                        .setLargeIcon(scaledBitmap)
                         .setChannelId("drop")
                         .setDefaults(Notification.DEFAULT_SOUND)
                         .setContentText(content)
