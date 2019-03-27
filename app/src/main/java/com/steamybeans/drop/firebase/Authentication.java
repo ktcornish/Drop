@@ -47,7 +47,7 @@ public class Authentication extends AppCompatActivity {
                             context.startActivity(new Intent(context, HomeActivity.class));
                         } else {
                             // Sign in fails
-                            Toast.makeText(context, "This email and password combination is incorrect", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Email or password is incorrect", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -64,7 +64,7 @@ public class Authentication extends AppCompatActivity {
                 }
 
                 if (usernames.contains(username)) {
-                    Toast.makeText(context, "Username already exists", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Username already exists", Toast.LENGTH_LONG).show();
                 } else {
                     signUp(email, password, username);
                 }
