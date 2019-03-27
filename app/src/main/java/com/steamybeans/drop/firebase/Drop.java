@@ -15,6 +15,7 @@ public class Drop {
     private DatabaseReference databaseReference;
 
     public void newDrop(final String drop, String uid, final double currentLatitude, final double currentLongitude) {
+        System.out.println("in method");
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("users")
                 .child(uid).child("posts").push();
@@ -22,6 +23,7 @@ public class Drop {
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                System.out.println("making new drop");
                 databaseReference.child("content").setValue(drop);
                 databaseReference.child("latitude").setValue(currentLatitude);
                 databaseReference.child("longitude").setValue(currentLongitude);
@@ -34,8 +36,6 @@ public class Drop {
     }
 
     public void setDropContent(final String userUid, final String dropUid, final TextView dropContent, final TextView username) {
-        System.out.println("SETTING DROP CONTENT!!!");
-        System.out.println(dropUid);
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("users")
                 .child(userUid);

@@ -1,18 +1,13 @@
 package com.steamybeans.drop.views;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -37,8 +32,8 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.Picasso;
 import com.steamybeans.drop.R;
+import com.steamybeans.drop.firebase.AchievementData;
 import com.steamybeans.drop.firebase.Authentication;
 import com.steamybeans.drop.firebase.User;
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -46,7 +41,11 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.ref.Reference;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 public class MyAccount extends AppCompatActivity {
 
@@ -59,7 +58,8 @@ public class MyAccount extends AppCompatActivity {
     private DatabaseReference userRef;
     private ProgressDialog loadingBar;
     private ImageView IVprofileImage;
-
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +99,6 @@ public class MyAccount extends AppCompatActivity {
 
 
         setUpButtons();
-
     }
 
 
@@ -202,10 +201,12 @@ public class MyAccount extends AppCompatActivity {
                                         public void onComplete(@NonNull Task<Void> task) {
 
                                             if (task.isSuccessful()) {
-                                                Toast.makeText(MyAccount.this, "Profile Updated", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(MyAccount.this, "Profile Updated", Toast.LENGTH_LONG).show();
+                                                AchievementData achievementData = new AchievementData();
+                                                achievementData.setProfilePicture(user.getUid());
                                             } else {
                                                 String message = task.getException().getMessage();
-                                                Toast.makeText(MyAccount.this, "Error:" + message, Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(MyAccount.this, "Error:" + message, Toast.LENGTH_LONG).show();
                                             }
                                         }
                                     });
@@ -214,7 +215,7 @@ public class MyAccount extends AppCompatActivity {
                     }
                 });
             } else {
-                Toast.makeText(authentication, "Error Occured: Image can't be cropped", Toast.LENGTH_SHORT).show();
+                Toast.makeText(authentication, "Error Occured: Image can't be cropped", Toast.LENGTH_LONG).show();
             }
 
         }
@@ -235,6 +236,10 @@ public class MyAccount extends AppCompatActivity {
         Uri videoPath = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.rain);
         video.setVideoURI(videoPath);
         video.start();
+
+        updateAchievementGraphics();
+
+        setAcheivementDescriptionText();
 
         //check if user account is still active
         authentication.checkAccountIsActive();
@@ -260,5 +265,98 @@ public class MyAccount extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    // Set achievement description text when user clicks achievement badge
+    private void setAcheivementDescriptionText() {
+        final ImageView ivDownVotesGiven = findViewById(R.id.IVdownVotesGiven);
+        final ImageView ivDownVotesReceived = findViewById(R.id.IVdownVotesReceived);
+        final ImageView ivDropsPosted = findViewById(R.id.IVdropsPosted);
+        final ImageView ivDropsViewed = findViewById(R.id.IVdropsViewed);
+        final ImageView ivDropFirstPost = findViewById(R.id.IVdropFirstPost);
+        final ImageView ivUpVotesGiven = findViewById(R.id.IVupVotesGiven);
+        final ImageView ivUpVotesReceived = findViewById(R.id.IVupVotesReceived);
+        final TextView et = findViewById(R.id.TVachievmentDescription);
+
+        ivDownVotesGiven.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { et.setText(getString(R.string.achievement_desc_downvotes_given)); }
+        });
+
+        ivDownVotesReceived.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                et.setText(getString(R.string.achievement_desc_downvotes_received));
+            }
+        });
+
+        ivDropsPosted.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                et.setText(getString(R.string.achievement_desc_drops_posted));
+            }
+        });
+
+        ivDropsViewed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                et.setText(getString(R.string.achievement_desc_drops_viewed));
+            }
+        });
+
+        ivDropFirstPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                et.setText(getString(R.string.achievement_desc_first_drop));
+            }
+        });
+
+        ivUpVotesGiven.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                et.setText(getString(R.string.achievement_desc_upvotes_given));
+            }
+        });
+
+        ivUpVotesReceived.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextView et = findViewById(R.id.TVachievmentDescription);
+                et.setText(getString(R.string.achievement_desc_upvotes_received));
+            }
+        });
+    }
+
+    private void updateAchievementGraphics() {
+        ImageView ivDownVotesGiven = findViewById(R.id.IVdownVotesGiven);
+        ImageView ivDownVotesReceived = findViewById(R.id.IVdownVotesReceived);
+        ImageView ivDropFirstPost = findViewById(R.id.IVdropFirstPost);
+        ImageView ivDropsPosted = findViewById(R.id.IVdropsPosted);
+        ImageView ivUpVotesGiven = findViewById(R.id.IVupVotesGiven);
+        ImageView ivUpVotesReceived = findViewById(R.id.IVupVotesReceived);
+        ImageView ivDropsViewed = findViewById(R.id.IVdropsViewed);
+        ImageView ivProfilePicture = findViewById(R.id.IVprofilePicture);
+        Bundle extras = getIntent().getExtras();
+        Context context = MyAccount.this;
+
+        //set images from intent
+        int DownVotesGivenImage = getResources().getIdentifier(extras.getString("downVotesGivenAchievement"),"drawable", context.getPackageName());
+        int DownVotesReceivedImage = getResources().getIdentifier(extras.getString("downVotesReceivedAchievement"),"drawable", context.getPackageName());
+        int FirstDropImage = getResources().getIdentifier(extras.getString("firstDropPostedAchievement"),"drawable", context.getPackageName());
+        int DropPostedImage = getResources().getIdentifier(extras.getString("dropsPostedAchievement"),"drawable", context.getPackageName());
+        int UpVotesReceived = getResources().getIdentifier(extras.getString("upvotesReceivedAchievement"),"drawable", context.getPackageName());
+        int UpVotesGiven = getResources().getIdentifier(extras.getString("upvotesGivenAchievement"),"drawable", context.getPackageName());
+        int DropsViewed = getResources().getIdentifier(extras.getString("dropsViewedAchievement"),"drawable", context.getPackageName());
+        int ProfilePicture = getResources().getIdentifier(extras.getString("profilePictureAchievement"),"drawable", context.getPackageName());
+
+        //set ImageViews
+        ivDownVotesGiven.setImageResource(DownVotesGivenImage);
+        ivDownVotesReceived.setImageResource(DownVotesReceivedImage);
+        ivDropFirstPost.setImageResource(FirstDropImage);
+        ivDropsPosted.setImageResource(DropPostedImage);
+        ivUpVotesGiven.setImageResource(UpVotesReceived);
+        ivUpVotesReceived.setImageResource(UpVotesGiven);
+        ivDropsViewed.setImageResource(DropsViewed);
+        ivProfilePicture.setImageResource(ProfilePicture);
     }
 }
