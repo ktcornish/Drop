@@ -235,7 +235,7 @@
         android:autoSizeStepGranularity="1px"
         android:autoSizeTextType="uniform"
         android:gravity="center"
-        android:text="@string/achievement_desc_upvotes_given"
+        android:text="@string/achievement_title_upvotes_given"
         app:layout_constraintBottom_toTopOf="@+id/IVupVotesGiven"
         app:layout_constraintEnd_toEndOf="@+id/imageView3"
         app:layout_constraintHorizontal_bias="0.066"
