@@ -20,22 +20,27 @@ import android.widget.TextView;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
 import com.steamybeans.drop.R;
 import com.steamybeans.drop.firebase.AchievementData;
 import com.steamybeans.drop.firebase.Authentication;
 import com.steamybeans.drop.firebase.Drop;
+import com.steamybeans.drop.firebase.User;
 import com.steamybeans.drop.firebase.Vote;
-
 import java.io.File;
 import java.io.IOException;
 
@@ -44,6 +49,8 @@ public class Map extends AppCompatActivity {
     private DatabaseReference userRef;
     private StorageReference userProfileImageRef;
     private ImageView IVprofileImage;
+  String dropId;
+
 
     public Map(Context context) {
         this.context = context;
@@ -55,6 +62,7 @@ public class Map extends AppCompatActivity {
             @Override
             public boolean onMarkerClick(final Marker marker) {
                 Drop drop = new Drop();
+                dropId = marker.getSnippet();
                 final Vote vote = new Vote();
                 DistanceCalculator calc = new DistanceCalculator();
                 LatLng latLng = new LatLng(location1.getLatitude(), location1.getLongitude());
@@ -72,6 +80,8 @@ public class Map extends AppCompatActivity {
 
                     dialog.show();
                 } else {
+                    updateAchievementData();
+
                     final Dialog dialog = new Dialog(context);
                     dialog.setContentView(R.layout.dialogue_view_drop);
                     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -142,6 +152,28 @@ public class Map extends AppCompatActivity {
                     return true;
 
             }
+        });
+    }
+
+    private void updateAchievementData() {
+        User u = new User();
+        final String uid = u.getUid();
+        final AchievementData ad = new AchievementData();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        final DatabaseReference databaseReference = firebaseDatabase.getReference("users")
+                .child(uid).child("achievementdata");
+
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.child("listdropsviewed").hasChild(dropId)) {
+                    databaseReference.child("listdropsviewed").child(dropId).setValue(1);
+                    ad.setDropsViewed(uid, 1);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
         });
     }
 }
