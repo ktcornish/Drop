@@ -33,6 +33,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
@@ -93,6 +94,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     public int minRating = -10;
     public float seekBarProgressTextViewPosition = 0;
     public Intent myAccountIntent;
+    public Double newLatitude;
+    public Double newLongitude;
 
 
     @Override
@@ -136,6 +139,13 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 authentication.checkAccountIsActive();
 
                 switch (item.getItemId()) {
+                    case R.id.NBhome:
+                        LatLng latLng = new LatLng(newLatitude, newLongitude);
+
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                        mMap.animateCamera(CameraUpdateFactory.zoomTo(18));
+                        return true;
+
                     case R.id.NBdrop:
                         final Dialog dialog = new Dialog(HomeActivity.this);
                         dialog.setContentView(R.layout.dialogue_new_drop);
@@ -163,6 +173,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                         });
                         dialog.show();
                         return true;
+
                     case R.id.NBfilter:
                         final Dialog filterDialog = new Dialog(HomeActivity.this);
                         filterDialog.setContentView(R.layout.dialog_filter_drops);
@@ -246,6 +257,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             boolean success = googleMap.setMapStyle(
                     MapStyleOptions.loadRawResourceStyle(
                             this, R.raw.map_style));
+
+            UiSettings uiSettings = googleMap.getUiSettings();
+            uiSettings.setMyLocationButtonEnabled(false);
 
             if (!success) {
                 Log.e("Map styling", "Style parsing failed.");
@@ -405,6 +419,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         lastLocation = location;
 
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        newLatitude = location.getLatitude();
+        newLongitude = location.getLongitude();
 
 //        currentUserLocationMarker = mMap.addMarker(markerOptions);
 

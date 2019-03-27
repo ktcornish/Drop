@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Drop</string>
     <string name="title_activity_signup">Signup</string>
-    <string name="nav_home">Home</string>
+    <string name="nav_location">My Location</string>
     <string name="nav_drop">Drop</string>
     <string name="nav_myaccount">My Account</string>
     <string name="nav_filter">Filter</string>
