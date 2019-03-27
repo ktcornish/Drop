@@ -57,14 +57,23 @@ public class Signup extends AppCompatActivity {
                 EditText ETsignupEmailAddress = findViewById(R.id.ETsignupEmailAddress);
                 EditText ETsignupPassword = findViewById(R.id.ETsignupPassword);
                 EditText ETsignupUsername = findViewById(R.id.ETsignupUsername);
-                String email = ETsignupEmailAddress.getText().toString();
-                String password = ETsignupPassword.getText().toString();
-                String username = ETsignupUsername.getText().toString();
                 CheckBox CBtermsAndConditions = findViewById(R.id.CBtermsAndConditions);
-                if (CBtermsAndConditions.isChecked()) {
-                    authentication.checkUsernameIsUnique(username, password, email);
+
+                if (ETsignupEmailAddress.getText().toString().trim().length() < 1) {
+                    ETsignupEmailAddress.setError("Email is empty");
+                } else if (ETsignupUsername.getText().toString().trim().length() < 1) {
+                    ETsignupUsername.setError("Username is empty");
+                } else if (ETsignupPassword.getText().toString().trim().length() < 1) {
+                    ETsignupPassword.setError("Password is empty");
                 } else {
-                    Toast.makeText(Signup.this, "Please agree to the terms and conditions", Toast.LENGTH_SHORT).show();
+                    String email = ETsignupEmailAddress.getText().toString();
+                    String password = ETsignupPassword.getText().toString();
+                    String username = ETsignupUsername.getText().toString();
+                    if (CBtermsAndConditions.isChecked()) {
+                        authentication.checkUsernameIsUnique(username, password, email);
+                    } else {
+                        Toast.makeText(Signup.this, "Please agree to the terms and conditions", Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         });

@@ -34,13 +34,16 @@
         android:layout_width="361dp"
         android:layout_height="517dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="88dp"
+        android:layout_marginBottom="40dp"
         android:background="@drawable/loginbackgroundshape"
         android:contentDescription="TODO"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/IVvideoColour"
+        app:layout_constraintVertical_bias="0.951" />
 
     <EditText
         android:id="@+id/ETloginEmailAddress"
@@ -111,5 +114,15 @@
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/logo_crop" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="178dp"
+        android:layout_height="61dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/BTNsignUp"
+        app:layout_constraintStart_toStartOf="@+id/imageView3"
+        app:srcCompat="@drawable/signuparrow" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
