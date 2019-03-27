@@ -11,17 +11,8 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
-
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,8 +25,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -47,6 +38,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -55,6 +47,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.steamybeans.drop.R;
 import com.steamybeans.drop.firebase.AchievementData;
+import com.steamybeans.drop.firebase.Achievements;
 import com.steamybeans.drop.firebase.Authentication;
 import com.steamybeans.drop.firebase.Drop;
 import com.steamybeans.drop.firebase.Firebasemarker;
@@ -63,7 +56,12 @@ import com.steamybeans.drop.firebase.User;
 import com.steamybeans.drop.firebase.Vote;
 import com.steamybeans.drop.map.Map;
 
-import java.sql.SQLOutput;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -93,6 +91,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Vote vote;
     private boolean zoomed = false;
     public int minRating = -10;
+    public Intent myAccountIntent;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +117,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         user = new User();
         authentication = new Authentication(this);
+        myAccountIntent = new Intent(HomeActivity.this, MyAccount.class);
 
         // Support toolbar in activity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_top);
@@ -203,6 +204,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onResume();
         //check if user account is still active
         authentication.checkAccountIsActive();
+        Achievements achievements = new Achievements();
+        achievements.checkIfAchievementHasBeenReached(myAccountIntent);
     }
 
     // Populate toolbar with buttons
@@ -218,7 +221,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.TBAccount:
-                startActivity(new Intent(HomeActivity.this, MyAccount.class));
+                startActivity(myAccountIntent);
                 overridePendingTransition(R.anim.slide_up_from_bottom, R.anim.slide_down_from_top);
                 return true;
 
@@ -256,13 +259,11 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void addMarkersToMap(final GoogleMap googleMap) {
-        System.out.println("AT TOP OF ADD MARKERS TO MAP METHOD");
         vote = new Vote();
         FirebaseDatabase.getInstance().getReference().child("users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    System.out.println("IN FIRST LOOP");
                     userId = snapshot.getKey();
 
                     FirebaseDatabase.getInstance().getReference().child("users").child(userId).child("posts")
@@ -270,7 +271,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 @Override
                                 public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
                                     for (final DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                        System.out.println("IN SECOND LOOP");
                                         final Firebasemarker firebaseMarker = snapshot.getValue(Firebasemarker.class);
                                         final String user = dataSnapshot.getRef().getParent().getKey();
                                         final String postId = snapshot.getKey();
@@ -282,9 +282,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                                                 int counter = 0;
                                                 for (final DataSnapshot snapshot3 : dataSnapshot.getChildren()) {
                                                     counter += snapshot3.getValue(Integer.class);;
-                                                    System.out.println("IN VOTES LOOP");
-                                                    System.out.println(counter);
-                                                    System.out.println(minRating);
                                                 }
                                                 if (counter > minRating) {
                                                     setUpMarker(googleMap, firebaseMarker, user, postId);
@@ -316,7 +313,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void setUpMarker(final GoogleMap googleMap, Firebasemarker firebaseMarker, final String user, final String postId) {
-        System.out.println("setting up marker");
         final LatLng location = new LatLng(firebaseMarker.getLatitude(), firebaseMarker.getLongitude());
 
         firebaseDatabase = FirebaseDatabase.getInstance();

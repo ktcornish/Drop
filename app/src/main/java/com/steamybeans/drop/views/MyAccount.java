@@ -1,18 +1,13 @@
 package com.steamybeans.drop.views;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -45,6 +40,11 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;
 import java.io.IOException;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 public class MyAccount extends AppCompatActivity {
 
@@ -322,6 +322,22 @@ public class MyAccount extends AppCompatActivity {
                 et.setText(getString(R.string.achievement_desc_upvotes_received));
             }
         });
+
+    private void updateAchievementGraphics() {
+        ImageView ivDownVotesGiven = findViewById(R.id.IVdownVotesGiven);
+        ImageView ivDownVotesReceived = findViewById(R.id.IVdownVotesReceived);
+        ImageView ivDropFirstPost = findViewById(R.id.IVdropFirstPost);
+        ImageView ivDropsPosted = findViewById(R.id.IVdropsPosted);
+        ImageView ivUpVotesGiven = findViewById(R.id.IVupVotesGiven);
+        ImageView ivUpVotesReceived = findViewById(R.id.IVupVotesReceived);
+        Bundle extras = getIntent().getExtras();
+
+        Context context = MyAccount.this;
+        int DownVotesGivenImage = getResources().getIdentifier(extras.getString("downVotesGivenAchievement"),"drawable", context.getPackageName());
+        ivDownVotesGiven.setImageResource(DownVotesGivenImage);
+
+        System.out.println(DownVotesGivenImage);
+        System.out.println(extras.getString("downVotesGivenAchievement"));
     }
 
     private void updateAchievementGraphics() {
