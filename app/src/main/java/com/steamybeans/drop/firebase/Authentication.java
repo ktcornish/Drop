@@ -48,7 +48,7 @@ public class Authentication extends AppCompatActivity {
                             context.startActivity(new Intent(context, HomeActivity.class));
                         } else {
                             // Sign in fails
-                            Toast.makeText(context, "This email and password combination is incorrect", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Email or password is incorrect", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -65,7 +65,7 @@ public class Authentication extends AppCompatActivity {
                 }
 
                 if (usernames.contains(username)) {
-                    Toast.makeText(context, "Username already exists", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Username already exists", Toast.LENGTH_LONG).show();
                 } else {
                     signUp(email, password, username);
                 }
@@ -92,7 +92,7 @@ public class Authentication extends AppCompatActivity {
                             context.startActivity(new Intent(context, LoginPage.class));
                         } else {
                             // Sign up fails
-                            Toast.makeText(context, "Can't create account:" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Email address is not valid", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
