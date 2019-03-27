@@ -149,8 +149,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                         BTNaddDrop.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Notifications notifications = new Notifications(HomeActivity.this);
-                                notifications.checkIfAchievmentHasBeenReached(user.getUid(), "First", "First Drop", "You've reached it!");
                                 if (ETaddDrop.getText().toString().trim().length() > 0) {
                                     Drop drop = new Drop();
                                     drop.newDrop(ETaddDrop.getText().toString(), user.getUid(), currentLatitude, currentLongitude);
@@ -204,7 +202,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onResume();
         //check if user account is still active
         authentication.checkAccountIsActive();
-        Achievements achievements = new Achievements();
+        Notifications notifications = new Notifications(HomeActivity.this);
+        Achievements achievements = new Achievements(notifications);
         achievements.checkIfAchievementHasBeenReached(myAccountIntent);
     }
 
@@ -353,67 +352,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             map.setUpMarkerClickListener(googleMap, location1);
         }
     }
-
-//    private void filterMapMarkersByPopularity(final GoogleMap googleMap, int upVotes) {
-//        FirebaseDatabase.getInstance().getReference().child("users").addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-//                    userId = snapshot.getKey();
-//                    FirebaseDatabase.getInstance().getReference().child("users").child(userId).child("posts")
-//                            .addListenerForSingleValueEvent(new ValueEventListener() {
-//                                @Override
-//                                public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
-//                                    for (final DataSnapshot snapshot2 : dataSnapshot.getChildren()) {
-//
-//                                        String postid = snapshot2.getKey();
-//                                        String user = dataSnapshot.getRef().getParent().getKey();
-//
-//                                        FirebaseDatabase.getInstance().getReference().child(user).child("posts")
-//                                                .child(postid).child("votes").addListenerForSingleValueEvent(new ValueEventListener() {
-//                                            @Override
-//                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                                                int counter = 0;
-//                                                for (final DataSnapshot snapshot3 : dataSnapshot.getChildren()) {
-//                                                    counter += snapshot3.getValue(Integer.class);
-//                                                }
-//                                                if (counter > 1) {
-//                                                    Firebasemarker firebaseMarker = snapshot2.getValue(Firebasemarker.class);
-//                                                    String user = dataSnapshot.getRef().getParent().getKey();
-//                                                    LatLng location = new LatLng(firebaseMarker.getLatitude(), firebaseMarker.getLongitude());
-//                                                    googleMap.addMarker(new MarkerOptions().position(location).title(user).snippet(snapshot2.getKey())
-//                                                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
-//                                                    Map map = new Map(HomeActivity.this);
-//                                                    if (ContextCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-//                                                        Location location1 = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-//                                                        map.setUpMarkerClickListener(mMap, location1);
-//                                                    }
-//                                                }
-//                                            }
-//                                            @Override
-//                                            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                                            }
-//                                        });
-//
-//
-//                                    }
-//                                }
-//
-//                                @Override
-//                                public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                                }
-//                            });
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-//    }
 
     public boolean checkUserLocationPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
