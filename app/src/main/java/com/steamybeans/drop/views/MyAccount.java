@@ -273,13 +273,23 @@ public class MyAccount extends AppCompatActivity {
         ImageView ivUpVotesGiven = findViewById(R.id.IVupVotesGiven);
         ImageView ivUpVotesReceived = findViewById(R.id.IVupVotesReceived);
         Bundle extras = getIntent().getExtras();
-
         Context context = MyAccount.this;
-        int DownVotesGivenImage = getResources().getIdentifier(extras.getString("downVotesGivenAchievement"),"drawable", context.getPackageName());
-        ivDownVotesGiven.setImageResource(DownVotesGivenImage);
 
-        System.out.println(DownVotesGivenImage);
-        System.out.println(extras.getString("downVotesGivenAchievement"));
+        //set images from intent
+        int DownVotesGivenImage = getResources().getIdentifier(extras.getString("downVotesGivenAchievement"),"drawable", context.getPackageName());
+        int DownVotesReceivedImage = getResources().getIdentifier(extras.getString("downVotesReceivedAchievement"),"drawable", context.getPackageName());
+        int FirstDropImage = getResources().getIdentifier(extras.getString("firstDropPostedAchievement"),"drawable", context.getPackageName());
+        int DropPostedImage = getResources().getIdentifier(extras.getString("dropsPostedAchievement"),"drawable", context.getPackageName());
+        int UpVotesReceived = getResources().getIdentifier(extras.getString("upvotesReceivedAchievement"),"drawable", context.getPackageName());
+        int UpVotesGiven = getResources().getIdentifier(extras.getString("upvotesGivenAchievement"),"drawable", context.getPackageName());
+
+        //set ImageViews
+        ivDownVotesGiven.setImageResource(DownVotesGivenImage);
+        ivDownVotesReceived.setImageResource(DownVotesReceivedImage);
+        ivDropFirstPost.setImageResource(FirstDropImage);
+        ivDropsPosted.setImageResource(DropPostedImage);
+        ivUpVotesGiven.setImageResource(UpVotesReceived);
+        ivUpVotesReceived.setImageResource(UpVotesGiven);
 
     }
 }
