@@ -33,6 +33,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.steamybeans.drop.R;
+import com.steamybeans.drop.firebase.AchievementData;
 import com.steamybeans.drop.firebase.Authentication;
 import com.steamybeans.drop.firebase.User;
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -201,6 +202,8 @@ public class MyAccount extends AppCompatActivity {
 
                                             if (task.isSuccessful()) {
                                                 Toast.makeText(MyAccount.this, "Profile Updated", Toast.LENGTH_LONG).show();
+                                                AchievementData achievementData = new AchievementData();
+                                                achievementData.setProfilePicture(user.getUid());
                                             } else {
                                                 String message = task.getException().getMessage();
                                                 Toast.makeText(MyAccount.this, "Error:" + message, Toast.LENGTH_LONG).show();
@@ -331,6 +334,8 @@ public class MyAccount extends AppCompatActivity {
         ImageView ivDropsPosted = findViewById(R.id.IVdropsPosted);
         ImageView ivUpVotesGiven = findViewById(R.id.IVupVotesGiven);
         ImageView ivUpVotesReceived = findViewById(R.id.IVupVotesReceived);
+        ImageView ivDropsViewed = findViewById(R.id.IVdropsViewed);
+        ImageView ivProfilePicture = findViewById(R.id.IVprofilePicture);
         Bundle extras = getIntent().getExtras();
         Context context = MyAccount.this;
 
@@ -341,6 +346,8 @@ public class MyAccount extends AppCompatActivity {
         int DropPostedImage = getResources().getIdentifier(extras.getString("dropsPostedAchievement"),"drawable", context.getPackageName());
         int UpVotesReceived = getResources().getIdentifier(extras.getString("upvotesReceivedAchievement"),"drawable", context.getPackageName());
         int UpVotesGiven = getResources().getIdentifier(extras.getString("upvotesGivenAchievement"),"drawable", context.getPackageName());
+        int DropsViewed = getResources().getIdentifier(extras.getString("dropsViewedAchievement"),"drawable", context.getPackageName());
+        int ProfilePicture = getResources().getIdentifier(extras.getString("profilePictureAchievement"),"drawable", context.getPackageName());
 
         //set ImageViews
         ivDownVotesGiven.setImageResource(DownVotesGivenImage);
@@ -349,6 +356,7 @@ public class MyAccount extends AppCompatActivity {
         ivDropsPosted.setImageResource(DropPostedImage);
         ivUpVotesGiven.setImageResource(UpVotesReceived);
         ivUpVotesReceived.setImageResource(UpVotesGiven);
-
+        ivDropsViewed.setImageResource(DropsViewed);
+        ivProfilePicture.setImageResource(ProfilePicture);
     }
 }

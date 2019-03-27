@@ -22,7 +22,7 @@ public class Achievements extends AppCompatActivity {
 
     public void checkIfAchievementHasBeenReached(final Intent intent) {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference databaseReference = firebaseDatabase.getReference("users").child(user.getUid())
+        final DatabaseReference databaseReference = firebaseDatabase.getReference("users").child(user.getUid())
                 .child("achievementdata");
 
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -32,7 +32,10 @@ public class Achievements extends AppCompatActivity {
                 long downVotesReceived = (long) dataSnapshot.child("downvotesreceived").getValue();
                 long dropsPosted = (long) dataSnapshot.child("dropsposted").getValue();
                 long upVotesGiven = (long) dataSnapshot.child("upvotesgiven").getValue();
-                long upVotesReceived = (long) dataSnapshot.child("downvotesgiven").getValue();
+                long upVotesReceived = (long) dataSnapshot.child("upvotesreceived").getValue();
+                long dropsViewed = (long) dataSnapshot.child("dropsviewed").getValue();
+                long profilePicture = (long) dataSnapshot.child("profilepicture").getValue();
+
 
                 // Downvotes given, gold, silver and bronze
                 downVotesGivenAchievement(downVotesGiven, intent);
@@ -51,6 +54,12 @@ public class Achievements extends AppCompatActivity {
 
                 // Upvotes received, gold, silver and bronze
                 upvotesReceivedAchievement(upVotesReceived, intent);
+
+                // Drops viewed
+                dropsViewedAchievement(dropsViewed, intent);
+
+                //profile picture updated
+                profilePictureAchievement(profilePicture, intent);
             }
 
             @Override
@@ -206,7 +215,6 @@ public class Achievements extends AppCompatActivity {
                     intent
             );
         }
-
     }
 
     private void downVotesGivenAchievement(Long downVotesGiven, Intent intent) {
@@ -238,6 +246,57 @@ public class Achievements extends AppCompatActivity {
                     "downvotes_given_" + result,
                     intent
             );
+        }
+    }
+
+    private void dropsViewedAchievement(Long dropsViewed, Intent intent) {
+        String result = "none";
+
+        // Drops posted, gold, silver & bronze
+        if (dropsViewed < 5) {
+            intent.putExtra("dropsViewedAchievement", "drops_viewed_none");
+        } else if (dropsViewed >= 5 && dropsViewed < 20) {
+            intent.putExtra("dropsViewedAchievement", "drops_viewed_bronze");
+            result = "bronze";
+        } else if (dropsViewed >= 20 && dropsViewed < 100) {
+            intent.putExtra("dropsViewedAchievement", "drops_viewed_silver");
+            result = "silver";
+        } else if (dropsViewed >= 100 && dropsViewed < 200 ) {
+            intent.putExtra("dropsViewedAchievement", "drops_viewed_gold");
+            result = "gold";
+        } else {
+            intent.putExtra("dropsViewedAchievement", "drops_viewed_plat");
+            result = "plat";
+        }
+
+        if (!result.equals("none")) {
+            notifications.checkIfNotificationHasAlreadyBeenSent(
+                    user.getUid(),
+                    "dropsViewedAchievement",
+                    result,
+                    "You've received the " + result + " achievement for number of drops viewed",
+                    "drops_viewed_" + result,
+                    intent
+            );
+        }
+    }
+
+    private void profilePictureAchievement(Long profilePicture, Intent intent) {
+        // First drop posted
+        if (profilePicture == 1) {
+            intent.putExtra("profilePictureAchievement", "r_1st_drop");
+
+            notifications.checkIfNotificationHasAlreadyBeenSent(
+                    user.getUid(),
+                    "profilePictureAchievement",
+                    "true",
+                    "You've received an achievement for uploading a profile picture",
+                    "r_1st_drop",
+                    intent
+            );
+
+        } else {
+            intent.putExtra("profilePictureAchievement", "r_1st_drop_none");
         }
     }
 

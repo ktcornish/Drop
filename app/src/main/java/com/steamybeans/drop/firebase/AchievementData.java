@@ -108,4 +108,19 @@ public class AchievementData {
             public void onCancelled(@NonNull DatabaseError database) {}
         });
     }
+
+    public void setProfilePicture(String userUid) {
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("users").child(userUid).child("achievementdata")
+                .child("profilepicture");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                databaseReference.setValue(1);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError database) {}
+        });
+    }
 }
