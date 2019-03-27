@@ -14,5 +14,12 @@
     <string name="achievement_desc_first_drop">First drop</string>
     <string name="achievement_desc_upvotes_given">Supportive</string>
     <string name="achievement_desc_upvotes_received">Drop king</string>
+    <string name="achievement_title_downvotes_given">Certified critic</string>
+    <string name="achievement_title_downvotes_received">Speaker of unpleasant truths</string>
+    <string name="achievement_title_drops_posted">Prolific dropper</string>
+    <string name="achievement_title_drops_viewed">Window dropper</string>
+    <string name="achievement_title_first_drop">First drop</string>
+    <string name="achievement_title_upvotes_given">Supportive</string>
+    <string name="achievement_title_upvotes_received">Drop king</string>
 
 </resources>
