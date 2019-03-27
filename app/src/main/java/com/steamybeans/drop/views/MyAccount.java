@@ -274,6 +274,7 @@ public class MyAccount extends AppCompatActivity {
         final ImageView ivDropsPosted = findViewById(R.id.IVdropsPosted);
         final ImageView ivDropsViewed = findViewById(R.id.IVdropsViewed);
         final ImageView ivDropFirstPost = findViewById(R.id.IVdropFirstPost);
+        final ImageView ivProfilePic = findViewById(R.id.IVprofilePicture);
         final ImageView ivUpVotesGiven = findViewById(R.id.IVupVotesGiven);
         final ImageView ivUpVotesReceived = findViewById(R.id.IVupVotesReceived);
         final TextView et = findViewById(R.id.TVachievmentDescription);
@@ -308,6 +309,13 @@ public class MyAccount extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 et.setText(getString(R.string.achievement_desc_first_drop));
+            }
+        });
+
+        ivProfilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                et.setText(getString(R.string.achievement_desc_profile_pic));
             }
         });
 
