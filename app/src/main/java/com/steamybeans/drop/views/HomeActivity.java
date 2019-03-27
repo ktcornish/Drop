@@ -153,21 +153,18 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                         filterDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
                         SeekBar SBupvotes = filterDialog.findViewById(R.id.SBupvotes);
-                        SBupvotes.setProgress(minRating + 10);
+                        SBupvotes.setProgress((minRating+10)/10);
 
                         final TextView TVseekBarProgress = filterDialog.findViewById(R.id.TVseekBarProgress);
                         TVseekBarProgress.setText(String.valueOf(minRating));
-                        TVseekBarProgress.setX(seekBarProgressTextViewPosition);
 
                         SBupvotes.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                             @Override
                             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                                 TVseekBarProgress.setText(String.valueOf(minRating));
-                                int val = (progress * (seekBar.getWidth() - 2 * seekBar.getThumbOffset())) / seekBar.getMax();
-                                seekBarProgressTextViewPosition = (seekBar.getX() + val + seekBar.getThumbOffset() / 2);
-                                TVseekBarProgress.setX(seekBarProgressTextViewPosition);
+                                minRating = (progress * 10) - 10;
+                                TVseekBarProgress.setText(String.valueOf(minRating));
                                 mMap.clear();
-                                minRating = progress -10;
                                 addMarkersToMap(mMap);
                             }
 
