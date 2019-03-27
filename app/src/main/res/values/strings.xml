@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Drop</string>
-
     <string name="title_activity_signup">Signup</string>
     <string name="nav_home">Home</string>
     <string name="nav_drop">Drop</string>
@@ -8,6 +7,12 @@
     <string name="nav_filter">Filter</string>
     <string name="logout">Log Out</string>
     <string name="title_activity_maps">Map</string>
-
+    <string name="achievement_desc_downvotes_given">Certified critic</string>
+    <string name="achievement_desc_downvotes_received">Speaker of unpleasant truths</string>
+    <string name="achievement_desc_drops_posted">Prolific dropper</string>
+    <string name="achievement_desc_drops_viewed">Window dropper</string>
+    <string name="achievement_desc_first_drop">First drop</string>
+    <string name="achievement_desc_upvotes_given">Supportive</string>
+    <string name="achievement_desc_upvotes_received">Drop king</string>
 
 </resources>

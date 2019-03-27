@@ -344,9 +344,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-
-
-
         Map map = new Map(HomeActivity.this);
         if (ContextCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             Location location1 = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);

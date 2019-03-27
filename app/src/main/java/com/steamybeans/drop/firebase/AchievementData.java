@@ -62,7 +62,19 @@ public class AchievementData {
 
 
     public void setDropsViewed(String userUid, final long change) {
-        // BOOKMARK - PLACEHOLDER
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("users").child(userUid).child("achievementdata")
+                .child("dropsviewed");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                long currentVal = (long) dataSnapshot.getValue();
+                databaseReference.setValue(change + currentVal);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError database) {}
+        });
     }
 
     public void setUpVotesGiven(String userUid, final long change) {
@@ -96,45 +108,4 @@ public class AchievementData {
             public void onCancelled(@NonNull DatabaseError database) {}
         });
     }
-
-
-
-
-
-
-
-
-
-    /*
-    Schema
-    // Schematic attributes
-    private String uid;
-    private long downVotesGiven;
-    private long downVotesReceived;
-    private long dropsPosted;
-    private long dropsViewed;
-    private long upVotesGiven;
-    private long upVotesReceived;
-    private long xp;
-
-    // Local getters
-    public String getUid() { return this.uid; }
-    public long getDownVotesGiven() { return  this.downVotesGiven; }
-    public long getDownVotesReceived() { return this.downVotesReceived; }
-    public long getDropsPosted() { return this.dropsPosted; }
-    public long getDropsViewed() { return this.dropsViewed; }
-    public long getUpVotesGiven() { return this.upVotesGiven; }
-    public long getUpVotesReceived() { return this.upVotesReceived; }
-    public long getXp() { return this.xp; }
-
-    // Local setters
-    public void setUid(String uid) { this.uid = uid; }
-    public void setDvg(long dvg) { this.downVotesGiven = dvg; }
-    public void setDvr(long dvr) { this.downVotesReceived = dvr; }
-    public void setDp(long dp) { this.dropsPosted = dp; }
-    public void setDv(long dv) { this.dropsViewed = dv; }
-    public void setUvg(long uvg) { this.upVotesGiven = uvg; }
-    public void setUvr(long uvr) { this.upVotesReceived = uvr; }
-    public void setXp(long xp) { this.xp = xp; }
-    */
 }

@@ -18,7 +18,10 @@ import com.steamybeans.drop.R;
 import com.steamybeans.drop.firebase.AchievementData;
 import com.steamybeans.drop.firebase.Authentication;
 import com.steamybeans.drop.firebase.Drop;
+import com.steamybeans.drop.firebase.User;
 import com.steamybeans.drop.firebase.Vote;
+
+import java.sql.SQLOutput;
 
 public class Map extends AppCompatActivity {
     private final Context context;
@@ -50,6 +53,11 @@ public class Map extends AppCompatActivity {
 
                     dialog.show();
                 } else {
+                    // Update achievement data
+                    AchievementData ad = new AchievementData();
+                    User u = new User();
+                    ad.setDropsViewed(u.getUid(), 1);
+
                     final Dialog dialog = new Dialog(context);
                     dialog.setContentView(R.layout.dialogue_view_drop);
                     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
