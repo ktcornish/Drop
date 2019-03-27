@@ -20,5 +20,4 @@
     <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
         <item name="android:background">#365CBB</item>
     </style>
-
 </resources>
