@@ -13,7 +13,7 @@
         android:foregroundTint="@android:color/background_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.476"
+        app:layout_constraintHorizontal_bias="0.472"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
@@ -49,13 +49,12 @@
 
     <TextView
         android:id="@+id/TVEmail"
-        android:layout_width="327dp"
-        android:layout_height="33dp"
+        android:layout_width="325dp"
+        android:layout_height="26dp"
         android:gravity="center"
         android:text="Email"
-        android:textSize="1dp"
+        android:textSize="14dp"
         app:layout_constraintEnd_toEndOf="@+id/imageView3"
-        app:layout_constraintHorizontal_bias="0.588"
         app:layout_constraintStart_toStartOf="@+id/imageView3"
         app:layout_constraintTop_toBottomOf="@+id/TVuserName" />
 
@@ -63,9 +62,9 @@
         android:id="@+id/TVuserName"
         android:layout_width="325dp"
         android:layout_height="50dp"
+        android:autoSizeTextType="uniform"
         android:gravity="center"
         android:text="Username"
-        android:autoSizeTextType="uniform"
         android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="@+id/imageView3"
         app:layout_constraintStart_toStartOf="@+id/imageView3"
@@ -124,7 +123,7 @@
         android:layout_width="61dp"
         android:layout_height="75dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="@+id/imageView3"
         app:layout_constraintTop_toBottomOf="@+id/TVEmail"
         app:srcCompat="@drawable/not_achieved_placeholder" />
@@ -133,42 +132,35 @@
         android:id="@+id/IVdropFirstPost"
         android:layout_width="61dp"
         android:layout_height="75dp"
-        android:layout_marginStart="25dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/BTNlogOut"
         app:layout_constraintStart_toEndOf="@+id/IVupVotesGiven"
         app:layout_constraintTop_toBottomOf="@+id/TVEmail"
-        app:layout_constraintVertical_bias="0.058"
         app:srcCompat="@drawable/not_achieved_placeholder" />
 
     <ImageView
         android:id="@+id/IVdownVotesGiven"
         android:layout_width="61dp"
         android:layout_height="75dp"
-        android:layout_marginStart="25dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/BTNlogOut"
         app:layout_constraintStart_toEndOf="@+id/IVdropFirstPost"
         app:layout_constraintTop_toBottomOf="@+id/TVEmail"
-        app:layout_constraintVertical_bias="0.058"
         app:srcCompat="@drawable/not_achieved_placeholder" />
 
     <ImageView
         android:id="@+id/IVdownVotesReceived"
         android:layout_width="61dp"
         android:layout_height="75dp"
-        android:layout_marginStart="25dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/BTNlogOut"
+        android:adjustViewBounds="false"
+        android:cropToPadding="false"
         app:layout_constraintEnd_toEndOf="@+id/imageView3"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.058"
         app:layout_constraintStart_toEndOf="@+id/IVdownVotesGiven"
         app:layout_constraintTop_toBottomOf="@+id/TVEmail"
-        app:layout_constraintVertical_bias="0.058"
         app:srcCompat="@drawable/not_achieved_placeholder" />
 
     <ImageView
@@ -177,11 +169,8 @@
         android:layout_height="75dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/TVachievmentDescription"
         app:layout_constraintStart_toStartOf="@+id/imageView3"
-        app:layout_constraintTop_toBottomOf="@+id/IVupVotesGiven"
-        app:layout_constraintVertical_bias="0.461"
+        app:layout_constraintTop_toBottomOf="@+id/IVtitleUpvotesGiven"
         app:srcCompat="@drawable/not_achieved_placeholder" />
 
     <ImageView
@@ -190,11 +179,8 @@
         android:layout_height="75dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/TVachievmentDescription"
         app:layout_constraintStart_toEndOf="@+id/IVupVotesReceived"
-        app:layout_constraintTop_toBottomOf="@+id/IVupVotesGiven"
-        app:layout_constraintVertical_bias="0.538"
+        app:layout_constraintTop_toBottomOf="@+id/TVtitleDropFirstPost"
         app:srcCompat="@drawable/not_achieved_placeholder" />
 
     <ImageView
@@ -203,11 +189,8 @@
         android:layout_height="75dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/TVachievmentDescription"
         app:layout_constraintStart_toEndOf="@+id/IVdropsPosted"
-        app:layout_constraintTop_toBottomOf="@+id/IVupVotesGiven"
-        app:layout_constraintVertical_bias="0.538"
+        app:layout_constraintTop_toBottomOf="@+id/TVtitleDownVotesGiven"
         app:srcCompat="@drawable/not_achieved_placeholder" />
 
     <ImageView
@@ -217,136 +200,139 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/TVachievmentDescription"
         app:layout_constraintEnd_toEndOf="@+id/imageView3"
         app:layout_constraintStart_toEndOf="@+id/IVdropsViewed"
-        app:layout_constraintTop_toBottomOf="@+id/IVdownVotesReceived"
+        app:layout_constraintTop_toBottomOf="@+id/TVtitleDownVotesReceived"
         app:srcCompat="@drawable/not_achieved_placeholder" />
 
     <TextView
         android:id="@+id/TVachievmentDescription"
         android:layout_width="329dp"
-        android:layout_height="82dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
+        android:layout_height="26dp"
+        android:layout_marginBottom="20dp"
         android:gravity="center"
+        android:text="Click on an achievement for more detail"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/BTNlogOut"
         app:layout_constraintEnd_toEndOf="@+id/imageView3"
-        app:layout_constraintStart_toStartOf="@+id/imageView3"
-        app:layout_constraintTop_toBottomOf="@+id/TVEmail"
-        app:layout_constraintVertical_bias="0.974" />
+        app:layout_constraintStart_toStartOf="@+id/imageView3" />
 
     <TextView
         android:id="@+id/IVtitleUpvotesGiven"
         android:layout_width="61dp"
         android:layout_height="16dp"
-        android:textSize="8sp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="4dp"
         android:gravity="center"
         android:text="@string/achievement_title_upvotes_given"
-        app:layout_constraintBottom_toTopOf="@+id/IVupVotesGiven"
-        app:layout_constraintEnd_toEndOf="@+id/imageView3"
-        app:layout_constraintHorizontal_bias="0.066"
+        android:textSize="8sp"
         app:layout_constraintStart_toStartOf="@+id/imageView3"
-        app:layout_constraintTop_toBottomOf="@+id/TVEmail"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/IVupVotesGiven" />
 
     <TextView
         android:id="@+id/TVtitleDropFirstPost"
         android:layout_width="61dp"
         android:layout_height="16dp"
-        android:layout_marginStart="8dp"
-        android:textSize="8sp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="4dp"
         android:gravity="center"
         android:text="@string/achievement_title_first_drop"
-        app:layout_constraintBottom_toTopOf="@+id/IVupVotesGiven"
-        app:layout_constraintEnd_toEndOf="@+id/imageView3"
-        app:layout_constraintHorizontal_bias="0.075"
+        android:textSize="8sp"
         app:layout_constraintStart_toEndOf="@+id/IVtitleUpvotesGiven"
-        app:layout_constraintTop_toBottomOf="@+id/TVEmail"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/IVdropFirstPost" />
 
     <TextView
         android:id="@+id/TVtitleDownVotesGiven"
         android:layout_width="61dp"
         android:layout_height="16dp"
-        android:layout_marginStart="28dp"
-        android:textSize="8sp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="4dp"
         android:gravity="center"
         android:text="@string/achievement_title_downvotes_given"
-        app:layout_constraintBottom_toTopOf="@+id/IVupVotesGiven"
+        android:textSize="8sp"
         app:layout_constraintStart_toEndOf="@+id/TVtitleDropFirstPost"
-        app:layout_constraintTop_toBottomOf="@+id/TVEmail"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/IVdownVotesGiven" />
 
     <TextView
         android:id="@+id/TVtitleDownVotesReceived"
         android:layout_width="61dp"
         android:layout_height="16dp"
         android:layout_marginStart="8dp"
-        android:textSize="8sp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
         android:gravity="center"
         android:text="@string/achievement_title_downvotes_received"
-        app:layout_constraintBottom_toTopOf="@+id/IVupVotesGiven"
+        android:textSize="8sp"
         app:layout_constraintEnd_toEndOf="@+id/imageView3"
-        app:layout_constraintHorizontal_bias="0.513"
+        app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintStart_toEndOf="@+id/TVtitleDownVotesGiven"
-        app:layout_constraintTop_toBottomOf="@+id/TVEmail"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/IVdownVotesReceived" />
 
     <TextView
         android:id="@+id/TVtitleUpVotesReceived"
         android:layout_width="61dp"
-        android:layout_height="16dp"
+        android:layout_height="14dp"
         android:layout_marginStart="20dp"
-        android:textSize="8sp"
+        android:layout_marginTop="4dp"
         android:gravity="center"
         android:text="@string/achievement_title_upvotes_received"
-        app:layout_constraintBottom_toTopOf="@+id/IVupVotesReceived"
+        android:textSize="8sp"
         app:layout_constraintStart_toStartOf="@+id/imageView3"
-        app:layout_constraintTop_toBottomOf="@+id/IVupVotesGiven"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/IVupVotesReceived" />
 
     <TextView
         android:id="@+id/TVtitleDropsPosted"
         android:layout_width="61dp"
         android:layout_height="16dp"
         android:layout_marginStart="24dp"
-        android:textSize="8sp"
+        android:layout_marginTop="4dp"
         android:gravity="center"
         android:text="@string/achievement_title_drops_posted"
-        app:layout_constraintBottom_toTopOf="@+id/IVupVotesReceived"
+        android:textSize="8sp"
         app:layout_constraintStart_toEndOf="@+id/TVtitleUpVotesReceived"
-        app:layout_constraintTop_toBottomOf="@+id/IVupVotesGiven"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/IVdropsPosted" />
 
     <TextView
         android:id="@+id/TVtitleDropsViewed"
         android:layout_width="61dp"
         android:layout_height="16dp"
         android:layout_marginStart="24dp"
+        android:layout_marginTop="4dp"
         android:gravity="center"
         android:text="@string/achievement_title_drops_viewed"
         android:textSize="8sp"
-        app:layout_constraintBottom_toTopOf="@+id/IVupVotesReceived"
         app:layout_constraintStart_toEndOf="@+id/TVtitleDropsPosted"
-        app:layout_constraintTop_toBottomOf="@+id/IVupVotesGiven"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/IVdropsViewed" />
 
     <TextView
         android:id="@+id/TVtitleProfilePic"
         android:layout_width="61dp"
         android:layout_height="16dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
         android:gravity="center"
         android:text="@string/achievement_title_profile_pic"
         android:textSize="8sp"
-        app:layout_constraintBottom_toTopOf="@+id/IVprofilePicture"
         app:layout_constraintEnd_toEndOf="@+id/imageView3"
-        app:layout_constraintHorizontal_bias="0.414"
+        app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintStart_toEndOf="@+id/TVtitleDropsViewed"
-        app:layout_constraintTop_toBottomOf="@+id/IVdownVotesReceived"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/IVprofilePicture" />
+
+    <TextView
+        android:id="@+id/TVachievementTitle"
+        android:layout_width="329dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/TVachievmentDescription"
+        app:layout_constraintEnd_toEndOf="@+id/imageView3"
+        app:layout_constraintStart_toStartOf="@+id/imageView3"
+        app:layout_constraintTop_toBottomOf="@+id/TVtitleDropsViewed"
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
