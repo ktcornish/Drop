@@ -284,7 +284,7 @@ public class Achievements extends AppCompatActivity {
     private void profilePictureAchievement(Long profilePicture, Intent intent) {
         // First drop posted
         if (profilePicture == 1) {
-            intent.putExtra("profilePictureAchievement", "r_1st_drop");
+            intent.putExtra("profilePictureAchievement", "profile_picture_achievement");
 
             notifications.checkIfNotificationHasAlreadyBeenSent(
                     user.getUid(),
