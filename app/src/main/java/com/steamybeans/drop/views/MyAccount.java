@@ -278,16 +278,22 @@ public class MyAccount extends AppCompatActivity {
         final ImageView ivUpVotesGiven = findViewById(R.id.IVupVotesGiven);
         final ImageView ivUpVotesReceived = findViewById(R.id.IVupVotesReceived);
         final TextView et = findViewById(R.id.TVachievmentDescription);
+        final TextView title = findViewById(R.id.TVachievementTitle);
+
 
         ivDownVotesGiven.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) { et.setText(getString(R.string.achievement_desc_downvotes_given)); }
+            public void onClick(View v) {
+                et.setText(getString(R.string.achievement_desc_downvotes_given));
+                title.setText(getString(R.string.achievement_title_downvotes_given));
+            }
         });
 
         ivDownVotesReceived.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 et.setText(getString(R.string.achievement_desc_downvotes_received));
+                title.setText(getString(R.string.achievement_title_downvotes_received));
             }
         });
 
@@ -295,6 +301,7 @@ public class MyAccount extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 et.setText(getString(R.string.achievement_desc_drops_posted));
+                title.setText(getString(R.string.achievement_title_drops_posted));
             }
         });
 
@@ -302,6 +309,7 @@ public class MyAccount extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 et.setText(getString(R.string.achievement_desc_drops_viewed));
+                title.setText(getString(R.string.achievement_title_drops_viewed));
             }
         });
 
@@ -309,6 +317,7 @@ public class MyAccount extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 et.setText(getString(R.string.achievement_desc_first_drop));
+                title.setText(getString(R.string.achievement_title_first_drop));
             }
         });
 
@@ -316,6 +325,7 @@ public class MyAccount extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 et.setText(getString(R.string.achievement_desc_profile_pic));
+                title.setText(getString(R.string.achievement_title_profile_pic));
             }
         });
 
@@ -323,14 +333,15 @@ public class MyAccount extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 et.setText(getString(R.string.achievement_desc_upvotes_given));
+                title.setText(getString(R.string.achievement_title_upvotes_given));
             }
         });
 
         ivUpVotesReceived.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TextView et = findViewById(R.id.TVachievmentDescription);
                 et.setText(getString(R.string.achievement_desc_upvotes_received));
+                title.setText(getString(R.string.achievement_title_upvotes_received));
             }
         });
     }
