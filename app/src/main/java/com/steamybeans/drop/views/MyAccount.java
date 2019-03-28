@@ -144,7 +144,7 @@ public class MyAccount extends AppCompatActivity {
                             public void onFailure(@NonNull Exception exception) {
                             }
                         });
-                    } catch (IOException e) {
+                    } catch (IOException ignored) {
                     }
 
                 }

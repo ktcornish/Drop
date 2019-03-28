@@ -25,6 +25,6 @@ public class TestHelpers {
     public boolean isUserLoggedIn() {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-        return firebaseUser == null ? false : true;
+        return firebaseUser != null;
     }
 }

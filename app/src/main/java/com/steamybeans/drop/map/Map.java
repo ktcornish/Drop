@@ -12,7 +12,6 @@ import android.location.Location;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,7 +22,6 @@ import com.google.android.gms.maps.model.Marker;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -37,7 +35,6 @@ import com.google.firebase.storage.StorageReference;
 
 import com.steamybeans.drop.R;
 import com.steamybeans.drop.firebase.AchievementData;
-import com.steamybeans.drop.firebase.Authentication;
 import com.steamybeans.drop.firebase.Drop;
 import com.steamybeans.drop.firebase.User;
 import com.steamybeans.drop.firebase.Vote;
@@ -119,7 +116,7 @@ public class Map extends AppCompatActivity {
                                         public void onFailure(@NonNull Exception exception) {
                                         }
                                     });
-                                } catch (IOException e) {
+                                } catch (IOException ignored) {
                                 }
 
                             }

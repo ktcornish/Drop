@@ -1,6 +1,5 @@
 package com.steamybeans.drop.views;
 
-import android.graphics.PorterDuff;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;

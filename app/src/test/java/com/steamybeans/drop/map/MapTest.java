@@ -2,7 +2,6 @@ package com.steamybeans.drop.map;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 
 import static org.junit.jupiter.api.Assertions.*;

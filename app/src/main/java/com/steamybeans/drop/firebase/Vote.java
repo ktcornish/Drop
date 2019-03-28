@@ -2,8 +2,6 @@ package com.steamybeans.drop.firebase;
 
 import androidx.annotation.NonNull;
 
-import android.graphics.drawable.Drawable;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
