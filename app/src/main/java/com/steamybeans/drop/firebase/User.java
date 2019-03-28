@@ -6,7 +6,6 @@ import com.google.firebase.auth.FirebaseUser;
 public class User {
 
     private FirebaseUser firebaseUser;
-    private FirebaseAuth firebaseAuth;
 
     public String getUid() {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -19,7 +18,7 @@ public class User {
     }
 
     public void signOut(){
-        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuth.signOut();
     }
 }

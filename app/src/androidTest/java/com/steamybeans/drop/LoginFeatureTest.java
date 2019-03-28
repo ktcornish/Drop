@@ -22,14 +22,12 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 @RunWith(AndroidJUnit4.class)
 public class LoginFeatureTest {
 
-    private TestHelpers testHelpers;
-
     @Rule
     public ActivityTestRule<LoginPage> mainActivityTestRule = new ActivityTestRule<LoginPage>(LoginPage.class);
 
     @Test
     public void LoggingIn() throws Exception {
-        testHelpers = new TestHelpers();
+        TestHelpers testHelpers = new TestHelpers();
 
         // 01 Log out if app launches with user signed in
         if (testHelpers.isUserLoggedIn()) {

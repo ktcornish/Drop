@@ -51,7 +51,6 @@ public class MyAccount extends AppCompatActivity {
 
     private User user;
     private Authentication authentication;
-    private TextView TVemail;
     private TextView TVuserName;
     final static int gallery_image = 1;
     private StorageReference userProfileImageRef;
@@ -68,7 +67,7 @@ public class MyAccount extends AppCompatActivity {
         //Set up classes
         authentication = new Authentication(this);
         user = new User();
-        IVprofileImage = (ImageView) findViewById(R.id.IVprofileImage);
+        IVprofileImage = findViewById(R.id.IVprofileImage);
 
         //Set Up database & Storage
         userProfileImageRef = FirebaseStorage.getInstance().getReference().child("Profile Images");
@@ -82,8 +81,8 @@ public class MyAccount extends AppCompatActivity {
         authentication.checkAccountIsActive();
 
         //set text views to user email & Username;
-        TVemail = (TextView) findViewById(R.id.TVEmail);
-        TVuserName = (TextView) findViewById(R.id.TVuserName);
+        TextView TVemail = findViewById(R.id.TVEmail);
+        TVuserName = findViewById(R.id.TVuserName);
         userRef.child("username").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

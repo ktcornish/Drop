@@ -16,7 +16,6 @@ import com.steamybeans.drop.R;
 
 public class Vote {
     private DatabaseReference databaseReference;
-    private FirebaseDatabase firebaseDatabase;
 
 
     public void makeAVote(final int voteValue, final String idOfDropper, final String postId, final TextView TVvotes, final ImageButton mainButton, final ImageButton otherButton, final int background) {
@@ -59,7 +58,7 @@ public class Vote {
     }
 
     public void calculateVotesTotal(String userUid, String dropUid, final TextView TVvotes) {
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("users")
                 .child(userUid).child("posts").child(dropUid).child("votes");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {

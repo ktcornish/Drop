@@ -22,8 +22,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 @RunWith(AndroidJUnit4.class)
 public class SignUpFeatureTest {
 
-    private TestHelpers testHelpers;
-
     @Rule
     public ActivityTestRule<LoginPage> mainActivityTestRule = new ActivityTestRule<LoginPage>(LoginPage.class);
 
@@ -35,7 +33,7 @@ public class SignUpFeatureTest {
 
     @Test
     public void fillInEmailAndPassword() throws Exception {
-        testHelpers = new TestHelpers();
+        TestHelpers testHelpers = new TestHelpers();
         Thread.sleep(2000);
         onView(withId(R.id.BTNsignUp)).perform(click());
         testHelpers.signUpTestUser();

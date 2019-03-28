@@ -22,8 +22,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 @RunWith(AndroidJUnit4.class)
 public class LogOutFeatureTest {
 
-    private TestHelpers testHelpers;
-
     @Rule
     public ActivityTestRule<LoginPage> mainActivityTestRule = new ActivityTestRule<LoginPage>(LoginPage.class);
     public GrantPermissionRule mGrantPermissionRule =
@@ -32,7 +30,7 @@ public class LogOutFeatureTest {
 
     @Test
     public void LoggingOut() throws Exception {
-        testHelpers = new TestHelpers();
+        TestHelpers testHelpers = new TestHelpers();
 
         // 01 Attempt signup if not logged in
         if (!testHelpers.isUserLoggedIn()) {

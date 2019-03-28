@@ -1,6 +1,5 @@
 package com.steamybeans.drop.views;
 
-
 import android.Manifest;
 import android.app.Dialog;
 import android.app.NotificationChannel;
@@ -37,10 +36,8 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -64,6 +61,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+@SuppressWarnings("deprecation")
 public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -72,27 +70,16 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleMap mMap;
     private User user;
     private Authentication authentication;
-    private BottomNavigationView BNbottomNavigationView;
     private TextView TVdialogTitle;
-    private TextView TVviewDialogTitle;
     private Button BTNaddDrop;
     private EditText ETaddDrop;
     private GoogleApiClient googleApiClient;
-    private LocationRequest locationRequest;
-    private Location lastLocation;
-    private Marker currentUserLocationMarker;
     private static final int request_User_Location_Code = 99;
-    private LatLng currentLocation;
     private double currentLatitude;
     private double currentLongitude;
-    private ChildEventListener childEventListener;
-    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    private DatabaseReference databaseReference = firebaseDatabase.getReference();
     private String userId;
-    private Vote vote;
     private boolean zoomed = false;
     private int minRating = -10;
-    public float seekBarProgressTextViewPosition = 0;
     private Intent myAccountIntent;
     private Double newLatitude;
     private Double newLongitude;
@@ -127,7 +114,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         //check if user account is still active
         authentication.checkAccountIsActive();
 
-        BNbottomNavigationView = findViewById(R.id.BNbottomNavigationView);
+        BottomNavigationView BNbottomNavigationView = findViewById(R.id.BNbottomNavigationView);
         BNbottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -276,7 +263,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void addMarkersToMap(final GoogleMap googleMap) {
-        vote = new Vote();
+        Vote vote = new Vote();
         FirebaseDatabase.getInstance().getReference().child("users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -298,7 +285,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                                 int counter = 0;
                                                 for (final DataSnapshot snapshot3 : dataSnapshot.getChildren()) {
-                                                    counter += snapshot3.getValue(Integer.class);;
+                                                    counter += snapshot3.getValue(Integer.class);
                                                 }
                                                 if (counter > minRating) {
                                                     setUpMarker(googleMap, firebaseMarker, user, postId);
@@ -332,8 +319,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void setUpMarker(final GoogleMap googleMap, Firebasemarker firebaseMarker, final String user, final String postId) {
         final LatLng location = new LatLng(firebaseMarker.getLatitude(), firebaseMarker.getLongitude());
 
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("users")
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference("users")
                 .child(user).child("posts").child(postId).child("votes");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -375,8 +362,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             } else {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, request_User_Location_Code);
             }
-        } else {
-
         }
     }
 
@@ -410,16 +395,13 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onLocationChanged(Location location) {
-        lastLocation = location;
 
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         newLatitude = location.getLatitude();
         newLongitude = location.getLongitude();
 
-//        currentUserLocationMarker = mMap.addMarker(markerOptions);
-
 //        Zooms camera on first location only to allow map scrolling;
-        if (zoomed == false) {
+        if (!zoomed) {
             mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
             mMap.animateCamera(CameraUpdateFactory.zoomTo(18));
             zoomed = true;
@@ -427,7 +409,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
         //add lat and Lon to variable for use with drops
-        currentLocation = latLng;
         currentLatitude = location.getLatitude();
         currentLongitude = location.getLongitude();
 
@@ -437,7 +418,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        locationRequest = new LocationRequest();
+        LocationRequest locationRequest = new LocationRequest();
         locationRequest.setInterval(10000);
         locationRequest.setFastestInterval(10000);
         locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
