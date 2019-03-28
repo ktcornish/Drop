@@ -67,7 +67,7 @@ public class Achievements extends AppCompatActivity {
         });
     }
 
-    private void upvotesReceivedAchievement(Long upvotesReceived, Intent intent) {
+    public void upvotesReceivedAchievement(Long upvotesReceived, Intent intent) {
         String result  = "none";
 
         // Drops posted, gold, silver & bronze

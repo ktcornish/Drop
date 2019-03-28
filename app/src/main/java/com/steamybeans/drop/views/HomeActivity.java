@@ -82,20 +82,20 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Location lastLocation;
     private Marker currentUserLocationMarker;
     private static final int request_User_Location_Code = 99;
-    public LatLng currentLocation;
-    public double currentLatitude;
-    public double currentLongitude;
+    private LatLng currentLocation;
+    private double currentLatitude;
+    private double currentLongitude;
     private ChildEventListener childEventListener;
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference();
     private String userId;
     private Vote vote;
     private boolean zoomed = false;
-    public int minRating = -10;
+    private int minRating = -10;
     public float seekBarProgressTextViewPosition = 0;
-    public Intent myAccountIntent;
-    public Double newLatitude;
-    public Double newLongitude;
+    private Intent myAccountIntent;
+    private Double newLatitude;
+    private Double newLongitude;
 
 
     @Override
@@ -103,10 +103,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            checkUserLocationPermission();
-        }
+        checkUserLocationPermission();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel("drop", "Drop", NotificationManager.IMPORTANCE_HIGH);
@@ -124,7 +121,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         myAccountIntent = new Intent(HomeActivity.this, MyAccount.class);
 
         // Support toolbar in activity
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_top);
+        Toolbar toolbar = findViewById(R.id.toolbar_top);
         setSupportActionBar(toolbar);
 
         //check if user account is still active
@@ -371,17 +368,15 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-    public boolean checkUserLocationPermission() {
+    private void checkUserLocationPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, request_User_Location_Code);
             } else {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, request_User_Location_Code);
             }
-            return false;
         } else {
 
-            return true;
         }
     }
 
@@ -399,11 +394,10 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 } else {
                     Toast.makeText(this, "Location Permission Denied", Toast.LENGTH_SHORT).show();
                 }
-                return;
         }
     }
 
-    protected synchronized void buildGoogleApiclient() {
+    private synchronized void buildGoogleApiclient() {
         googleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
